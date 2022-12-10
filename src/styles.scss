@@ -1,0 +1,190 @@
+@import url("https://fonts.bunny.net/css?family=roboto:400,500,700");
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+body {
+	font-family: "Roboto", sans-serif;
+	line-height: 1;
+}
+ol,
+ul {
+	list-style: none;
+}
+blockquote,
+q {
+	quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: "";
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	line-height: 1.2;
+}
+
+h5,
+h6,
+p {
+	line-height: 1.4;
+}
+
+a {
+	color: var(--accent);
+	text-decoration: none;
+	font-weight: bold;
+}
+
+:root {
+	@media screen and (max-width: 600px) {
+		font-size: 12px;
+	}
+	@media screen and (max-width: 800px) {
+		font-size: 13px;
+	}
+	@media screen and (max-width: 1200px) {
+		font-size: 14px;
+	}
+	font-size: 16px; // 1200px - 1920px
+	@media screen and (min-width: 1920px) {
+		font-size: 18px;
+	}
+	@media screen and (min-width: 2500px) {
+		font-size: 30px;
+	}
+
+	--bg-color-1: #efefef;
+	--bg-color-2: #dddddd;
+	--bg-color-3: #acacac;
+	--bg-color-4: #888888;
+	--bg-color-5: #757575;
+	--bg-color-6: #666666;
+	--color-1: #222;
+	--color-2: #333;
+	--color-3: #555;
+	--color-4: #666;
+	--color-5: #888;
+	--color-6: #aaa;
+	--accent-color: white;
+	--accent: #3082b1;
+	&.dark {
+		--bg-color-1: #0d0c1d;
+		--bg-color-2: #141329;
+		--bg-color-3: #1f1c3f;
+		--bg-color-4: #252346;
+		--bg-color-5: #2e2c53;
+		--bg-color-6: #2a2849;
+		--color-1: #efefef;
+		--color-2: #dddddd;
+		--color-3: #acacac;
+		--color-4: #888888;
+		--color-5: #757575;
+		--color-6: #666666;
+		--accent-color: white;
+		--accent: #3082b1;
+	}
+}
