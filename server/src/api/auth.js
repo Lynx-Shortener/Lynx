@@ -22,7 +22,7 @@ router.post("/login", async function (req, res) {
 
 	return res.status(200).json({
 		success: true,
-		data,
+		result: data,
 	});
 });
 
@@ -34,7 +34,7 @@ router.get("/me", async function (req, res) {
 
 	return res.status(200).send({
 		success: true,
-		data: {
+		result: {
 			email,
 			id,
 			username,

@@ -59,7 +59,6 @@ module.exports = async ({ author, slug, destination }) => {
 		slug,
 		destination,
 		author,
-		uses: 0,
 		creationDate: new Date(),
 		modifiedDate: new Date(),
 	});

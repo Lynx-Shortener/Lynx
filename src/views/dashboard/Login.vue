@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { useAccountStore } from "../stores/account";
+import { useAccountStore } from "@/stores/account.js";
 export default {
 	data() {
 		return {
@@ -29,7 +29,7 @@ export default {
 			if (data.success) {
 				this.response = "Logged in!";
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
-				this.$router.push("/");
+				this.$router.push("/dash");
 			}
 		},
 	},

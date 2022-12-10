@@ -5,7 +5,6 @@ const schema = new mongoose.Schema({
 	slug: String,
 	destination: String,
 	author: String,
-	uses: Number,
 	creationDate: Date,
 	modifiedDate: Date,
 });

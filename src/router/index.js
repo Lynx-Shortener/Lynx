@@ -1,24 +1,32 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAccountStore } from "../stores/account";
 
-import Home from "../views/Home.vue";
-
 const routes = [
 	{
 		path: "/",
 		name: "Home",
-		component: Home,
+		redirect: "/dash/overview",
 	},
 	{
-		path: "/about",
-		component: () => import("../views/About.vue"),
-		meta: {
-			requiresLogin: true,
-		},
-	},
-	{
-		path: "/login",
-		component: () => import("../views/Login.vue"),
+		path: "/dash",
+		component: () => import("../views/dashboard/Index.vue"),
+		redirect: "/dash/overview",
+		children: [
+			{
+				path: "/dash/overview",
+				component: () => import("../views/dashboard/Overview.vue"),
+				meta: {
+					requiresLogin: true,
+				},
+			},
+			{
+				path: "/dash/login",
+				component: () => import("../views/dashboard/Login.vue"),
+				meta: {
+					hideSidebar: true,
+				},
+			},
+		],
 	},
 ];
 
@@ -27,12 +35,15 @@ const router = createRouter({
 	routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 	const account = useAccountStore();
+	if (account.account === null && account.token !== null) {
+		await account.getAccount();
+	}
 
 	if (to.meta.requiresLogin && account.account === null) {
 		return next({
-			path: "/login",
+			path: "/dash/login",
 			query: {
 				next: encodeURIComponent(to.fullPath),
 			},
