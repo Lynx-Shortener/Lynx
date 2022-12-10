@@ -1,4 +1,4 @@
-@import url("https://fonts.bunny.net/css?family=roboto:400,500,700");
+@import url("https://fonts.bunny.net/css?family=roboto:300,400,500,700");
 html,
 body {
 	margin: 0;
@@ -171,6 +171,7 @@ a {
 	--color-6: #aaa;
 	--accent-color: white;
 	--accent: #3082b1;
+	--color-error: tomato;
 	&.dark {
 		--bg-color-1: #0d0c1d;
 		--bg-color-2: #141329;
@@ -186,5 +187,63 @@ a {
 		--color-6: #666666;
 		--accent-color: white;
 		--accent: #3082b1;
+		--color-error: tomato;
+	}
+}
+
+.formkit-form {
+	.formkit-messages {
+		margin-top: 0.4rem;
+		margin-bottom: 1rem;
+	}
+}
+
+.formkit-outer {
+	width: 100%;
+	text-align: left;
+	margin-bottom: 0.5rem;
+	margin-top: 0.2rem;
+	.formkit-wrapper {
+		.formkit-label {
+			margin-bottom: 0.4rem;
+			display: block;
+			font-weight: 500;
+		}
+		.formkit-inner {
+			input {
+				padding: 0.8em 0.5em;
+				background: none;
+				border: 1px solid var(--bg-color-4);
+				border-radius: 8px;
+				width: 100%;
+				box-sizing: border-box;
+			}
+		}
+		button {
+			padding: 0.8em 0.2em;
+			background: none;
+			border-radius: 8px;
+			width: 100%;
+			border: none;
+			display: block;
+			cursor: pointer;
+			&[primary] {
+				background: var(--accent);
+				color: var(--accent-color);
+			}
+		}
+	}
+	.formkit-messages {
+		color: tomato;
+		margin-top: 0.4rem;
+		margin-bottom: 1rem;
+		font-weight: bold;
+		display: block;
+	}
+	.formkit-help {
+		text-align: left;
+		margin-top: 0.4rem;
+		font-weight: 300;
+		font-size: 0.8rem;
 	}
 }

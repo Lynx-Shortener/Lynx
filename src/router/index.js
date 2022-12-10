@@ -12,6 +12,13 @@ const routes = [
 	{
 		path: "/about",
 		component: () => import("../views/About.vue"),
+		meta: {
+			requiresLogin: true,
+		},
+	},
+	{
+		path: "/login",
+		component: () => import("../views/Login.vue"),
 	},
 ];
 
@@ -25,7 +32,7 @@ router.beforeEach((to, from, next) => {
 
 	if (to.meta.requiresLogin && account.account === null) {
 		return next({
-			path: "/",
+			path: "/login",
 			query: {
 				next: encodeURIComponent(to.fullPath),
 			},

@@ -10,14 +10,26 @@ async function getAccountByUsername(username) {
 }
 
 async function getAccountByEmail(email) {
-	console.log(email);
 	return await Account.findOne({
 		"email.address": email,
 	});
 }
 
-module.exports = async ({ username, password, captcha }) => {
-	
+module.exports = async ({ username, password }) => {
+	let errors = [];
+
+	if (!username) errors.username = "username was not provided";
+	if (!password) errors.password = "password was not provided";
+
+	if (Object.keys(errors).length !== 0)
+		return [
+			null,
+			{
+				message: Object.values(errors).join("\n"),
+				code: 400,
+			},
+		];
+
 	// Username can also be an email
 	const account = (await getAccountByUsername(username)) || (await getAccountByEmail(username));
 	if (!account)

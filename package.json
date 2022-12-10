@@ -10,6 +10,7 @@
 		"server": "node server"
 	},
 	"dependencies": {
+		"@formkit/vue": "^1.0.0-beta.12",
 		"pinia": "^2.0.28",
 		"sass": "^1.55.0",
 		"vue": "^3.2.37",
