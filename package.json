@@ -1,29 +1,22 @@
 {
-	"name": "scriptware-themes",
-	"private": true,
-	"version": "0.0.0",
-	"type": "module",
-	"scripts": {
-		"dev": "vite",
-		"build": "vite build",
-		"preview": "vite preview",
-		"server": "nodemon server -w server"
-	},
+	"name": "URL-Shortener",
+	"version": "1.0.0",
+	"main": "src/index.js",
+	"repository": "https://github.com/JackBailey/URL-Shortener.git",
+	"author": "Jack Bailey <jack@jackbailey.dev>",
+	"license": "MIT",
+	"private": false,
 	"dependencies": {
-		"@formkit/vue": "^1.0.0-beta.12",
-		"@fortawesome/fontawesome-svg-core": "^6.2.1",
-		"@fortawesome/free-brands-svg-icons": "^6.2.1",
-		"@fortawesome/free-regular-svg-icons": "^6.2.1",
-		"@fortawesome/free-solid-svg-icons": "^6.2.1",
-		"@fortawesome/vue-fontawesome": "^3.0.2",
-		"pinia": "^2.0.28",
-		"sass": "^1.56.2",
-		"vue": "^3.2.45",
-		"vue-router": "^4.1.6",
-		"vue3-observe-visibility": "^0.1.2"
+		"bcrypt": "^5.1.0",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"express-mongo-sanitize": "^2.2.0",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^6.8.0",
+		"uuid": "^9.0.0"
 	},
-	"devDependencies": {
-		"@vitejs/plugin-vue": "^4.0.0",
-		"vite": "^4.0.0"
+	"scripts": {
+		"dev": "node .",
+		"serve": "npm run dev --prefix frontend"
 	}
 }

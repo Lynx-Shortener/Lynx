@@ -4,6 +4,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const bodyParser = require("body-parser");
 const createLink = require("./db/modules/link/create");
 const listLink = require("./db/modules/link/list");
+const path = require("path");
 
 const mongoose = require("mongoose");
 const setup = require("./modules/setup");
@@ -14,6 +15,14 @@ app.use(bodyParser.json());
 app.use(mongoSanitize({ allowDots: true }));
 
 app.use("/api", require("./api"));
+
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static("dist"));
+
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve("dist", "index.html"));
+	});
+}
 
 const mongoDB = `mongodb://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@${process.env.DB_HOST}:${
 	process.env.DB_PORT

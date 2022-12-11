@@ -1,0 +1,29 @@
+{
+	"name": "scriptware-themes",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"server": "nodemon server -w server"
+	},
+	"dependencies": {
+		"@formkit/vue": "^1.0.0-beta.12",
+		"@fortawesome/fontawesome-svg-core": "^6.2.1",
+		"@fortawesome/free-brands-svg-icons": "^6.2.1",
+		"@fortawesome/free-regular-svg-icons": "^6.2.1",
+		"@fortawesome/free-solid-svg-icons": "^6.2.1",
+		"@fortawesome/vue-fontawesome": "^3.0.2",
+		"pinia": "^2.0.28",
+		"sass": "^1.56.2",
+		"vue": "^3.2.45",
+		"vue-router": "^4.1.6",
+		"vue3-observe-visibility": "^0.1.2"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "^4.0.0",
+		"vite": "^4.0.0"
+	}
+}
