@@ -1,6 +1,5 @@
 <template>
 	<div class="overview">
-		<p>hi</p>
 		<div class="links">
 			<h1>hello there!</h1>
 			<table>
@@ -54,8 +53,6 @@ export default {
 				link.creationDate = new Date(link.creationDate).toLocaleString();
 				return link;
 			});
-
-			console.log(links);
 
 			this.links = this.links.concat(links);
 			this.remainingPages = response.result.remaining;

@@ -62,8 +62,6 @@ export const useAccountStore = defineStore("account", {
 
 			const data = await response.json();
 
-			console.log(data);
-
 			return data;
 		},
 	},
