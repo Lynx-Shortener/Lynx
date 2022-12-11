@@ -1,15 +1,16 @@
 <template>
 	<div class="sidebar">
-		<router-link to="/dash/overview">
-			<font-awesome-icon icon="list" />
-			<p>Overview</p>
-		</router-link>
-		<router-link to="/dash/settings">
-			<font-awesome-icon icon="gear" />
-			<p>Settings</p>
-		</router-link>
-		<div class="spacer"></div>
-		<div class="lowericons">
+		<div class="upperIcons">
+			<router-link to="/dash/overview">
+				<font-awesome-icon icon="list" />
+				<p>Overview</p>
+			</router-link>
+			<router-link to="/dash/settings">
+				<font-awesome-icon icon="gear" />
+				<p>Settings</p>
+			</router-link>
+		</div>
+		<div class="lowerIcons">
 			<a @click="darkMode.toggle()" class="darkmode">
 				<font-awesome-icon :icon="darkMode.dark ? 'sun' : 'moon'" />
 				<p>{{ darkMode.dark ? "Light Mode" : "Dark Mode" }}</p>
@@ -42,12 +43,17 @@ export default {
 	padding: 1.5rem 1.5rem;
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
 	box-sizing: border-box;
 	height: 100vh;
 	-webkit-user-select: none; /* Safari */
 	-ms-user-select: none; /* IE 10 and IE 11 */
 	user-select: none; /* Standard syntax */
+	justify-content: space-between;
+	.upperIcons {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
 	a {
 		text-decoration: none;
 		color: inherit;
@@ -72,12 +78,33 @@ export default {
 				aspect-ratio: 1/1;
 			}
 		}
-		// &:hover {
-		// 	background: ;
-		// }
 	}
 	.spacer {
 		flex-grow: 1;
+	}
+
+	@media screen and (max-width: 768px) {
+		flex-direction: row;
+		width: 100%;
+		height: max-content;
+		align-items: center;
+		padding: 1rem 1.5rem 1rem;
+		a {
+			height: max-content;
+			p {
+				display: none;
+			}
+		}
+		.upperIcons > a {
+			svg {
+				font-size: 1.3rem;
+			}
+		}
+		.upperIcons,
+		.lowerIcons {
+			display: flex;
+			flex-direction: row;
+		}
 	}
 }
 </style>
