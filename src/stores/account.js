@@ -40,7 +40,8 @@ export const useAccountStore = defineStore("account", {
 		async getAccount() {
 			const data = await this.fetch("/auth/me", {});
 
-			return data.success ? data.result.account : null;
+			this.account = data.success ? data.result.account : null;
+			return this.account;
 		},
 		async fetch(url, { body, headers, method, query }) {
 			headers = Object.assign(headers || {}, {
@@ -60,6 +61,8 @@ export const useAccountStore = defineStore("account", {
 			}
 
 			const data = await response.json();
+
+			console.log(data);
 
 			return data;
 		},
