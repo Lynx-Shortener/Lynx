@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { list, get } = require("../db/modules/url");
+const { list, get } = require("../db/modules/link");
 
 const { current: currentAccount } = require("../db/modules/account/get");
 
@@ -12,7 +12,7 @@ router.get("/list", async function (req, res) {
 
 	res.status(200).json({
 		success: true,
-		data: result,
+		result: data,
 	});
 });
 
@@ -32,7 +32,7 @@ router.get("/", async function (req, res) {
 	} else {
 		res.status(404).json({
 			success: false,
-			message: "invalid url",
+			message: "invalid link",
 		});
 	}
 });

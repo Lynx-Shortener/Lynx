@@ -17,7 +17,7 @@ export default {
 	},
 	async mounted() {
 		const response = await fetch(
-			"/api/url?" +
+			"/api/link?" +
 				new URLSearchParams({
 					slug: this.$route.params.pathMatch[0],
 				}),

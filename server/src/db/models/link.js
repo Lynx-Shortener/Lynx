@@ -9,6 +9,6 @@ const schema = new mongoose.Schema({
 	modifiedDate: Date,
 });
 
-const URL = mongoose.model("URL", schema);
+const Link = mongoose.model("Link", schema);
 
-module.exports = URL;
+module.exports = Link;

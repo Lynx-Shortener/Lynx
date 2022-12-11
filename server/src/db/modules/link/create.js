@@ -1,6 +1,6 @@
-const URL = require("../../models/url");
+const Link = require("../../models/link");
 const { v4: uuid4 } = require("uuid");
-const getURL = require("./get");
+const getLink = require("./get");
 
 const chars = {
 	alpha: "abcdefghijklmnopqrstuvwxyz",
@@ -24,37 +24,37 @@ function generateSlug() {
 
 module.exports = async ({ author, slug, destination }) => {
 	if (!slug) {
-		let urlUnique;
-		while (!urlUnique) {
+		let slugUnique;
+		while (!slugUnique) {
 			slug = generateSlug();
-			const existingURL = await getURL({ slug });
-			if (!existingURL) urlUnique = true;
+			const existingLink = await getLink({ slug });
+			if (!existingLink) slugUnique = true;
 		}
 	} else {
-		const existingURL = await getURL({ slug });
-		if (existingURL)
+		const existingLink = await getURL({ slug });
+		if (existingLink)
 			return [
 				null,
 				{
-					message: "A URL with that slug already exists",
+					message: "A link with that slug already exists",
 					code: 409,
 				},
 			];
 	}
 
 	if (process.env.URL_ONLY_UNIQUE === "true") {
-		const existingURL = await getURL({ destination });
-		if (existingURL)
+		const existingLink = await getLink({ destination });
+		if (existingLink)
 			return [
 				null,
 				{
-					message: "A URL with that destination already exists",
+					message: "A link with that destination already exists",
 					code: 409,
 				},
 			];
 	}
 
-	const url = new URL({
+	const link = new Link({
 		id: uuid4(),
 		slug,
 		destination,
@@ -63,7 +63,7 @@ module.exports = async ({ author, slug, destination }) => {
 		modifiedDate: new Date(),
 	});
 
-	await url.save();
+	await link.save();
 
-	return [url, null];
+	return [link, null];
 };

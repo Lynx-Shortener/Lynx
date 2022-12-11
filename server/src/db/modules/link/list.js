@@ -1,8 +1,8 @@
-const URL = require("../../models/url");
+const Link = require("../../models/link");
 
 module.exports = async ({ pagesize, page }) => {
-	const total = await URL.count();
-	const urls = await URL.find({}, null, { skip: page * pagesize, limit: pagesize });
+	const total = await Link.count();
+	const links = await Link.find({}, null, { skip: page * pagesize, limit: pagesize });
 
 	let remaining = Math.ceil((total - page * pagesize) / pagesize) - 1;
 
@@ -10,6 +10,6 @@ module.exports = async ({ pagesize, page }) => {
 
 	return {
 		remaining,
-		urls,
+		links,
 	};
 };
