@@ -1,7 +1,6 @@
 <template>
 	<div class="overview">
 		<div class="links">
-			<h1>hello there!</h1>
 			<table>
 				<thead class="header">
 					<th>Created At</th>
