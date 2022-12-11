@@ -2,6 +2,11 @@
 	<router-view> </router-view>
 </template>
 
+<script setup>
+import { useDarkMode } from "./stores/dark";
+useDarkMode();
+</script>
+
 <style lang="scss">
 body {
 	background: var(--bg-color-1);

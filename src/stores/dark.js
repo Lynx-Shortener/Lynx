@@ -13,6 +13,8 @@ export const useDarkMode = defineStore("dark", {
 		if (dark) document.documentElement.classList.add("dark");
 		else document.documentElement.classList.remove("dark");
 
+		console.log(dark);
+
 		return {
 			dark,
 		};
