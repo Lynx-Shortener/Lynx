@@ -19,8 +19,6 @@ const mongoDB = `mongodb://${process.env.DB_USER}:${encodeURIComponent(process.e
 	process.env.DB_PORT
 }/shortener?authSource=admin`;
 
-console.log(mongoDB);
-
 mongoose.set("strictQuery", false);
 
 mongoose.connect(

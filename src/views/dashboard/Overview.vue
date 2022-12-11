@@ -32,13 +32,6 @@ export default {
 			if (this.loadingMore) return;
 			this.loadingMore = true;
 			const account = useAccountStore();
-			console.log(
-				"/url/list" +
-					new URLSearchParams({
-						page: this.page,
-						pagesize: this.pagesize,
-					})
-			);
 			const response = await account.fetch(
 				"/url/list?" +
 					new URLSearchParams({
@@ -60,7 +53,6 @@ export default {
 		},
 		visibilityChanged(visibile) {
 			this.endVisible = visibile;
-			console.log(visibile);
 			if (!this.loadingMore && visibile && this.remainingPages > 0) this.loadMore();
 		},
 	},
