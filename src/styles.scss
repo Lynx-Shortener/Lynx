@@ -217,6 +217,7 @@ a {
 				border-radius: 8px;
 				width: 100%;
 				box-sizing: border-box;
+				color: var(--color-1);
 			}
 		}
 		button {
@@ -235,7 +236,7 @@ a {
 	}
 	.formkit-messages {
 		color: tomato;
-		margin-top: 0.4rem;
+		margin-top: 0.8rem;
 		margin-bottom: 1rem;
 		font-weight: bold;
 		display: block;

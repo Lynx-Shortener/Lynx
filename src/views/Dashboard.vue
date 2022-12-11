@@ -19,7 +19,8 @@ export default {
 
 <style lang="scss" scoped>
 main {
-	margin-right: 4rem;
 	width: 100%;
+	overflow-y: scroll;
+	padding-right: 4rem;
 }
 </style>

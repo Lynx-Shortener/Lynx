@@ -11,6 +11,7 @@ useDarkMode();
 body {
 	background: var(--bg-color-1);
 	display: flex;
+	height: 100%;
 }
 #app {
 	color: var(--color-1);

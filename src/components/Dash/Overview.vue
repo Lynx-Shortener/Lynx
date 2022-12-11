@@ -131,12 +131,11 @@ export default {
 <style lang="scss" scoped>
 .overview {
 	width: 80%;
-	margin: 0 auto;
-	padding-block: 5rem;
-	height: 100vh;
+	margin: 5rem auto;
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+
 	.createLink,
 	.newLink,
 	.links {
@@ -183,16 +182,6 @@ export default {
 	}
 
 	.links {
-		flex-grow: 1;
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-
-		.content {
-			overflow-y: scroll;
-			height: 100%;
-			flex-grow: 1;
-		}
 		table {
 			width: 100%;
 			border-collapse: collapse;
@@ -207,34 +196,5 @@ export default {
 			}
 		}
 	}
-	// .links {
-	// 	border: 1px solid var(--bg-color-3);
-	// 	border-radius: 10px;
-	// 	height: 40rem;
-	// 	overflow-y: scroll;
-	// 	width: 80%;
-	// 	// width: max-content;
-	// 	box-sizing: border-box;
-	// 	margin-top: 5rem;
-	// 	padding: 1rem 2rem;
-	// 	margin: 5rem auto 0 auto;
-	// 	border-collapse: collapse;
-	// 	caption-side: bottom;
-	// 	.header,
-	// 	.link {
-	// 		gap: 1rem;
-	// 		td,
-	// 		th {
-	// 			padding: 0.2rem 0.4rem;
-	// 		}
-	// 	}
-	// 	.link {
-	// 		.destination {
-	// 			white-space: nowrap;
-	// 			text-overflow: ellipsis;
-	// 			overflow-x: hidden;
-	// 		}
-	// 	}
-	// }
 }
 </style>
