@@ -12,13 +12,15 @@ My functionality I wanted:
 
 ## Roadmap
 
-[ ] ShareX support - Maybe make compatible with YOURLS?
+-   [ ] ShareX support
 
-[ ] Multi-user support
+    Maybe compatible with YOURLS?
 
-[ ] Image uploads?
+-   [ ] Multi-user support
 
-[ ] QR codes
+-   [ ] Image uploads?
+
+-   [ ] QR codes
 
 ## Naming
 
