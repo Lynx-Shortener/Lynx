@@ -9,14 +9,16 @@
 			<p>Settings</p>
 		</router-link>
 		<div class="spacer"></div>
-		<a @click="darkMode.toggle()">
-			<font-awesome-icon :icon="darkMode.dark ? 'sun' : 'moon'" />
-			<p>{{ darkMode.dark ? "Light Mode" : "Dark Mode" }}</p>
-		</a>
-		<a>
-			<font-awesome-icon icon="right-from-bracket" />
-			<p>Logout</p>
-		</a>
+		<div class="lowericons">
+			<a @click="darkMode.toggle()" class="darkmode">
+				<font-awesome-icon :icon="darkMode.dark ? 'sun' : 'moon'" />
+				<p>{{ darkMode.dark ? "Light Mode" : "Dark Mode" }}</p>
+			</a>
+			<a class="logout">
+				<font-awesome-icon icon="right-from-bracket" />
+				<p>Logout</p>
+			</a>
+		</div>
 	</div>
 </template>
 
@@ -36,8 +38,8 @@ export default {
 	background: var(--bg-color-2);
 	height: 100%;
 	position: relative;
-	width: 12rem;
-	padding: 2rem 1rem;
+	width: max-content;
+	padding: 1.5rem 1.5rem;
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
@@ -53,8 +55,26 @@ export default {
 		gap: 1rem;
 		align-items: center;
 		padding: 0.4rem 0.5rem;
-		border-radius: 5px;
+		border-radius: 2px;
 		cursor: pointer;
+		white-space: nowrap;
+		&.router-link-exact-active {
+			background: var(--accent);
+			color: var(--accent-color);
+		}
+		&.logout,
+		&.darkmode {
+			svg {
+				background: var(--accent);
+				padding: 10px;
+				border-radius: 50%;
+				color: var(--accent-color);
+				aspect-ratio: 1/1;
+			}
+		}
+		// &:hover {
+		// 	background: ;
+		// }
 	}
 	.spacer {
 		flex-grow: 1;
