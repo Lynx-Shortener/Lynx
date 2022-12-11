@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { list, get, create } = require("../db/modules/link");
+const { list, get, create, update } = require("../db/modules/link");
 
 const { current: currentAccount } = require("../db/modules/account/get");
 
@@ -60,6 +60,29 @@ router.post("/", async function (req, res) {
 
 	const [link, linkError] = await create({
 		author: account.id,
+		slug,
+		destination,
+	});
+
+	if (linkError)
+		return res.status(linkError.code).json({
+			success: false,
+			message: linkError.message,
+		});
+
+	return res.status(200).json({
+		success: true,
+		result: returnLink(link),
+	});
+});
+
+router.patch("/", async function (req, res) {
+	const [account, accountError] = await currentAccount(req);
+	if (accountError) return res.status(accountError.code).send(accountError.message);
+	const { slug, destination, id } = req.body;
+
+	const [link, linkError] = await update({
+		id,
 		slug,
 		destination,
 	});

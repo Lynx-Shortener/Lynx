@@ -42,8 +42,24 @@
 					</thead>
 					<tr class="link" v-for="link in links" :key="link.id">
 						<td><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
-						<td><strong>Slug:&nbsp;</strong>{{ link.slug }}</td>
-						<td class="destination"><strong>Destination:&nbsp;</strong>{{ link.destination }}</td>
+						<td
+							><strong>Slug:&nbsp;</strong>
+							<span v-if="!link.editing">{{ link.slug }}</span>
+							<FormKit v-else type="text" v-model="link.edit.slug" />
+						</td>
+						<td class="destination"
+							><strong>Destination:&nbsp;</strong>
+							<span v-if="!link.editing">{{ link.destination }}</span>
+							<FormKit v-else type="text" v-model="link.edit.destination" />
+						</td>
+						<td class="actions">
+							<FormKit type="button" :input-class="link.editing ? 'confirm' : 'edit'" @click="handleEdit(link)">
+								<font-awesome-icon :icon="link.editing ? 'check' : 'pencil'" />
+							</FormKit>
+							<FormKit type="button" :input-class="link.editing ? 'cancel' : 'delete'" @click="handleDelete(link)">
+								<font-awesome-icon :icon="link.editing ? 'x' : 'trash-can'" />
+							</FormKit>
+						</td>
 					</tr>
 					<span v-observe-visibility="visibilityChanged"></span>
 				</table>
@@ -114,8 +130,28 @@ export default {
 
 			response.result.link = `${window.location.origin}/${response.result.slug}`;
 			this.newLink.response = response.result;
-
-			console.log(response);
+		},
+		handleEdit(targetLink) {
+			const index = this.links.findIndex((link) => link.id === targetLink.id);
+			if (!targetLink.editing) {
+				this.links[index].edit = {
+					slug: targetLink.slug,
+					destination: targetLink.destination,
+				};
+				this.links[index].editing = true;
+			} else {
+				this.links[index].slug = targetLink.edit.slug;
+				this.links[index].destination = targetLink.edit.destination;
+				this.links[index].editing = false;
+			}
+		},
+		handleDelete(targetLink) {
+			if (targetLink.editing) {
+				const index = this.links.findIndex((link) => link.id === targetLink.id);
+				this.links[index].editing = false;
+			} else {
+				alert("DELETE");
+			}
 		},
 		visibilityChanged(visibile) {
 			this.endVisible = visibile;
@@ -194,6 +230,25 @@ export default {
 					text-align: left;
 					strong {
 						display: none;
+					}
+
+					&.actions {
+						display: flex;
+						gap: 0.2rem;
+						:deep(.formkit-outer) {
+							.formkit-wrapper {
+								button {
+									border-radius: 5px;
+									padding: 0.4rem 0.8rem;
+									background: var(--accent);
+									color: var(--accent-color);
+									&.delete,
+									&.cancel {
+										background: var(--color-error);
+									}
+								}
+							}
+						}
 					}
 				}
 			}
