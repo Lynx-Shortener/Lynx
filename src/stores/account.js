@@ -30,7 +30,7 @@ export const useAccountStore = defineStore("account", {
 			if (data.success) {
 				this.token = data.result.token;
 				// expire in 7 days
-				var expires = new Date(Date.now() + 86400 * 1000).toUTCString();
+				var expires = new Date(Date.now() + 86400 * 1000 * 7).toUTCString();
 				document.cookie = `token=${this.token};expires=${expires};path=/;SameSite=Strict; Secure;`;
 				await this.getAccount();
 			}
@@ -38,17 +38,9 @@ export const useAccountStore = defineStore("account", {
 			return data;
 		},
 		async getAccount() {
-			const response = await fetch("/api/auth/me", {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${this.token}`,
-				},
-			});
-			const data = await response.json();
-			if (data.success) {
-				this.account = data.result.account;
-			}
+			const data = await this.fetch("/auth/me", {});
+
+			return data.success ? data.result.account : null;
 		},
 		async fetch(url, { body, headers, method, query }) {
 			headers = Object.assign(headers || {}, {
@@ -62,6 +54,10 @@ export const useAccountStore = defineStore("account", {
 				body,
 				query,
 			});
+
+			if (response.status === 401) {
+				return { success: false };
+			}
 
 			const data = await response.json();
 

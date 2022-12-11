@@ -37,18 +37,20 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 	const account = useAccountStore();
-	if (account.account === null && account.token !== null) {
-		await account.getAccount();
+	if (to.meta.requiresLogin) {
+		if (account.account === null && account.token !== null) {
+			await account.getAccount();
+		}
+		if (account.account === null) {
+			return next({
+				path: "/dash/login",
+				query: {
+					next: encodeURIComponent(to.fullPath),
+				},
+			});
+		}
 	}
 
-	if (to.meta.requiresLogin && account.account === null) {
-		return next({
-			path: "/dash/login",
-			query: {
-				next: encodeURIComponent(to.fullPath),
-			},
-		});
-	}
 	next();
 });
 
