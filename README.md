@@ -1,20 +1,24 @@
-# Vue3 + Vite + vue-router + SCSS
+# URL-Shortener
 
-Template created by [Jack-Bailey](https://jackbailey.dev) as a quick start.
+A fullstack application to shorten your URLs.
 
-## Installation
+I've tried a variety of URL shorteners but didn't find any with the functionality I wanted so I made my own.
 
-```
-npm install -g yarn degit
+My functionality I wanted:
 
-degit Jack-Bailey/vue-vite-vuerouter-scss my-vue3-vite-router-scss-app
+-   Admin Interface
+-   Option to redirect the root path
+-   Simple UI
 
-cd my-vue3-vite-router-scss-app
+## Roadmap
 
-yarn
+[ ] ShareX support - Maybe make compatible with YOURLS?
 
-yarn dev
-```
+[ ] Multi-user support
+
+[ ] Image uploads?
+
+[ ] QR codes
 
 ## Naming
 
