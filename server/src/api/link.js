@@ -7,8 +7,8 @@ const { current: currentAccount } = require("../db/modules/account/get");
 router.get("/list", async function (req, res) {
 	const [account, error] = await currentAccount(req);
 	if (error) return res.status(error.code).send(error.message);
-	const { pagesize, page } = req.query;
-	const data = await list({ pagesize, page });
+	const { pagesize, page, sort } = req.query;
+	const data = await list({ pagesize, page, sort });
 
 	res.status(200).json({
 		success: true,

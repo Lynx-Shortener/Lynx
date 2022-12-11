@@ -1,15 +1,19 @@
 <template>
 	<div class="overview">
 		<div class="links">
-			<div class="header">
-				<p>Slug</p>
-				<p>Destination</p>
-			</div>
-			<div class="link" v-for="link in links" :key="link.id">
-				<p>{{ link.slug }}</p>
-				<p class="destination">{{ link.destination }}</p>
-			</div>
-			<span v-observe-visibility="visibilityChanged"></span>
+			<table>
+				<thead class="header">
+					<th>Created At</th>
+					<th>Slug</th>
+					<th>Destination</th>
+				</thead>
+				<tr class="link" v-for="link in links" :key="link.id">
+					<td>{{ link.creationDate }}</td>
+					<td>{{ link.slug }}</td>
+					<td class="destination">{{ link.destination }}</td>
+				</tr>
+				<span v-observe-visibility="visibilityChanged"></span>
+			</table>
 		</div>
 	</div>
 </template>
@@ -37,13 +41,21 @@ export default {
 					new URLSearchParams({
 						page: this.page,
 						pagesize: this.pagesize,
+						sort: "desc",
 					}),
 				{}
 			);
 
 			this.page++;
 
-			this.links = this.links.concat(response.result.links);
+			const links = response.result.links.map((link) => {
+				link.creationDate = new Date(link.creationDate).toLocaleString();
+				return link;
+			});
+
+			console.log(links);
+
+			this.links = this.links.concat(links);
 			this.remainingPages = response.result.remaining;
 			this.loadingMore = false;
 
@@ -66,33 +78,55 @@ export default {
 .overview {
 	width: 100%;
 	.links {
-		border: 1px solid var(--bg-color-3);
-		border-radius: 10px;
 		height: 40rem;
 		overflow-y: scroll;
-		// width: 100%;
-		width: max-content;
-		margin-top: 5rem;
+		border: 1px solid var(--bg-color-3);
+		border-radius: 10px;
+		width: 80%;
 		padding: 1rem 2rem;
-		.header,
-		.link {
-			display: grid;
-			grid-template-columns: minmax(5rem, 10ch) 20ch;
-			gap: 1rem;
-			p {
-				padding: 0.2rem 0.4rem;
+		margin: 5rem auto 0;
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			caption-side: bottom;
+			thead,
+			tr {
+				td,
+				th {
+					padding: 0.8rem 0.4rem;
+					text-align: left;
+				}
 			}
-		}
-		.link {
-			.destination {
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				overflow-x: hidden;
-			}
-		}
-		p {
-			padding: 0.2rem;
 		}
 	}
+	// .links {
+	// 	border: 1px solid var(--bg-color-3);
+	// 	border-radius: 10px;
+	// 	height: 40rem;
+	// 	overflow-y: scroll;
+	// 	width: 80%;
+	// 	// width: max-content;
+	// 	box-sizing: border-box;
+	// 	margin-top: 5rem;
+	// 	padding: 1rem 2rem;
+	// 	margin: 5rem auto 0 auto;
+	// 	border-collapse: collapse;
+	// 	caption-side: bottom;
+	// 	.header,
+	// 	.link {
+	// 		gap: 1rem;
+	// 		td,
+	// 		th {
+	// 			padding: 0.2rem 0.4rem;
+	// 		}
+	// 	}
+	// 	.link {
+	// 		.destination {
+	// 			white-space: nowrap;
+	// 			text-overflow: ellipsis;
+	// 			overflow-x: hidden;
+	// 		}
+	// 	}
+	// }
 }
 </style>
