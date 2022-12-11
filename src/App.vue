@@ -2,10 +2,10 @@
 	<router-view> </router-view>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { useDarkMode } from "./stores/dark";
 useDarkMode();
-</script>
+</script> -->
 
 <style lang="scss">
 body {

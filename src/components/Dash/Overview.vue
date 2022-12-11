@@ -1,6 +1,8 @@
 <template>
 	<div class="overview">
+		<p>hi</p>
 		<div class="links">
+			<h1>hello there!</h1>
 			<table>
 				<thead class="header">
 					<th>Created At</th>
@@ -19,7 +21,7 @@
 </template>
 
 <script>
-import { useAccountStore } from "@/stores/account";
+import { useAccountStore } from "../../stores/account";
 export default {
 	data() {
 		return {

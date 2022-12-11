@@ -9,29 +9,29 @@ const routes = [
 	},
 	{
 		path: "/dash",
-		component: () => import("../views/dashboard/Index.vue"),
+		component: () => import("../views/Dashboard.vue"),
 		redirect: "/dash/overview",
 		children: [
 			{
 				path: "/dash/overview",
-				component: () => import("../views/dashboard/Overview.vue"),
+				component: () => import("../components/Dash/Overview.vue"),
 				meta: {
 					requiresLogin: true,
 				},
 			},
 			{
 				path: "/dash/login",
-				component: () => import("../views/dashboard/Login.vue"),
+				component: () => import("../components/Dash/Login.vue"),
 				meta: {
 					hideSidebar: true,
 				},
 			},
 		],
 	},
-	{
-		path: "/:pathMatch(.*)*",
-		component: () => import("../views/Link.vue"),
-	},
+	// {
+	// 	path: "/:pathMatch(.*)*",
+	// 	component: () => import("../views/Link.vue"),
+	// },
 ];
 
 const router = createRouter({

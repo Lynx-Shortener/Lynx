@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { useAccountStore } from "@/stores/account.js";
+import { useAccountStore } from "../../stores/account";
 export default {
 	data() {
 		return {
