@@ -192,6 +192,9 @@ export default {
 				th {
 					padding: 0.8rem 0.4rem;
 					text-align: left;
+					strong {
+						display: none;
+					}
 				}
 			}
 		}
@@ -238,6 +241,7 @@ export default {
 							line-height: 1.5;
 							padding: 0;
 							strong {
+								display: inline;
 								font-weight: bold;
 							}
 						}
