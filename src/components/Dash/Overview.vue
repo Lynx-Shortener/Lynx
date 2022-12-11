@@ -41,9 +41,9 @@
 						<th>Destination</th>
 					</thead>
 					<tr class="link" v-for="link in links" :key="link.id">
-						<td>{{ link.creationDate }}</td>
-						<td>{{ link.slug }}</td>
-						<td class="destination">{{ link.destination }}</td>
+						<td><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
+						<td><strong>Slug:&nbsp;</strong>{{ link.slug }}</td>
+						<td class="destination"><strong>Destination:&nbsp;</strong>{{ link.destination }}</td>
 					</tr>
 					<span v-observe-visibility="visibilityChanged"></span>
 				</table>
@@ -192,6 +192,56 @@ export default {
 				th {
 					padding: 0.8rem 0.4rem;
 					text-align: left;
+				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 768px) {
+		margin: 2rem auto;
+		.createLink {
+			.content {
+				:deep(.formkit-form) {
+					grid-template-columns: 1fr;
+					.formkit-outer {
+						&[data-family="button"] {
+							grid-column: 1;
+						}
+					}
+				}
+			}
+		}
+		.links,
+		.createLink {
+			.header {
+				padding: 1rem;
+			}
+		}
+		.links {
+			.content {
+				padding: 0;
+
+				table {
+					thead {
+						display: none;
+					}
+					tr {
+						display: flex;
+						flex-direction: column;
+						padding: 1rem;
+						box-sizing: border-box;
+						text-align: left;
+						border-bottom: 1px solid var(--bg-color-3);
+						align-items: start;
+						gap: 1rem;
+						td {
+							line-height: 1.5;
+							padding: 0;
+							strong {
+								font-weight: bold;
+							}
+						}
+					}
 				}
 			}
 		}

@@ -22,5 +22,9 @@ main {
 	width: 100%;
 	overflow-y: scroll;
 	padding-right: 4rem;
+	box-sizing: border-box;
+	@media screen and (max-width: 768px) {
+		padding-right: 0;
+	}
 }
 </style>
