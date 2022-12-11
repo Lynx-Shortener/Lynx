@@ -56,13 +56,18 @@ export const useAccountStore = defineStore("account", {
 				query,
 			});
 
-			if (response.status === 401) {
-				return { success: false };
+			try {
+				// fall back on text response
+				const data = await response.clone().json();
+
+				return data;
+			} catch {
+				const data = await response.text();
+				return {
+					success: response.ok,
+					message: data,
+				};
 			}
-
-			const data = await response.json();
-
-			return data;
 		},
 	},
 });

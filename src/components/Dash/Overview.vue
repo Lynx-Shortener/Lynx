@@ -1,19 +1,53 @@
 <template>
 	<div class="overview">
+		<div class="createLink">
+			<div class="header">
+				<h2>Create a new link</h2>
+			</div>
+			<div class="content">
+				<FormKit type="form" submit-label="Create Link" @submit="createLink" :actions="false">
+					<FormKit
+						type="url"
+						label="Destination URL"
+						placeholder="https://www.example.com..."
+						validation="required|url"
+						v-model="newLink.data.destination"
+					/>
+					<FormKit type="text" label="Custom Slug" placeholder="shopping-list" v-model="newLink.data.slug" />
+					<FormKit type="submit" label="Create Link" primary></FormKit>
+				</FormKit>
+			</div>
+		</div>
+		<div class="newLink" v-if="newLink.response.link">
+			<div class="content">
+				<h3>Your new link has been created!</h3>
+				<p
+					>Your short link is
+					<a :href="newLink.response.link" target="_blank"
+						><span>{{ newLink.response.link }}</span></a
+					></p
+				>
+			</div>
+		</div>
 		<div class="links">
-			<table>
-				<thead class="header">
-					<th>Created At</th>
-					<th>Slug</th>
-					<th>Destination</th>
-				</thead>
-				<tr class="link" v-for="link in links" :key="link.id">
-					<td>{{ link.creationDate }}</td>
-					<td>{{ link.slug }}</td>
-					<td class="destination">{{ link.destination }}</td>
-				</tr>
-				<span v-observe-visibility="visibilityChanged"></span>
-			</table>
+			<div class="header">
+				<h2>Existing Links</h2>
+			</div>
+			<div class="content">
+				<table>
+					<thead>
+						<th>Created At</th>
+						<th>Slug</th>
+						<th>Destination</th>
+					</thead>
+					<tr class="link" v-for="link in links" :key="link.id">
+						<td>{{ link.creationDate }}</td>
+						<td>{{ link.slug }}</td>
+						<td class="destination">{{ link.destination }}</td>
+					</tr>
+					<span v-observe-visibility="visibilityChanged"></span>
+				</table>
+			</div>
 		</div>
 	</div>
 </template>
@@ -29,6 +63,13 @@ export default {
 			endVisible: true,
 			loadingMore: false,
 			remainingPages: 1,
+			newLink: {
+				data: {
+					slug: "",
+					destination: "",
+				},
+				response: {},
+			},
 		};
 	},
 	methods: {
@@ -61,6 +102,21 @@ export default {
 				this.loadMore();
 			}
 		},
+		async createLink() {
+			const account = useAccountStore();
+			const response = await account.fetch("/link", {
+				method: "POST",
+				body: JSON.stringify(this.newLink.data),
+			});
+
+			this.newLink.data.slug = "";
+			this.newLink.data.destination = "";
+
+			response.result.link = `${window.location.origin}/${response.result.slug}`;
+			this.newLink.response = response.result;
+
+			console.log(response);
+		},
 		visibilityChanged(visibile) {
 			this.endVisible = visibile;
 			if (!this.loadingMore && visibile && this.remainingPages > 0) this.loadMore();
@@ -74,15 +130,69 @@ export default {
 
 <style lang="scss" scoped>
 .overview {
-	width: 100%;
+	width: 80%;
+	margin: 0 auto;
+	padding-block: 5rem;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	.createLink,
+	.newLink,
 	.links {
-		height: 40rem;
-		overflow-y: scroll;
 		border: 1px solid var(--bg-color-3);
 		border-radius: 10px;
-		width: 80%;
-		padding: 1rem 2rem;
-		margin: 5rem auto 0;
+		.header {
+			border-bottom: 1px solid var(--bg-color-3);
+			h2 {
+				font-weight: 500;
+				font-size: 1.5rem;
+				text-align: left;
+			}
+		}
+
+		.content,
+		.header {
+			padding: 1rem 2rem;
+		}
+	}
+
+	.createLink {
+		.content {
+			:deep(.formkit-form) {
+				display: grid;
+				grid-template-columns: 3fr 1fr;
+				gap: 0 1rem;
+				.formkit-outer {
+					margin-bottom: 1rem;
+					&[data-family="button"] {
+						grid-column: 1/3;
+					}
+				}
+			}
+		}
+	}
+
+	.newLink {
+		h3 {
+			font-weight: 500;
+			font-size: 1.2rem;
+			line-height: 1.5;
+			margin-bottom: 1rem;
+		}
+	}
+
+	.links {
+		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+
+		.content {
+			overflow-y: scroll;
+			height: 100%;
+			flex-grow: 1;
+		}
 		table {
 			width: 100%;
 			border-collapse: collapse;

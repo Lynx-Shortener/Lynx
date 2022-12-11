@@ -28,10 +28,10 @@ const routes = [
 			},
 		],
 	},
-	// {
-	// 	path: "/:pathMatch(.*)*",
-	// 	component: () => import("../views/Link.vue"),
-	// },
+	{
+		path: "/:pathMatch(.*)*",
+		component: () => import("../views/Link.vue"),
+	},
 ];
 
 const router = createRouter({

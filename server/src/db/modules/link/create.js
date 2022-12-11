@@ -23,7 +23,8 @@ function generateSlug() {
 }
 
 module.exports = async ({ author, slug, destination }) => {
-	if (!slug) {
+	console.log(author, slug, destination);
+	if (!slug || slug === "") {
 		let slugUnique;
 		while (!slugUnique) {
 			slug = generateSlug();
@@ -31,7 +32,7 @@ module.exports = async ({ author, slug, destination }) => {
 			if (!existingLink) slugUnique = true;
 		}
 	} else {
-		const existingLink = await getURL({ slug });
+		const existingLink = await getLink({ slug });
 		if (existingLink)
 			return [
 				null,
