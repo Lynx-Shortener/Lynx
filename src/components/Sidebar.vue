@@ -10,6 +10,10 @@
 				<p>Settings</p>
 			</router-link>
 			<div class="spacer"></div>
+			<a @click="darkMode.toggle()">
+				<font-awesome-icon :icon="darkMode.dark ? 'sun' : 'moon'" />
+				<p>{{ darkMode.dark ? "Light Mode" : "Dark Mode" }}</p>
+			</a>
 			<a>
 				<font-awesome-icon icon="right-from-bracket" />
 				<p>Logout</p>
@@ -17,6 +21,17 @@
 		</div>
 	</div>
 </template>
+
+<script>
+import { useDarkMode } from "../stores/dark";
+export default {
+	data() {
+		return {
+			darkMode: useDarkMode(),
+		};
+	},
+};
+</script>
 
 <style lang="scss" scoped>
 .sidebar {
@@ -33,6 +48,9 @@
 		gap: 0.5rem;
 		box-sizing: border-box;
 		height: 100vh;
+		-webkit-user-select: none; /* Safari */
+		-ms-user-select: none; /* IE 10 and IE 11 */
+		user-select: none; /* Standard syntax */
 	}
 	a {
 		text-decoration: none;
