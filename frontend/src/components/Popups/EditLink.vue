@@ -69,5 +69,18 @@ export default {
 			}
 		}
 	}
+	@media screen and (max-width: 768px) {
+		:deep(.formkit-form) {
+			table {
+				width: 100%;
+				tr {
+					td {
+						display: block;
+						width: 100%;
+					}
+				}
+			}
+		}
+	}
 }
 </style>
