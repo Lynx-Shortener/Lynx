@@ -49,6 +49,5 @@ const listenPort = process.env.EXPRESS_PORT || 3000;
 setup().then(() => {
 	app.listen(listenPort, async () => {
 		console.log(`Listening on port ${listenPort}`);
-		createLink({ destination: "https://stackoverflow.com/questions/5062614/how-to-decide-when-to-use-node-js?rq=1", author: "1234" });
 	});
 });
