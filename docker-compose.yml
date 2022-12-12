@@ -8,6 +8,9 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
         ports:
             - "${DB_PORT}:27017"
+        volumes:
+            - ./db:/data/db
+
     url-shortener:
         build: .
         restart: always
