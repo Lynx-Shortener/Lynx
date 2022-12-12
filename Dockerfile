@@ -14,8 +14,6 @@ RUN yarn build
 
 WORKDIR /app
 
-COPY .env .env
-
 ENV NODE_ENV=production
 
 RUN yarn
