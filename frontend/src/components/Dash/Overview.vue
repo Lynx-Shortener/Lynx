@@ -129,7 +129,7 @@ export default {
 			response.result.link = `${window.location.origin}/${response.result.slug}`;
 			this.newLink.response = response.result;
 		},
-		handleEdit(targetLink) {
+		async handleEdit(targetLink) {
 			const index = this.links.findIndex((link) => link.id === targetLink.id);
 			if (!targetLink.editing) {
 				this.links[index].edit = {
@@ -138,9 +138,21 @@ export default {
 				};
 				this.links[index].editing = true;
 			} else {
-				this.links[index].slug = targetLink.edit.slug;
-				this.links[index].destination = targetLink.edit.destination;
+				const account = useAccountStore();
 				this.links[index].editing = false;
+
+				const response = await account.fetch("/link", {
+					method: "PATCH",
+					body: JSON.stringify({
+						slug: targetLink.edit.slug,
+						destination: targetLink.edit.destination,
+						id: targetLink.id,
+					}),
+				});
+
+				if (response.useAccountStore) {
+					this.links[index] = response.result;
+				}
 			}
 		},
 		handleDelete(targetLink) {
