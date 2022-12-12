@@ -10,7 +10,7 @@
 						type="url"
 						label="Destination URL"
 						placeholder="https://www.example.com..."
-						validation="required|url"
+						validation="trim:url"
 						v-model="newLink.data.destination"
 					/>
 					<FormKit type="text" label="Custom Slug" placeholder="shopping-list" v-model="newLink.data.slug" />
@@ -41,16 +41,14 @@
 						<th>Destination</th>
 					</thead>
 					<tr class="link" v-for="link in links" :key="link.id">
-						<td><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
-						<td
+						<td class="date"><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
+						<td class="slug"
 							><strong>Slug:&nbsp;</strong>
-							<span v-if="!link.editing">{{ link.slug }}</span>
-							<FormKit v-else type="text" v-model="link.edit.slug" />
+							<span :contenteditable="link.editing">{{ link.editing ? link.edit.slug : link.slug }}</span>
 						</td>
 						<td class="destination"
 							><strong>Destination:&nbsp;</strong>
-							<span v-if="!link.editing">{{ link.destination }}</span>
-							<FormKit v-else type="text" v-model="link.edit.destination" />
+							<span :contenteditable="link.editing">{{ link.editing ? link.edit.destination : link.destination }}</span>
 						</td>
 						<td class="actions">
 							<FormKit type="button" :input-class="link.editing ? 'confirm' : 'edit'" @click="handleEdit(link)">
@@ -218,37 +216,74 @@ export default {
 	}
 
 	.links {
+		width: 100%;
 		table {
-			width: 100%;
+			display: block;
+			border-collapse: collapse;
 			border-collapse: collapse;
 			caption-side: bottom;
+			width: 100%;
+			table-layout: fixed;
 			thead,
 			tr {
+				width: 100%;
+				width: 100%;
+				display: table-header-group;
+
 				td,
 				th {
 					padding: 0.8rem 0.4rem;
 					text-align: left;
+					position: relative;
+					vertical-align: middle;
 					strong {
 						display: none;
+					}
+
+					&.date {
+						white-space: nowrap;
+					}
+
+					span {
+						&[contenteditable="true"] {
+							color: var(--color-4);
+						}
+					}
+
+					&.destination {
+						width: 100%;
+						span {
+							max-width: 100%;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							position: absolute;
+							top: 50%;
+							left: 0;
+							transform: translateY(-50%);
+							box-sizing: border-box;
+							width: 100%;
+						}
+					}
+
+					:deep(.formkit-outer) {
+						.formkit-wrapper {
+							button {
+								border-radius: 5px;
+								padding: 0.4rem 0.8rem;
+								background: var(--accent);
+								color: var(--accent-color);
+								&.delete,
+								&.cancel {
+									background: var(--color-error);
+								}
+							}
+						}
 					}
 
 					&.actions {
 						display: flex;
 						gap: 0.2rem;
-						:deep(.formkit-outer) {
-							.formkit-wrapper {
-								button {
-									border-radius: 5px;
-									padding: 0.4rem 0.8rem;
-									background: var(--accent);
-									color: var(--accent-color);
-									&.delete,
-									&.cancel {
-										background: var(--color-error);
-									}
-								}
-							}
-						}
 					}
 				}
 			}
