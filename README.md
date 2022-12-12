@@ -22,6 +22,8 @@ My functionality I wanted:
 
 -   [ ] QR codes
 
+-   [ ] Import/Export
+
 ## Naming
 
 Each item including a slug, destination and id is called a [`Link`](server/src/db/models/link.js), the plural being links.
