@@ -44,18 +44,18 @@
 						<td class="date"><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
 						<td class="slug"
 							><strong>Slug:&nbsp;</strong>
-							<span :contenteditable="link.editing">{{ link.editing ? link.edit.slug : link.slug }}</span>
+							<span>{{ link.slug }}</span>
 						</td>
 						<td class="destination"
 							><strong>Destination:&nbsp;</strong>
-							<span :contenteditable="link.editing">{{ link.editing ? link.edit.destination : link.destination }}</span>
+							<span>{{ link.destination }}</span>
 						</td>
 						<td class="actions">
-							<FormKit type="button" :input-class="link.editing ? 'confirm' : 'edit'" @click="handleEdit(link)">
-								<font-awesome-icon :icon="link.editing ? 'check' : 'pencil'" />
+							<FormKit type="button" input-class="edit" @click="handleEdit(link)">
+								<font-awesome-icon icon="pencil" />
 							</FormKit>
-							<FormKit type="button" :input-class="link.editing ? 'cancel' : 'delete'" @click="handleDelete(link)">
-								<font-awesome-icon :icon="link.editing ? 'x' : 'trash-can'" />
+							<FormKit type="button" input-class="delete" @click="handleDelete(link)">
+								<font-awesome-icon icon="trash-can" />
 							</FormKit>
 						</td>
 					</tr>
@@ -67,10 +67,12 @@
 </template>
 
 <script>
+import { usePopups } from "../../stores/popups";
 import { useAccountStore } from "../../stores/account";
 export default {
 	data() {
 		return {
+			popups: usePopups(),
 			links: [],
 			page: 0,
 			pagesize: 5,
@@ -129,31 +131,8 @@ export default {
 			response.result.link = `${window.location.origin}/${response.result.slug}`;
 			this.newLink.response = response.result;
 		},
-		async handleEdit(targetLink) {
-			const index = this.links.findIndex((link) => link.id === targetLink.id);
-			if (!targetLink.editing) {
-				this.links[index].edit = {
-					slug: targetLink.slug,
-					destination: targetLink.destination,
-				};
-				this.links[index].editing = true;
-			} else {
-				const account = useAccountStore();
-				this.links[index].editing = false;
-
-				const response = await account.fetch("/link", {
-					method: "PATCH",
-					body: JSON.stringify({
-						slug: targetLink.edit.slug,
-						destination: targetLink.edit.destination,
-						id: targetLink.id,
-					}),
-				});
-
-				if (response.useAccountStore) {
-					this.links[index] = response.result;
-				}
-			}
+		async handleEdit(link) {
+			this.popups.addPopup("EditLink", link);
 		},
 		handleDelete(targetLink) {
 			if (targetLink.editing) {
@@ -231,7 +210,6 @@ export default {
 		width: 100%;
 		table {
 			display: block;
-			border-collapse: collapse;
 			border-collapse: collapse;
 			caption-side: bottom;
 			width: 100%;

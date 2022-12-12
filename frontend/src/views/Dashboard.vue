@@ -1,13 +1,16 @@
 <template>
 	<Sidebar v-if="showSidebar" />
+	<PopupContainer />
 	<main><router-view /></main>
 </template>
 
 <script>
 import Sidebar from "../components/Sidebar.vue";
+import PopupContainer from "../components/PopupContainer.vue";
 export default {
 	components: {
 		Sidebar,
+		PopupContainer,
 	},
 	computed: {
 		showSidebar() {
