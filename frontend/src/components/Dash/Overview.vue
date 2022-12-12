@@ -346,6 +346,15 @@ export default {
 								display: inline;
 								font-weight: bold;
 							}
+
+							overflow: hidden;
+
+							&.destination {
+								span {
+									position: static;
+									overflow: hidden;
+								}
+							}
 						}
 					}
 				}
