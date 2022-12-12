@@ -40,7 +40,7 @@ export default {
 		position: relative;
 		padding: 1rem;
 		width: 40rem;
-		max-width: 90%;
+		max-width: 80vw;
 		&.loaded {
 			padding: 2rem 1rem 1rem;
 		}
