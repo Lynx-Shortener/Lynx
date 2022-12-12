@@ -1,0 +1,17 @@
+version: "3"
+services:
+    db:
+        image: mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "${DB_PORT}:27017"
+    url-shortener:
+        build: .
+        restart: always
+        ports:
+            - 3000:3000
+        depends_on:
+            - db
