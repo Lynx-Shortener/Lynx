@@ -1,6 +1,23 @@
 const getLink = require("./get");
 
 module.exports = async ({ id, slug, destination }) => {
+	if (!slug)
+		return [
+			null,
+			{
+				message: "Invalid slug",
+				code: 409,
+			},
+		];
+	if (!destination) {
+		return [
+			null,
+			{
+				message: "Invalid destination",
+				code: 409,
+			},
+		];
+	}
 	let link = await getLink({ id });
 	if (!link)
 		return [
@@ -8,15 +25,6 @@ module.exports = async ({ id, slug, destination }) => {
 			{
 				message: "A link with that id does not exist",
 				code: 404,
-			},
-		];
-
-	if (!slug)
-		return [
-			null,
-			{
-				message: "Invalid slug",
-				code: 409,
 			},
 		];
 

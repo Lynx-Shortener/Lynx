@@ -7,14 +7,17 @@
 			<div class="content">
 				<FormKit type="form" submit-label="Create Link" @submit="createLink" :actions="false">
 					<FormKit
-						type="url"
+						type="text"
 						label="Destination URL"
 						placeholder="https://www.example.com..."
-						validation="trim:url"
+						validation="trim"
 						v-model="newLink.data.destination"
 					/>
 					<FormKit type="text" label="Custom Slug" placeholder="shopping-list" v-model="newLink.data.slug" />
 					<FormKit type="submit" label="Create Link" primary></FormKit>
+					<div class="validation-error">
+						<p>{{ newLink.data.error }}</p>
+					</div>
 				</FormKit>
 			</div>
 		</div>
@@ -84,6 +87,7 @@ export default {
 				data: {
 					slug: "",
 					destination: "",
+					error: "",
 				},
 				response: {},
 			},
@@ -101,13 +105,18 @@ export default {
 			}
 		},
 		async createLink() {
+			this.newLink.data.error = null;
 			const { slug, destination } = this.newLink.data;
 			const response = await this.links.create({
 				slug,
 				destination,
 			});
 
-			this.newLink.response = response.result.link;
+			if (response.success) {
+				this.newLink.response = response.result.link;
+			} else {
+				this.newLink.data.error = response.message;
+			}
 		},
 		async handleEdit(link) {
 			this.popups.addPopup("EditLink", { id: link.id });
@@ -170,6 +179,12 @@ export default {
 					&[data-family="button"] {
 						grid-column: 1/3;
 					}
+				}
+				.validation-error {
+					grid-column: 1/3;
+					text-align: left;
+					color: var(--color-error);
+					font-weight: 5old;
 				}
 			}
 		}

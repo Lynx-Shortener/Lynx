@@ -43,6 +43,8 @@ export const useLinks = defineStore("links", {
 				body: JSON.stringify({ slug, destination }),
 			});
 
+			if (!response.success) return response;
+
 			let link = response.result;
 
 			link.creationDate = new Date(link.creationDate).toLocaleString();

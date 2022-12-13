@@ -23,7 +23,16 @@ function generateSlug() {
 }
 
 module.exports = async ({ author, slug, destination }) => {
-	console.log(author, slug, destination);
+	if (/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(destination) === false) {
+		return [
+			null,
+			{
+				message: "Invalid destination url format",
+				code: 409,
+			},
+		];
+	}
+
 	if (!slug || slug === "") {
 		let slugUnique;
 		while (!slugUnique) {
