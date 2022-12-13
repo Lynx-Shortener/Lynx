@@ -329,6 +329,9 @@ export default {
 									overflow: hidden;
 								}
 							}
+							&.actions {
+								width: 100%;
+							}
 						}
 					}
 				}
