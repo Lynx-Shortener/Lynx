@@ -16,6 +16,12 @@ My functionality I wanted:
 -   Option to redirect the root path
 -   Simple UI
 
+## Todo
+
+-   [ ] Account Settings
+-   [ ] Import/Export
+-   [ ] Full error handling
+
 ## Roadmap
 
 -   [ ] ShareX support
@@ -27,8 +33,6 @@ My functionality I wanted:
 -   [ ] Image uploads?
 
 -   [ ] QR codes
-
--   [ ] Import/Export
 
 ## Naming
 
