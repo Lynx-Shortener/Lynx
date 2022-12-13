@@ -40,7 +40,7 @@
 						<th>Slug</th>
 						<th>Destination</th>
 					</thead>
-					<tr class="link" v-for="link in links" :key="link.id">
+					<tr class="link" v-for="link in links.links" :key="link.id">
 						<td class="date"><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
 						<td class="slug"
 							><strong>Slug:&nbsp;</strong>
@@ -69,11 +69,12 @@
 <script>
 import { usePopups } from "../../stores/popups";
 import { useAccountStore } from "../../stores/account";
+import { useLinks } from "../../stores/links";
 export default {
 	data() {
 		return {
 			popups: usePopups(),
-			links: [],
+			links: useLinks(),
 			page: 0,
 			pagesize: 5,
 			endVisible: true,
@@ -92,47 +93,24 @@ export default {
 		async loadMore() {
 			if (this.loadingMore) return;
 			this.loadingMore = true;
-			const account = useAccountStore();
-			const response = await account.fetch(
-				"/link/list?" +
-					new URLSearchParams({
-						page: this.page,
-						pagesize: this.pagesize,
-						sort: "desc",
-					}),
-				{}
-			);
-
-			this.page++;
-
-			const links = response.result.links.map((link) => {
-				link.creationDate = new Date(link.creationDate).toLocaleString();
-				return link;
-			});
-
-			this.links = this.links.concat(links);
-			this.remainingPages = response.result.remaining;
+			await this.links.paginate();
 			this.loadingMore = false;
 
-			if (this.endVisible && this.remainingPages > 0) {
+			if (this.endVisible && this.links.remainingPages !== 0) {
 				this.loadMore();
 			}
 		},
 		async createLink() {
-			const account = useAccountStore();
-			const response = await account.fetch("/link", {
-				method: "POST",
-				body: JSON.stringify(this.newLink.data),
+			const { slug, destination } = this.newLink.data;
+			const response = await this.links.create({
+				slug,
+				destination,
 			});
 
-			this.newLink.data.slug = "";
-			this.newLink.data.destination = "";
-
-			response.result.link = `${window.location.origin}/${response.result.slug}`;
-			this.newLink.response = response.result;
+			this.newLink.response = response.result.link;
 		},
 		async handleEdit(link) {
-			this.popups.addPopup("EditLink", link);
+			this.popups.addPopup("EditLink", { id: link.id });
 		},
 		handleDelete(targetLink) {
 			if (targetLink.editing) {

@@ -11,6 +11,15 @@ module.exports = async ({ id, slug, destination }) => {
 			},
 		];
 
+	if (!slug)
+		return [
+			null,
+			{
+				message: "Invalid slug",
+				code: 409,
+			},
+		];
+
 	if (await getLink({ slug }, id))
 		return [
 			null,

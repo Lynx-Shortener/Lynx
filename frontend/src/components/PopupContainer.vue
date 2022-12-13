@@ -4,7 +4,7 @@
 			<div class="exitIcon" v-if="popup.loaded" @click="popups.closePopup(popup.id)">
 				<font-awesome-icon icon="x" />
 			</div>
-			<component :is="popup.component" @vue:mounted="popups.setLoaded(popup.id)" v-show="popup.loaded" :data="popup.data" />
+			<component :is="popup.component" @vue:mounted="popups.setLoaded(popup.id)" v-show="popup.loaded" :data="popup.data" :id="popup.id" />
 			<div class="loader" v-if="!popup.loaded">
 				<img src="/loader.svg" alt="" />
 			</div>
@@ -51,6 +51,9 @@ export default {
 			svg {
 				cursor: pointer;
 			}
+		}
+		&:not(:last-of-type) {
+			display: none;
 		}
 	}
 }

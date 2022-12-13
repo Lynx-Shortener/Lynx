@@ -6,13 +6,13 @@
 				<tr>
 					<td><strong>Destination URL</strong></td>
 					<td>
-						<FormKit type="text" v-model="data.destination" />
+						<FormKit type="text" v-model="link.destination" />
 					</td>
 				</tr>
 				<tr>
 					<td><strong>Custom Slug</strong></td>
 					<td>
-						<FormKit type="text" v-model="data.slug" />
+						<FormKit type="text" v-model="link.slug" />
 					</td>
 				</tr>
 			</table>
@@ -22,25 +22,70 @@
 </template>
 
 <script>
-import { useAccountStore } from "../../stores/account";
+import { usePopups } from "../../stores/popups";
+import { useLinks } from "../../stores/links";
 export default {
 	props: ["data"],
+	data() {
+		return {
+			links: useLinks(),
+			popups: usePopups(),
+			link: {
+				destination: "",
+				slug: "",
+			},
+		};
+	},
 	methods: {
 		async update() {
-			const account = useAccountStore();
-			const response = await account.fetch("/link", {
-				method: "PATCH",
-				body: JSON.stringify({
-					slug: this.data.slug,
-					destination: this.data.destination,
-					id: this.data.id,
-				}),
-			});
-
-			if (response.useAccountStore) {
-				this.links[index] = response.result;
+			const response = await this.links.update(this.link);
+			if (!response.success) {
+				this.popups.addPopup("Information", {
+					title: "Error updating your link",
+					description: response.message,
+					buttons: [
+						{
+							name: "Retry",
+							type: "primary",
+							action: "return",
+						},
+						{
+							name: "Cancel",
+							type: "secondary",
+							action: "close-all",
+						},
+					],
+				});
+			} else {
+				this.popups.closeSelf(this);
+				this.popups.addPopup("Information", {
+					title: "Successfully updated your link",
+					buttons: [
+						{
+							name: "Okay",
+							type: "primary",
+							action: "close-all",
+						},
+					],
+				});
 			}
+			// const account = useAccountStore();
+			// const response = await account.fetch("/link", {
+			// 	method: "PATCH",
+			// 	body: JSON.stringify({
+			// 		slug: this.data.slug,
+			// 		destination: this.data.destination,
+			// 		id: this.data.id,
+			// 	}),
+			// });
+
+			// if (response.useAccountStore) {
+			// 	this.links[index] = response.result;
+			// }
 		},
+	},
+	async mounted() {
+		this.link = await this.links.get(this.data.id);
 	},
 };
 </script>

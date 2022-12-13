@@ -29,5 +29,8 @@ export const usePopups = defineStore("popup]", {
 		closeTopmost() {
 			this.popups.pop();
 		},
+		closeSelf(a) {
+			this.closePopup(a.$el.attributes.id.value);
+		},
 	},
 });
