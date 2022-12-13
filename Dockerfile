@@ -4,13 +4,34 @@ RUN apk add --no-cache git
 
 WORKDIR /app
 
-RUN git clone https://github.com/JackBailey/URL-Shortener /app
+COPY ["./frontend/package.json","./frontend/yarn.lock","frontend/"]
+
+COPY ["./package.json","./yarn.lock","./"]
+
+## INSTALL FRONTEND DEPS
 
 WORKDIR /app/frontend
 
 RUN yarn
 
+## INSTALL BACKEND DEPS
+
+WORKDIR /app
+
+RUN yarn
+
+## COPY OVER SRC FILES
+
+COPY . .
+
+## BUILD FRONTEND
+
+WORKDIR /app/frontend
+
 RUN yarn build
+
+
+## START BACKEND
 
 WORKDIR /app
 
