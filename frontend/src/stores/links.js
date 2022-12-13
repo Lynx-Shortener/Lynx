@@ -78,6 +78,8 @@ export const useLinks = defineStore("links", {
 				}),
 			});
 
+			if (!response.success) return response;
+
 			const index = this.links.findIndex((link) => link.id === id);
 			let link = response.result;
 

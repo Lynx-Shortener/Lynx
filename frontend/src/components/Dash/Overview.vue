@@ -284,6 +284,9 @@ export default {
 							grid-column: 1;
 						}
 					}
+					.validation-error {
+						grid-column: 1;
+					}
 				}
 			}
 		}
