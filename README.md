@@ -1,5 +1,11 @@
 # URL-Shortener
 
+## DISCLAIMER
+
+This is still indev. A variety of security features are yet to be implemented. This is not production ready yet.
+
+## About
+
 A fullstack application to shorten your URLs.
 
 I've tried a variety of URL shorteners but didn't find any with the functionality I wanted so I made my own.
