@@ -91,5 +91,20 @@ export const useLinks = defineStore("links", {
 
 			return response;
 		},
+		async delete({ id }) {
+			const account = useAccountStore();
+			const response = await account.fetch("/link", {
+				method: "DELETE",
+				body: JSON.stringify({
+					id,
+				}),
+			});
+
+			if (!response.success) return response;
+
+			this.links = this.links.filter((link) => link.id !== id);
+
+			return response;
+		},
 	},
 });

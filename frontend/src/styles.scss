@@ -237,6 +237,11 @@ a {
 			&[button-type="secondary"] {
 				background: var(--bg-color-1);
 			}
+
+			&[button-type="danger"] {
+				background: var(--color-error);
+				color: var(--accent-color);
+			}
 		}
 	}
 	.formkit-messages {

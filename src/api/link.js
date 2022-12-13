@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { list, get, create, update } = require("../db/modules/link");
+const { list, get, create, update, remove } = require("../db/modules/link");
 
 const { current: currentAccount } = require("../db/modules/account/get");
 
@@ -96,6 +96,26 @@ router.patch("/", async function (req, res) {
 	return res.status(200).json({
 		success: true,
 		result: returnLink(link),
+	});
+});
+
+router.delete("/", async function (req, res) {
+	const [account, accountError] = await currentAccount(req);
+	if (accountError) return res.status(accountError.code).send(accountError.message);
+	const { id } = req.body;
+
+	const [link, deleteError] = await remove({
+		id,
+	});
+
+	if (deleteError)
+		return res.status(deleteError.code).json({
+			success: false,
+			message: deleteError.message,
+		});
+
+	return res.status(200).json({
+		success: true,
 	});
 });
 

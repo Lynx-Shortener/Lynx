@@ -118,16 +118,11 @@ export default {
 				this.newLink.data.error = response.message;
 			}
 		},
-		async handleEdit(link) {
+		handleEdit(link) {
 			this.popups.addPopup("EditLink", { id: link.id });
 		},
-		handleDelete(targetLink) {
-			if (targetLink.editing) {
-				const index = this.links.findIndex((link) => link.id === targetLink.id);
-				this.links[index].editing = false;
-			} else {
-				alert("DELETE");
-			}
+		handleDelete(link) {
+			this.popups.addPopup("DeleteLink", link);
 		},
 		visibilityChanged(visibile) {
 			this.endVisible = visibile;

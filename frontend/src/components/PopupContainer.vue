@@ -4,7 +4,14 @@
 			<div class="exitIcon" v-if="popup.loaded" @click="popups.closePopup(popup.id)">
 				<font-awesome-icon icon="x" />
 			</div>
-			<component :is="popup.component" @vue:mounted="popups.setLoaded(popup.id)" v-show="popup.loaded" :data="popup.data" :id="popup.id" />
+			<component
+				:is="popup.component"
+				@vue:mounted="popups.setLoaded(popup.id)"
+				v-show="popup.loaded"
+				:data="popup.data"
+				:id="popup.id"
+				class="popupComponent"
+			/>
 			<div class="loader" v-if="!popup.loaded">
 				<img src="/loader.svg" alt="" />
 			</div>
@@ -54,6 +61,30 @@ export default {
 		}
 		&:not(:last-of-type) {
 			display: none;
+		}
+
+		:deep(.popupComponent) {
+			h2 {
+				font-size: 2rem;
+				font-weight: 500;
+				margin-bottom: 1rem;
+			}
+			.buttons {
+				margin-top: 1rem;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				gap: 1rem;
+				:deep(.formkit-outer) {
+					max-width: 60%;
+				}
+			}
+			span {
+				background: var(--bg-color-1);
+				padding: 0 0.2rem;
+				margin: 0 0.2rem;
+				border-radius: 5px;
+			}
 		}
 	}
 }
