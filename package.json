@@ -9,6 +9,7 @@
 	"dependencies": {
 		"bcrypt": "^5.1.0",
 		"csv-parse": "^5.3.3",
+		"csv-stringify": "^6.2.3",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
 		"express-mongo-sanitize": "^2.2.0",

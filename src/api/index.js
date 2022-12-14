@@ -1,3 +1,4 @@
+const { application } = require("express");
 const express = require("express");
 const router = express.Router();
 
@@ -6,6 +7,8 @@ router.use("/auth", require("./auth.js"));
 router.use("/link", require("./link.js"));
 
 router.use("/import", require("./import.js"));
+
+router.use("/export", require("./export.js"));
 
 router.get("/", function (req, res) {
 	res.send("OK");
