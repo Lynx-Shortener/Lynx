@@ -11,6 +11,8 @@ module.exports = async (req) => {
 	try {
 		const decodedjwt = jwt.verify(token, process.env.JWT_KEY);
 		const account = await Account.findOne({ id: decodedjwt.id });
+		if (!account) return [null, { code: 401, message: "Invalid authorization token" }];
+
 		return [account, null];
 	} catch (err) {
 		return [null, { code: 401, message: "Invalid authorization token" }];
