@@ -1,7 +1,7 @@
 <template>
 	<div class="import">
 		<h2>Select your service to import</h2>
-		<FormKit type="radio" :options="['Shlink']" v-model="service" />
+		<FormKit type="radio" :options="services" v-model="service" />
 		<div class="buttons">
 			<FormKit type="button" label="Next" button-type="primary" :disabled="!service" @click="next" />
 		</div>
@@ -14,7 +14,7 @@ export default {
 	data() {
 		return {
 			service: "",
-			services: ["Shlink"],
+			services: ["Shlink", "URL-Shortener"],
 			popups: usePopups(),
 		};
 	},
