@@ -3,18 +3,7 @@ const router = express.Router();
 const { list, get, create, update, remove } = require("../db/modules/link");
 
 const { current: currentAccount } = require("../db/modules/account/get");
-
-const returnLink = ({ id, slug, destination, author, creationDate, modifiedDate, visits }) => {
-	return {
-		id,
-		slug,
-		destination,
-		author,
-		creationDate,
-		modifiedDate,
-		visits,
-	};
-};
+const returnLink = require("../modules/returnLink");
 
 router.get("/list", async function (req, res) {
 	const [account, error] = await currentAccount(req);
@@ -25,7 +14,10 @@ router.get("/list", async function (req, res) {
 			success: false,
 			message: "Pagesize limit is 100 items",
 		});
+
 	const data = await list({ pagesize, page, sort });
+
+	data.links = data.links.map((link) => returnLink(link));
 
 	res.status(200).json({
 		success: true,
