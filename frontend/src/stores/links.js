@@ -28,6 +28,7 @@ export const useLinks = defineStore("links", {
 
 			const links = response.result.links.map((link) => {
 				link.creationDate = new Date(link.creationDate).toLocaleString();
+				link.visits = new Intl.NumberFormat("default", {}).format(link.visits || 0);
 				return link;
 			});
 

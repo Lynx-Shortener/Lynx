@@ -4,7 +4,7 @@ const { list, get, create, update, remove } = require("../db/modules/link");
 
 const { current: currentAccount } = require("../db/modules/account/get");
 
-const returnLink = ({ id, slug, destination, author, creationDate, modifiedDate }) => {
+const returnLink = ({ id, slug, destination, author, creationDate, modifiedDate, visits }) => {
 	return {
 		id,
 		slug,
@@ -12,6 +12,7 @@ const returnLink = ({ id, slug, destination, author, creationDate, modifiedDate 
 		author,
 		creationDate,
 		modifiedDate,
+		visits,
 	};
 };
 
@@ -34,9 +35,13 @@ router.get("/list", async function (req, res) {
 
 router.get("/", async function (req, res) {
 	const { slug } = req.query;
-	const data = await get({
-		slug,
-	});
+	const data = await get(
+		{
+			slug,
+		},
+		null,
+		true
+	);
 
 	if (data) {
 		res.status(200).json({

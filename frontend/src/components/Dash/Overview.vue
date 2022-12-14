@@ -42,6 +42,8 @@
 						<th>Created At</th>
 						<th>Slug</th>
 						<th>Destination</th>
+						<th>Visits</th>
+						<th></th>
 					</thead>
 					<tr class="link" v-for="link in links.links" :key="link.id">
 						<td class="date"><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
@@ -52,6 +54,10 @@
 						<td class="destination"
 							><strong>Destination:&nbsp;</strong>
 							<span>{{ link.destination }}</span>
+						</td>
+						<td>
+							<strong>Visits&nbsp;</strong>
+							<span>{{ link.visits }} </span>
 						</td>
 						<td class="actions">
 							<FormKit type="button" input-class="edit" @click="handleEdit(link)">

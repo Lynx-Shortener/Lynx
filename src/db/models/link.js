@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
 	author: String,
 	creationDate: Date,
 	modifiedDate: Date,
+	visits: Number,
 });
 
 const Link = mongoose.model("Link", schema);

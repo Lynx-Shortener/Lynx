@@ -71,6 +71,7 @@ module.exports = async ({ author, slug, destination }) => {
 		author,
 		creationDate: new Date(),
 		modifiedDate: new Date(),
+		visits: 0,
 	});
 
 	await link.save();
