@@ -19,7 +19,9 @@ My functionality I wanted:
 ## Todo
 
 -   [ ] Account Settings
--   [ ] Import/Export
+-   [ ] Import
+    -   [x] Shlink
+-   [ ] Export
 -   [ ] Full error handling
 
 ## Roadmap
