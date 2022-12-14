@@ -121,5 +121,16 @@ export const useLinks = defineStore("links", {
 
 			return response;
 		},
+		async export({ format }) {
+			const account = useAccountStore();
+			const response = await account.fetch("/export", {
+				method: "POST",
+				body: JSON.stringify({
+					format,
+				}),
+			});
+
+			return response;
+		},
 	},
 });

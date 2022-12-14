@@ -11,17 +11,16 @@ router.post("/", async (req, res) => {
 	const [account, error] = await currentAccount(req);
 	if (error) return res.status(error.code).send(error.message);
 
-	const { type: exportType } = req.body;
+	const { format } = req.body;
 
 	let links = await Link.find();
 	links = links.map((link) => returnLink(link));
 
 	let exported;
 
-	if (exportType === "json") {
+	if (format === "json") {
 		exported = {
 			data: JSON.stringify(links),
-			mimetype: "text/json",
 			filetype: "json",
 		};
 	} else {
@@ -37,18 +36,19 @@ router.post("/", async (req, res) => {
 
 		exported = {
 			data: csv,
-			mimetype: "text/csv",
-			filetype: "json",
+			filetype: "csv",
 		};
 	}
 
-	res.writeHead(200, {
-		"Content-Type": exported.mimetype,
-		"Content-disposition": `attachment;filename=export-${uuid4()}.${exported.filetype}`,
-		"Content-Length": exported.data.length,
-	});
+	const buffer = Buffer.from(exported.data);
 
-	res.end(Buffer.from(exported.data, "binary"));
+	res.status(200).json({
+		success: true,
+		result: {
+			buffer,
+			filename: `export-${uuid4()}.${exported.filetype}`,
+		},
+	});
 });
 
 module.exports = router;

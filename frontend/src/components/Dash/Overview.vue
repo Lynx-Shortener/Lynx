@@ -37,7 +37,7 @@
 				<h2>Existing Links</h2>
 				<div class="buttons">
 					<FormKit type="button" label="Import" button-type="primary" @click="importLinks" />
-					<FormKit type="button" label="Export" button-type="primary" />
+					<FormKit type="button" label="Export" button-type="primary" @click="exportLinks" />
 				</div>
 			</div>
 			<div class="content">
@@ -81,7 +81,6 @@
 
 <script>
 import { usePopups } from "../../stores/popups";
-import { useAccountStore } from "../../stores/account";
 import { useLinks } from "../../stores/links";
 export default {
 	data() {
@@ -136,6 +135,9 @@ export default {
 		},
 		importLinks() {
 			this.popups.addPopup("Import-Service");
+		},
+		exportLinks() {
+			this.popups.addPopup("Export");
 		},
 		visibilityChanged(visibile) {
 			this.endVisible = visibile;
