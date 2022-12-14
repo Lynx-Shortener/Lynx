@@ -7,7 +7,7 @@
 		>
 		<div class="buttons">
 			<FormKit type="button" label="Yes" button-type="danger" @click="deleteLink" />
-			<FormKit type="button" label="No" button-type="secondary" />
+			<FormKit type="button" label="No" button-type="secondary" @click="close" />
 		</div>
 	</div>
 </template>
@@ -55,6 +55,9 @@ export default {
 					],
 				});
 			}
+		},
+		close() {
+			this.popups.closeSelf(this);
 		},
 	},
 };

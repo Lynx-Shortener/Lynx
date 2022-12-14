@@ -34,6 +34,10 @@ export default {
 				case "close-all":
 					this.popups.closeAll();
 					break;
+
+				case "refresh":
+					window.location.reload();
+					break;
 			}
 		},
 	},

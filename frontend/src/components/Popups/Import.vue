@@ -77,7 +77,7 @@ export default {
 						{
 							name: "Okay",
 							type: "primary",
-							action: "close-all",
+							action: "refresh",
 						},
 					],
 				});
