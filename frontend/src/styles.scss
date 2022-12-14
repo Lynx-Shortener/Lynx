@@ -242,6 +242,11 @@ a {
 				background: var(--color-error);
 				color: var(--accent-color);
 			}
+
+			&[disabled] {
+				opacity: 0.6;
+				cursor: not-allowed;
+			}
 		}
 	}
 	.formkit-messages {
@@ -256,5 +261,19 @@ a {
 		margin-top: 0.4rem;
 		font-weight: 300;
 		font-size: 0.8rem;
+	}
+	.formkit-fieldset {
+		.formkit-options {
+			.formkit-option {
+				.formkit-wrapper {
+					gap: 1rem;
+					display: flex;
+					align-items: center;
+					.formkit-label {
+						margin: 0;
+					}
+				}
+			}
+		}
 	}
 }

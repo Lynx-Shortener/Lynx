@@ -35,6 +35,10 @@
 		<div class="links">
 			<div class="header">
 				<h2>Existing Links</h2>
+				<div class="buttons">
+					<FormKit type="button" label="Import" button-type="primary" @click="importLinks" />
+					<FormKit type="button" label="Export" button-type="primary" />
+				</div>
 			</div>
 			<div class="content">
 				<table>
@@ -130,6 +134,9 @@ export default {
 		handleDelete(link) {
 			this.popups.addPopup("DeleteLink", link);
 		},
+		importLinks() {
+			this.popups.addPopup("Import-Service");
+		},
 		visibilityChanged(visibile) {
 			this.endVisible = visibile;
 			if (!this.loadingMore && visibile && this.remainingPages > 0) this.loadMore();
@@ -155,11 +162,25 @@ export default {
 		border: 1px solid var(--bg-color-3);
 		border-radius: 10px;
 		.header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
 			border-bottom: 1px solid var(--bg-color-3);
 			h2 {
 				font-weight: 500;
 				font-size: 1.5rem;
 				text-align: left;
+			}
+			.buttons {
+				display: flex;
+				gap: 0.5rem;
+				:deep(.formkit-outer) {
+					.formkit-wrapper {
+						button {
+							padding-inline: 1rem;
+						}
+					}
+				}
 			}
 		}
 

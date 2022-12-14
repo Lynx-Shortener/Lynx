@@ -5,12 +5,24 @@ import { createPinia } from "pinia";
 import { plugin, defaultConfig } from "@formkit/vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faList, faGear, faRightFromBracket, faMoon, faSun, faPencil, faTrashCan, faX, faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+	faList,
+	faGear,
+	faRightFromBracket,
+	faMoon,
+	faSun,
+	faPencil,
+	faTrashCan,
+	faX,
+	faCheck,
+	faFileArrowUp,
+	faFile,
+} from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
 
 const pinia = createPinia();
 
-library.add(faList, faGear, faRightFromBracket, faMoon, faSun, faPencil, faTrashCan, faX, faCheck);
+library.add(faList, faGear, faRightFromBracket, faMoon, faSun, faPencil, faTrashCan, faX, faCheck, faFileArrowUp, faFile);
 
 var app = createApp(App);
 app.use(router);

@@ -11,7 +11,7 @@ const setup = require("./modules/setup");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(mongoSanitize({ allowDots: true }));
 
 app.use("/api", require("./api"));

@@ -12,16 +12,25 @@ const upload = multer({ dest: "tmp/csv/" });
 
 router.post("/", upload.single("file"), async (req, res) => {
 	const [account, error] = await currentAccount(req);
-	console.log(account, error);
 	if (error) return res.status(error.code).send(error.message);
 	try {
 		const fileData = fs.readFileSync(path.join("tmp", "csv", req.file.filename));
 		parse(fileData, { columns: true, trim: true }, async (err, rows) => {
 			if (!err) {
+				if (req.body.service == "shlink") {
+					if (
+						["shortUrl", "longUrl", "createdAt", "visits"].filter((requirement) => !Object.keys(rows[0]).includes(requirement)).length !=
+						0
+					) {
+						return res.status(400).json({
+							message: "Invalid import fields",
+						});
+					}
+				}
 				const slugs = [];
 				let links = rows.map((row) => {
 					let link = {};
-					if (req.body.source == "shlink") {
+					if (req.body.service == "shlink") {
 						link.id = uuid4();
 						link.slug = new URL(row.shortUrl).pathname.slice(1);
 						link.destination = row.longUrl;
@@ -48,7 +57,7 @@ router.post("/", upload.single("file"), async (req, res) => {
 				await Link.insertMany(links);
 				return res.status(200).json({
 					success: true,
-					message: `Successfully imported ${links.length} / ${rows.length} links!`,
+					message: `Imported ${links.length} / ${rows.length} links!`,
 				});
 			}
 		});

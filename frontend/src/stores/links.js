@@ -107,5 +107,19 @@ export const useLinks = defineStore("links", {
 
 			return response;
 		},
+		async import({ file, service }) {
+			const account = useAccountStore();
+			const formdata = new FormData();
+			formdata.append("file", file);
+			formdata.append("service", service.toLowerCase());
+
+			const response = await account.fetch("/import", {
+				method: "POST",
+				body: formdata,
+				contentType: false,
+			});
+
+			return response;
+		},
 	},
 });

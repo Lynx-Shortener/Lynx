@@ -43,11 +43,21 @@ export const useAccountStore = defineStore("account", {
 			this.account = data.success ? data.result.account : null;
 			return this.account;
 		},
-		async fetch(url, { body, headers, method, query }) {
-			headers = Object.assign(headers || {}, {
-				"Content-Type": "application/json",
+		async fetch(url, { body, headers, method, query, contentType }) {
+			let defaultHeaders = {
 				Authorization: `Bearer ${this.token}`,
-			});
+			};
+
+			if (contentType !== false) {
+				defaultHeaders = Object.assign(
+					{
+						"Content-Type": contentType || "application/json",
+					},
+					defaultHeaders
+				);
+			}
+
+			headers = Object.assign(defaultHeaders, headers || {});
 
 			const response = await fetch(`/api${url}`, {
 				method: method || "GET",

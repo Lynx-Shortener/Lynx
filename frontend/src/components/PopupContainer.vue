@@ -77,9 +77,10 @@ export default {
 				gap: 1rem;
 				:deep(.formkit-outer) {
 					max-width: 60%;
+					background: red;
 				}
 			}
-			span {
+			> span {
 				background: var(--bg-color-1);
 				padding: 0 0.2rem;
 				margin: 0 0.2rem;
