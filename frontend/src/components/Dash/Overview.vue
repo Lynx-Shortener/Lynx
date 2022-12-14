@@ -56,7 +56,7 @@
 							<span>{{ link.destination }}</span>
 						</td>
 						<td>
-							<strong>Visits&nbsp;</strong>
+							<strong>Visits:&nbsp;</strong>
 							<span>{{ link.visits }} </span>
 						</td>
 						<td class="actions">
