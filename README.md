@@ -21,7 +21,9 @@ My functionality I wanted:
 -   [ ] Account Settings
 -   [ ] Import
     -   [x] Shlink
--   [ ] Export
+    -   [x] URL-Shortener
+    -   [ ] YOURLS
+-   [x] Export
 -   [ ] Full error handling
 
 ## Roadmap
