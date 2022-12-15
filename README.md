@@ -19,12 +19,18 @@ My functionality I wanted:
 ## Todo
 
 -   [ ] Account Settings
+    -   [x] Email
+    -   [ ] Password
+    -   [ ] Username
 -   [ ] Import
     -   [x] Shlink
     -   [x] URL-Shortener
     -   [ ] YOURLS
 -   [x] Export
 -   [ ] Full error handling
+    -   [ ] Invalid Inputs
+    -   [ ] Check sanitization
+    -   [ ] Crashes
 
 ## Roadmap
 
