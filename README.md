@@ -28,7 +28,7 @@ My functionality I wanted:
     -   [ ] YOURLS
 -   [x] Export
 -   [ ] Full error handling
-    -   [ ] Invalid Inputs
+    -   [x] Invalid Inputs
     -   [ ] Check sanitization
     -   [x] Crashes
 
