@@ -48,6 +48,7 @@ export default {
 		padding: 1rem;
 		width: 40rem;
 		max-width: 80vw;
+		box-sizing: border-box;
 		&.loaded {
 			padding: 2rem 1rem 1rem;
 		}
