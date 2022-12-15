@@ -4,6 +4,7 @@ const router = express.Router();
 const {
 	login,
 	get: { current: currentAccount },
+	update: { email: updateEmail },
 } = require("../db/modules/account");
 
 router.post("/login", async function (req, res) {
@@ -39,6 +40,30 @@ router.get("/me", async function (req, res) {
 			id,
 			username,
 		},
+	});
+});
+
+router.patch("/email", async function (req, res) {
+	const [account, accountError] = await currentAccount(req);
+	if (accountError) return res.status(accountError.code).send(accountError.message);
+
+	const { newEmail, password } = req.body;
+
+	const [updateResponse, updateError] = await updateEmail({
+		account,
+		newEmail,
+		password,
+	});
+
+	if (updateError)
+		return res.status(updateError.code).json({
+			success: false,
+			message: updateError.message,
+		});
+
+	return res.status(200).json({
+		success: true,
+		result: updateResponse,
 	});
 });
 

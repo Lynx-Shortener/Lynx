@@ -40,7 +40,7 @@ export const useAccountStore = defineStore("account", {
 		async getAccount() {
 			const data = await this.fetch("/auth/me", {});
 
-			this.account = data.success ? data.result.account : null;
+			this.account = data.success ? data.result : null;
 			return this.account;
 		},
 		async fetch(url, { body, headers, method, query, contentType }) {

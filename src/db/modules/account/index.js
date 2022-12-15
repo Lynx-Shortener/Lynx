@@ -3,4 +3,5 @@ module.exports = {
 	countAccounts: require("./count"),
 	login: require("./login"),
 	get: require("./get"),
+	update: require("./update"),
 };

@@ -20,6 +20,13 @@ const routes = [
 				},
 			},
 			{
+				path: "/dash/settings",
+				component: () => import("../components/Dash/Settings.vue"),
+				meta: {
+					requiresLogin: true,
+				},
+			},
+			{
 				path: "/dash/login",
 				component: () => import("../components/Dash/Login.vue"),
 				meta: {
