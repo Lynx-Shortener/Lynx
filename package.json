@@ -1,8 +1,8 @@
 {
-	"name": "URL-Shortener",
+	"name": "lynx",
 	"version": "1.0.0",
 	"main": "src/index.js",
-	"repository": "https://github.com/JackBailey/URL-Shortener.git",
+	"repository": "https://github.com/JackBailey/Lynx.git",
 	"author": "Jack Bailey <jack@jackbailey.dev>",
 	"license": "MIT",
 	"private": false,

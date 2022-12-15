@@ -13,7 +13,7 @@ const upload = multer({ dest: "tmp/uploads/" });
 
 const fields = {
 	shlink: ["shortUrl", "longUrl", "createdAt", "visits"],
-	"url-shortener": ["id", "slug", "destination", "author", "creationDate", "modifiedDate", "visits"],
+	lynx: ["id", "slug", "destination", "author", "creationDate", "modifiedDate", "visits"],
 };
 
 const processFile = async (path) => {
@@ -57,14 +57,14 @@ router.post("/", requireLogin, upload.single("file"), requireFields(["service"])
 					link.creationDate = new Date(row.createdAt);
 					link.modifiedDate = new Date(row.createdAt);
 					link.visits = row.visits;
-				} else if (service == "url-shortener") {
+				} else if (service == "lynx") {
 					link = row;
 				}
 
 				return link;
 			});
 		} else if (filetype == "json") {
-			if (service == "url-shortener") {
+			if (service == "lynx") {
 				links = JSON.parse(fs.readFileSync(filepath, "utf-8"));
 				fs.unlinkSync(filepath);
 			}

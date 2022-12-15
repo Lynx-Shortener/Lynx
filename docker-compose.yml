@@ -11,8 +11,8 @@ services:
         volumes:
             - ./db:/data/db
 
-    url-shortener:
-        image: jackbailey/urlshortener
+    lynx:
+        image: jackbailey/lynx
         restart: always
         ports:
             - 3000:3000

@@ -14,7 +14,7 @@ export default {
 	data() {
 		return {
 			service: "",
-			services: ["Shlink", "URL-Shortener"],
+			services: ["Shlink", "Lynx"],
 			popups: usePopups(),
 		};
 	},

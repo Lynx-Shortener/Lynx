@@ -1,4 +1,4 @@
-# URL-Shortener
+# Lynx
 
 ## DISCLAIMER
 
@@ -24,7 +24,7 @@ My functionality I wanted:
     -   [x] Username
 -   [ ] Import
     -   [x] Shlink
-    -   [x] URL-Shortener
+    -   [x] Lynx
     -   [ ] YOURLS
 -   [x] Export
 -   [ ] Full error handling
