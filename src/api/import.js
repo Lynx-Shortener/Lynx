@@ -8,7 +8,7 @@ const Link = require("../db/models/link");
 const { v4: uuid4 } = require("uuid");
 const { current: currentAccount } = require("../db/modules/account/get");
 
-const upload = multer({ dest: "tmp/csv/" });
+const upload = multer({ dest: "tmp/uploads/" });
 
 const fields = {
 	shlink: ["shortUrl", "longUrl", "createdAt", "visits"],
@@ -38,7 +38,7 @@ router.post("/", upload.single("file"), async (req, res) => {
 				message: "Invalid filetype",
 			});
 		let links;
-		const filepath = path.join("tmp", "csv", req.file.filename);
+		const filepath = path.join("tmp", "uploads", req.file.filename);
 		if (filetype == "csv") {
 			const rows = await processFile(filepath);
 			if (fields[service].filter((requirement) => !Object.keys(rows[0]).includes(requirement)).length != 0) {
