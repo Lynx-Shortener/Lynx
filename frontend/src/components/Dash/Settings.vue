@@ -19,7 +19,12 @@
 				</tr>
 				<tr>
 					<td>Password</td>
-					<td>***********</td>
+					<td>***********</td
+					><td>
+						<FormKit type="button" input-class="edit" @click="popups.addPopup('ChangePassword', {})">
+							<font-awesome-icon icon="pencil" />
+						</FormKit>
+					</td>
 				</tr>
 			</table>
 		</div>
