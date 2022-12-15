@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const requireFields = require("./middleware/requireFields");
 
 const {
 	login,
@@ -7,7 +8,7 @@ const {
 	update: { email: updateEmail, password: updatePassword, username: updateUsername },
 } = require("../db/modules/account");
 
-router.post("/login", async function (req, res) {
+router.post("/login", requireFields(["username", "password"]), async function (req, res) {
 	try {
 		const { username, password } = req.body;
 
@@ -59,7 +60,7 @@ router.get("/me", async function (req, res) {
 	}
 });
 
-router.patch("/email", async function (req, res) {
+router.patch("/email", requireFields(["newEmail", "password"]), async function (req, res) {
 	try {
 		const [account, accountError] = await currentAccount(req);
 		if (accountError) return res.status(accountError.code).send(accountError.message);
@@ -91,7 +92,7 @@ router.patch("/email", async function (req, res) {
 	}
 });
 
-router.patch("/password", async function (req, res) {
+router.patch("/password", requireFields(["password", "newPassword"]), async function (req, res) {
 	try {
 		const [account, accountError] = await currentAccount(req);
 		if (accountError) return res.status(accountError.code).send(accountError.message);
@@ -123,7 +124,7 @@ router.patch("/password", async function (req, res) {
 	}
 });
 
-router.patch("/username", async function (req, res) {
+router.patch("/username", requireFields(["newUsername", "password"]), async function (req, res) {
 	try {
 		const [account, accountError] = await currentAccount(req);
 		if (accountError) return res.status(accountError.code).send(accountError.message);

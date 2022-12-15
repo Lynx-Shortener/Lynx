@@ -7,6 +7,7 @@ const { parse } = require("csv-parse");
 const Link = require("../db/models/link");
 const { v4: uuid4 } = require("uuid");
 const { current: currentAccount } = require("../db/modules/account/get");
+const requireFields = require("./middleware/requireFields");
 
 const upload = multer({ dest: "tmp/uploads/" });
 
@@ -25,7 +26,7 @@ const processFile = async (path) => {
 	return records;
 };
 
-router.post("/", upload.single("file"), async (req, res) => {
+router.post("/", requireFields(["service"]), upload.single("file"), async (req, res) => {
 	try {
 		const [account, error] = await currentAccount(req);
 		if (error) return res.status(error.code).send(error.message);

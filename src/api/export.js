@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const fs = require("fs");
-const path = require("path");
 const Link = require("../db/models/link");
 const { current: currentAccount } = require("../db/modules/account/get");
 const returnLink = require("../modules/returnLink");
 const { v4: uuid4 } = require("uuid");
+const requireFields = require("./middleware/requireFields");
 
-router.post("/", async (req, res) => {
+router.post("/", requireFields(["format"]), async (req, res) => {
 	try {
 		const [account, error] = await currentAccount(req);
 		if (error) return res.status(error.code).send(error.message);

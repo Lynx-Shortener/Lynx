@@ -18,9 +18,6 @@ async function getAccountByEmail(email) {
 module.exports = async ({ username, password }) => {
 	let errors = [];
 
-	if (!username) errors.username = "username was not provided";
-	if (!password) errors.password = "password was not provided";
-
 	if (Object.keys(errors).length !== 0)
 		return [
 			null,

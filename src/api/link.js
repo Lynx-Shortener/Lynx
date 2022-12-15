@@ -4,8 +4,9 @@ const { list, get, create, update, remove } = require("../db/modules/link");
 
 const { current: currentAccount } = require("../db/modules/account/get");
 const returnLink = require("../modules/returnLink");
+const requireFields = require("./middleware/requireFields");
 
-router.get("/list", async function (req, res) {
+router.get("/list", requireFields(["pagesize", "page", "sort"], "query"), async function (req, res) {
 	try {
 		const [account, error] = await currentAccount(req);
 		if (error) return res.status(error.code).send(error.message);
@@ -33,7 +34,7 @@ router.get("/list", async function (req, res) {
 	}
 });
 
-router.get("/", async function (req, res) {
+router.get("/", requireFields(["slug"], "query"), async function (req, res) {
 	try {
 		const { slug } = req.query;
 		const data = await get(
@@ -66,7 +67,7 @@ router.get("/", async function (req, res) {
 	}
 });
 
-router.post("/", async function (req, res) {
+router.post("/", requireFields(["slug", "destination"]), async function (req, res) {
 	try {
 		const [account, accountError] = await currentAccount(req);
 		if (accountError) return res.status(accountError.code).send(accountError.message);
@@ -97,7 +98,7 @@ router.post("/", async function (req, res) {
 	}
 });
 
-router.patch("/", async function (req, res) {
+router.patch("/", requireFields(["slug", "destination", "id"]), async function (req, res) {
 	try {
 		const [account, accountError] = await currentAccount(req);
 		if (accountError) return res.status(accountError.code).send(accountError.message);
@@ -128,7 +129,7 @@ router.patch("/", async function (req, res) {
 	}
 });
 
-router.delete("/", async function (req, res) {
+router.delete("/", requireFields(["id"]), async function (req, res) {
 	try {
 		const [account, accountError] = await currentAccount(req);
 		if (accountError) return res.status(accountError.code).send(accountError.message);
