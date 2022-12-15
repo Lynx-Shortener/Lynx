@@ -16,6 +16,11 @@
 				<tr>
 					<td>Username</td>
 					<td>{{ account.account.username }}</td>
+					<td>
+						<FormKit type="button" input-class="edit" @click="popups.addPopup('ChangeUsername', {})">
+							<font-awesome-icon icon="pencil" />
+						</FormKit>
+					</td>
 				</tr>
 				<tr>
 					<td>Password</td>

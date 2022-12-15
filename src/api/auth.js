@@ -4,7 +4,7 @@ const router = express.Router();
 const {
 	login,
 	get: { current: currentAccount },
-	update: { email: updateEmail, password: updatePassword },
+	update: { email: updateEmail, password: updatePassword, username: updateUsername },
 } = require("../db/modules/account");
 
 router.post("/login", async function (req, res) {
@@ -77,6 +77,30 @@ router.patch("/password", async function (req, res) {
 		account,
 		password,
 		newPassword,
+	});
+
+	if (updateError)
+		return res.status(updateError.code).json({
+			success: false,
+			message: updateError.message,
+		});
+
+	return res.status(200).json({
+		success: true,
+		result: updateResponse,
+	});
+});
+
+router.patch("/username", async function (req, res) {
+	const [account, accountError] = await currentAccount(req);
+	if (accountError) return res.status(accountError.code).send(accountError.message);
+
+	const { newUsername, password } = req.body;
+
+	const [updateResponse, updateError] = await updateUsername({
+		account,
+		newUsername,
+		password,
 	});
 
 	if (updateError)

@@ -1,11 +1,10 @@
 <template>
-	<div class="changePassword">
-		<h2>Change Password</h2>
-		<FormKit type="form" :actions="false" @submit="changePassword">
-			<FormKit type="password" label="Current Password" v-model="newData.password" />
-			<FormKit type="password" label="New Password" v-model="newData.newPassword" />
-			<FormKit type="password" label="New Password Confirmation" v-model="newData.newPasswordConfirmation" />
-			<FormKit type="submit" label="Change Password" primary />
+	<div class="changeUsername">
+		<h2>Change Username</h2>
+		<FormKit type="form" :actions="false" @submit="changeUsername">
+			<FormKit type="text" label="New Username" v-model="newData.newUsername" />
+			<FormKit type="password" label="Password" v-model="newData.password" />
+			<FormKit type="submit" label="Change Username" primary />
 			<p>{{ response }}</p>
 		</FormKit>
 	</div>
@@ -20,27 +19,26 @@ export default {
 			account: useAccountStore(),
 			popups: usePopups(),
 			newData: {
+				newUsername: "",
 				password: "",
-				newPassword: "",
-				newPasswordConfirmation: "",
 			},
 			response: "",
 		};
 	},
 	methods: {
-		async changePassword() {
-			const { password, newPassword } = this.newData;
-			const response = await this.account.fetch("/auth/password", {
+		async changeUsername() {
+			const { newUsername, password } = this.newData;
+			const response = await this.account.fetch("/auth/username", {
 				method: "PATCH",
 				body: JSON.stringify({
+					newUsername,
 					password,
-					newPassword,
 				}),
 			});
 
 			if (!response.success) {
 				this.popups.addPopup("Information", {
-					title: "Error updating your password",
+					title: "Error updating your username",
 					description: response.message,
 					buttons: [
 						{
@@ -59,7 +57,7 @@ export default {
 				this.account.account = response.result.account;
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {
-					title: "Successfully updated your password",
+					title: "Successfully updated your username",
 					buttons: [
 						{
 							name: "Okay",
