@@ -257,6 +257,12 @@ export default {
 						}
 					}
 
+					&.slug {
+						span {
+							white-space: nowrap;
+						}
+					}
+
 					&.destination {
 						width: 100%;
 						span {
