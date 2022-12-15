@@ -26,17 +26,17 @@ const processFile = async (path) => {
 };
 
 router.post("/", upload.single("file"), async (req, res) => {
-	const [account, error] = await currentAccount(req);
-	if (error) return res.status(error.code).send(error.message);
-	const { service } = req.body;
-
-	const filetype = req.file.originalname.split(".").at(-1);
-	const allowedFiletypes = ["json", "csv"];
-	if (!allowedFiletypes.includes(filetype))
-		return res.status(400).json({
-			message: "Invalid filetype",
-		});
 	try {
+		const [account, error] = await currentAccount(req);
+		if (error) return res.status(error.code).send(error.message);
+		const { service } = req.body;
+
+		const filetype = req.file.originalname.split(".").at(-1);
+		const allowedFiletypes = ["json", "csv"];
+		if (!allowedFiletypes.includes(filetype))
+			return res.status(400).json({
+				message: "Invalid filetype",
+			});
 		let links;
 		const filepath = path.join("tmp", "csv", req.file.filename);
 		if (filetype == "csv") {
