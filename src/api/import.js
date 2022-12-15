@@ -6,7 +6,7 @@ const path = require("path");
 const { parse } = require("csv-parse");
 const Link = require("../db/models/link");
 const { v4: uuid4 } = require("uuid");
-const { current: currentAccount } = require("../db/modules/account/get");
+const requireLogin = require("./middleware/requireLogin");
 const requireFields = require("./middleware/requireFields");
 
 const upload = multer({ dest: "tmp/uploads/" });
@@ -26,10 +26,8 @@ const processFile = async (path) => {
 	return records;
 };
 
-router.post("/", requireFields(["service"]), upload.single("file"), async (req, res) => {
+router.post("/", requireLogin, requireFields(["service"]), upload.single("file"), async (req, res) => {
 	try {
-		const [account, error] = await currentAccount(req);
-		if (error) return res.status(error.code).send(error.message);
 		const { service } = req.body;
 
 		const filetype = req.file.originalname.split(".").at(-1);
@@ -55,7 +53,7 @@ router.post("/", requireFields(["service"]), upload.single("file"), async (req, 
 					link.id = uuid4();
 					link.slug = new URL(row.shortUrl).pathname.slice(1);
 					link.destination = row.longUrl;
-					link.author = account.id;
+					link.author = req.account.id;
 					link.creationDate = new Date(row.createdAt);
 					link.modifiedDate = new Date(row.createdAt);
 					link.visits = row.visits;
