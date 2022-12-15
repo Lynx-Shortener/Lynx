@@ -26,7 +26,7 @@ const processFile = async (path) => {
 	return records;
 };
 
-router.post("/", requireLogin, requireFields(["service"]), upload.single("file"), async (req, res) => {
+router.post("/", requireLogin, upload.single("file"), requireFields(["service"]), async (req, res) => {
 	try {
 		const { service } = req.body;
 

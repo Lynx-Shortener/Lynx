@@ -2,8 +2,6 @@ require("dotenv").config("../../../.env");
 const express = require("express");
 const mongoSanitize = require("express-mongo-sanitize");
 const bodyParser = require("body-parser");
-const createLink = require("./db/modules/link/create");
-const listLink = require("./db/modules/link/list");
 const path = require("path");
 
 const mongoose = require("mongoose");
