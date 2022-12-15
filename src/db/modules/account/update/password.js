@@ -14,7 +14,6 @@ module.exports = async ({ account, password, newPassword }) => {
 		];
 
 	const hashedPassword = hashPassword(newPassword);
-	console.log(hashPassword, newPassword);
 	account.password = hashedPassword;
 
 	await account.save();
