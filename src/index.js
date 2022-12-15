@@ -14,6 +14,10 @@ app.use(mongoSanitize({ allowDots: true }));
 
 app.use("/api", require("./api"));
 
+app.get("/", function (req, res) {
+	res.redirect(process.env.HOME_REDIRECT || "/dash/overview");
+});
+
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static("dist"));
 
