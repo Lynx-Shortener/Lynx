@@ -24,12 +24,15 @@ export default {
 	},
 	methods: {
 		async login() {
+			this.response = null;
 			const account = useAccountStore();
 			const data = await account.login(this.logindata);
 			if (data.success) {
 				this.response = "Logged in!";
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
 				this.$router.push("/dash");
+			} else {
+				this.response = data.message;
 			}
 		},
 	},

@@ -1,7 +1,4 @@
-const {
-	createAccount,
-	countAccounts,
-} = require("../db/modules/account");
+const { createAccount, countAccounts } = require("../db/modules/account");
 require("dotenv").config();
 
 module.exports = async () => {
