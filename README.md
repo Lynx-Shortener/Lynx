@@ -1,14 +1,14 @@
 # Lynx
 
-<img href="https://hub.docker.com/r/jackbailey/lynx">
+<a href="https://hub.docker.com/r/jackbailey/lynx">
     <img alt="Image Size" src="https://img.shields.io/docker/image-size/jackbailey/lynx?label=Image%20Size">
-<a>
+</a>
 <a href="https://hub.docker.com/r/jackbailey/lynx">
     <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/jackbailey/lynx?label=Docker%20Pulls">
-<a>
+</a>
 <a href="https://github.com/JackBailey/Lynx">
     <img alt="Image Size" src="https://img.shields.io/github/license/jackbailey/lynx?label=License">
-<a>
+</a>
 
 ## DISCLAIMER
 
