@@ -30,7 +30,7 @@ My functionality I wanted:
 -   [ ] Full error handling
     -   [ ] Invalid Inputs
     -   [ ] Check sanitization
-    -   [ ] Crashes
+    -   [x] Crashes
 
 ## Roadmap
 
