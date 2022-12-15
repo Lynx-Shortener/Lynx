@@ -18,10 +18,10 @@ My functionality I wanted:
 
 ## Todo
 
--   [ ] Account Settings
+-   [x] Account Settings
     -   [x] Email
-    -   [ ] Password
-    -   [ ] Username
+    -   [x] Password
+    -   [x] Username
 -   [ ] Import
     -   [x] Shlink
     -   [x] URL-Shortener
