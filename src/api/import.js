@@ -41,6 +41,7 @@ router.post("/", upload.single("file"), async (req, res) => {
 		const filepath = path.join("tmp", "uploads", req.file.filename);
 		if (filetype == "csv") {
 			const rows = await processFile(filepath);
+			fs.unlinkSync(filepath);
 			if (fields[service].filter((requirement) => !Object.keys(rows[0]).includes(requirement)).length != 0) {
 				return res.status(400).json({
 					message: "Invalid import fields",
@@ -66,6 +67,7 @@ router.post("/", upload.single("file"), async (req, res) => {
 		} else if (filetype == "json") {
 			if (service == "url-shortener") {
 				links = JSON.parse(fs.readFileSync(filepath, "utf-8"));
+				fs.unlinkSync(filepath);
 			}
 		}
 
