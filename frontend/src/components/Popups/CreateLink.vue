@@ -1,7 +1,7 @@
 <template>
-	<div class="editLink">
-		<h2>Edit link</h2>
-		<FormKit type="form" @submit="update" :actions="false">
+	<div class="createLink">
+		<h2>Create link</h2>
+		<FormKit type="form" @submit="create" :actions="false">
 			<table>
 				<tr>
 					<td><strong>Destination URL</strong></td>
@@ -16,7 +16,7 @@
 					</td>
 				</tr>
 			</table>
-			<FormKit type="submit" label="Update Link" primary></FormKit>
+			<FormKit type="submit" label="Create Link" primary></FormKit>
 		</FormKit>
 	</div>
 </template>
@@ -25,7 +25,6 @@
 import { usePopups } from "../../stores/popups";
 import { useLinks } from "../../stores/links";
 export default {
-	props: ["data"],
 	data() {
 		return {
 			links: useLinks(),
@@ -37,11 +36,11 @@ export default {
 		};
 	},
 	methods: {
-		async update() {
-			const response = await this.links.update(this.link);
+		async create() {
+			const response = await this.links.create(this.link);
 			if (!response.success) {
 				this.popups.addPopup("Information", {
-					title: "Error updating your link",
+					title: "Error creating your link",
 					description: response.message,
 					buttons: [
 						{
@@ -59,7 +58,8 @@ export default {
 			} else {
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {
-					title: "Successfully updated your link",
+					title: "Successfully created your link",
+					description: `Your short link is <a href="${response.result.link.link}" target="_blank">${response.result.link.slug}</a>`,
 					buttons: [
 						{
 							name: "Okay",
@@ -71,14 +71,11 @@ export default {
 			}
 		},
 	},
-	async mounted() {
-		this.link = await this.links.get(this.data.id);
-	},
 };
 </script>
 
 <style lang="scss" scoped>
-.editLink {
+.createLink {
 	> h2 {
 		font-size: 1.5rem;
 		font-weight: bold;

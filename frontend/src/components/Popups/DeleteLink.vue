@@ -1,10 +1,7 @@
 <template>
 	<div class="information">
-		<h2>Deleting a Link</h2>
-		<p
-			>Are you sure you want to delete the link <span>{{ data.slug }}</span
-			>?</p
-		>
+		<h2>Link Deletion</h2>
+		<p>Are you sure you want to delete {{ title }}?</p>
 		<div class="buttons">
 			<FormKit type="button" label="Yes" button-type="danger" @click="deleteLink" />
 			<FormKit type="button" label="No" button-type="secondary" @click="close" />
@@ -21,13 +18,14 @@ export default {
 		return {
 			popups: usePopups(),
 			links: useLinks(),
+			title: "",
 		};
 	},
 	methods: {
 		async deleteLink() {
-			const { id } = this.data;
+			const ids = this.data;
 			const response = await this.links.delete({
-				id,
+				ids,
 			});
 
 			if (!response.success) {
@@ -59,6 +57,13 @@ export default {
 		close() {
 			this.popups.closeSelf(this);
 		},
+	},
+	mounted() {
+		if (this.data.length > 1) {
+			this.title = "the selected links";
+		} else {
+			this.title = "this link";
+		}
 	},
 };
 </script>

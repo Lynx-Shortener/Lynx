@@ -1,4 +1,4 @@
-module.exports = ({ id, slug, destination, author, creationDate, modifiedDate, visits }) => {
+module.exports = ({ id, slug, destination, author, creationDate, modifiedDate, visits, account }) => {
 	return {
 		id,
 		slug,
@@ -7,5 +7,6 @@ module.exports = ({ id, slug, destination, author, creationDate, modifiedDate, v
 		creationDate,
 		modifiedDate,
 		visits,
+		account,
 	};
 };

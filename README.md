@@ -1,5 +1,7 @@
-# Lynx
-
+<p align="center">
+<img alt="" src="frontend/public/logo.png" height="300px">
+</p>
+<p align="center">
 <a href="https://hub.docker.com/r/jackbailey/lynx">
     <img alt="Image Size" src="https://img.shields.io/docker/image-size/jackbailey/lynx?label=Image%20Size">
 </a>
@@ -9,6 +11,9 @@
 <a href="https://github.com/JackBailey/Lynx">
     <img alt="Image Size" src="https://img.shields.io/github/license/jackbailey/lynx?label=License">
 </a>
+</p>
+
+# Lynx
 
 ## DISCLAIMER
 
@@ -53,6 +58,10 @@ My functionality I wanted:
 -   [ ] Image uploads?
 
 -   [ ] QR codes
+
+-   [ ] Searching
+
+-   [ ] Sorting
 
 ## Naming
 

@@ -1,4 +1,5 @@
 const Link = require("../../models/link");
+const Account = require("../../models/link");
 const { v4: uuid4 } = require("uuid");
 const getLink = require("./get");
 
@@ -68,13 +69,15 @@ module.exports = async ({ author, slug, destination }) => {
 		id: uuid4(),
 		slug,
 		destination,
-		author,
+		author: author.id,
 		creationDate: new Date(),
 		modifiedDate: new Date(),
 		visits: 0,
 	});
 
 	await link.save();
+
+	link.account = author.username;
 
 	return [link, null];
 };

@@ -1,10 +1,15 @@
 const Link = require("../../models/link");
 
-module.exports = async ({ id }) => {
+module.exports = async ({ ids }) => {
 	try {
-		await Link.deleteOne({ id });
+		await Link.deleteMany({
+			id: {
+				$in: ids,
+			},
+		});
 		return [true, null];
-	} catch {
+	} catch (e) {
+		console.log(e);
 		return [
 			null,
 			{

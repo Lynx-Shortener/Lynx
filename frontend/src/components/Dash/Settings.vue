@@ -1,37 +1,22 @@
 <template>
 	<div class="settings">
-		<h1>Settings</h1>
 		<div class="account">
 			<h2>Account</h2>
-			<table>
-				<tr>
-					<td>Email</td>
-					<td>{{ account.account.email }}</td>
-					<td>
-						<FormKit type="button" input-class="edit" @click="popups.addPopup('ChangeEmail', {})">
-							<font-awesome-icon icon="pencil" />
-						</FormKit>
-					</td>
-				</tr>
-				<tr>
-					<td>Username</td>
-					<td>{{ account.account.username }}</td>
-					<td>
-						<FormKit type="button" input-class="edit" @click="popups.addPopup('ChangeUsername', {})">
-							<font-awesome-icon icon="pencil" />
-						</FormKit>
-					</td>
-				</tr>
-				<tr>
-					<td>Password</td>
-					<td>***********</td
-					><td>
-						<FormKit type="button" input-class="edit" @click="popups.addPopup('ChangePassword', {})">
-							<font-awesome-icon icon="pencil" />
-						</FormKit>
-					</td>
-				</tr>
-			</table>
+			<p>Here you can edit your login information and username.</p>
+			<div class="inputs">
+				<div class="input">
+					<label>Email</label>
+					<div @click="popups.addPopup('ChangeEmail', {})">{{ account.account.email }}</div>
+				</div>
+				<div class="input">
+					<label>Username</label>
+					<div @click="popups.addPopup('ChangeUsername', {})">{{ account.account.username }}</div>
+				</div>
+				<div class="input">
+					<label>Password</label>
+					<div @click="popups.addPopup('ChangePassword', {})">***********</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -46,6 +31,11 @@ export default {
 			popups: usePopups(),
 		};
 	},
+	methods: {
+		handleClick() {
+			console.log("ok");
+		},
+	},
 };
 </script>
 
@@ -53,47 +43,61 @@ export default {
 .settings {
 	padding: 2rem;
 	text-align: left;
-	h1 {
-		font-size: 2.5rem;
-		font-weight: 500;
-		margin-bottom: 2rem;
-	}
-	h2 {
-		font-size: 1.5rem;
-		font-weight: 500;
-		margin-bottom: 1rem;
-	}
+
 	.account {
-		background: var(--bg-color-2);
-		width: max-content;
-		padding: 1rem;
-		border-radius: 10px;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 		h2 {
-			border-bottom: 1px solid var(--bg-color-1);
-			padding-bottom: 0.5rem;
+			font-size: 1.5rem;
+			font-weight: 500;
+			color: var(--color-2);
 		}
-		table {
-			tr {
-				td {
-					padding: 0.2rem 0.5rem;
-					vertical-align: middle;
-					&:first-of-type {
-						font-weight: 500;
-					}
+		p {
+			color: var(--color-3);
+			font-weight: 300;
+		}
+		.inputs {
+			margin-top: 2rem;
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+			width: max-content;
+			.input {
+				width: 100%;
+				label {
+					font-weight: 500;
+					font-size: 0.9rem;
+					margin-bottom: 1rem;
+					display: block;
+				}
+				div {
+					border: 1px solid var(--bg-color-2);
+					padding: 0.5rem;
+					border-radius: 5px;
+					min-width: 10rem;
+					cursor: pointer;
 				}
 			}
-			:deep(.formkit-outer) {
-				margin: 0;
-				.formkit-wrapper {
-					button {
-						border-radius: 5px;
-						padding: 0.4rem 0.8rem;
-						background: var(--accent);
-						color: var(--accent-color);
-						&.delete,
-						&.cancel {
-							background: var(--color-error);
-						}
+		}
+	}
+
+	@media screen and (max-width: 768px) {
+		.account {
+			h2 {
+				font-size: 3rem;
+			}
+			p {
+				font-size: 1.5rem;
+			}
+
+			.inputs {
+				.input {
+					label {
+						font-size: 1.1rem;
+					}
+					div {
+						font-size: 1.2rem;
 					}
 				}
 			}
