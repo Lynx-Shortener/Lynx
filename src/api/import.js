@@ -63,11 +63,11 @@ router.post("/", requireLogin, upload.single("file"), requireFields(["service"])
 					link.visits = row.visits;
 				} else if (service == "yourls") {
 					let slug = row.source.split("");
-					slug.shift();
-					slug.pop();
+					if (slug.at(0) == "/") slug.shift();
+					if (slug.at(-1) == "/") slug.pop();
 					slug = slug.join("");
 
-					link.id == uuid4();
+					link.id = uuid4();
 					link.slug = slug;
 					link.destination = row.target;
 					link.author = req.account.id;
