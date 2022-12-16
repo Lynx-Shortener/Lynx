@@ -7,7 +7,7 @@ export const useDarkMode = defineStore("dark", {
 		if (localStorage.getItem("dark") !== null) {
 			dark = localStorage.getItem("dark") === "true";
 		} else {
-			dark = this.prefersDark;
+			dark = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) || false;
 		}
 
 		if (dark) document.documentElement.classList.add("dark");
@@ -16,11 +16,6 @@ export const useDarkMode = defineStore("dark", {
 		return {
 			dark,
 		};
-	},
-	getters: {
-		prefersDark() {
-			return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-		},
 	},
 	actions: {
 		toggle() {
