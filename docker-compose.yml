@@ -4,10 +4,8 @@ services:
         image: mongo
         restart: always
         environment:
-            MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
-            MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
-        ports:
-            - "${DB_PORT}:27017"
+            MONGO_INITDB_ROOT_USERNAME:
+            MONGO_INITDB_ROOT_PASSWORD:
         volumes:
             - ./db:/data/db
 
@@ -18,7 +16,16 @@ services:
             - 3000:3000
         depends_on:
             - db
-        env_file:
-            - .env
         environment:
             - NODE_ENV=production
+            - DB_USER=
+            - DB_PASSWORD=
+            - JWT_KEY=
+            - URL_LENGTH=8
+            - URL_SET=standard
+            - URL_ONLY_UNIQUE=false
+            - HOME_REDIRECT=/dash/overview
+
+            ## DO NOT CHANGE THESE:
+            - DB_HOST=db
+            - DB_PORT=27017

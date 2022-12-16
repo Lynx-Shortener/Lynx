@@ -15,13 +15,9 @@
 
 # Lynx
 
-## DISCLAIMER
-
-This is still indev. A variety of security features are yet to be implemented. This is not production ready yet.
-
 ## About
 
-A fullstack application to shorten your URLs.
+A fullstack application using the MEVN stack to shorten your URLs.
 
 I've tried a variety of URL shorteners but didn't find any with the functionality I wanted so I made my own.
 
@@ -31,25 +27,122 @@ My functionality I wanted:
 -   Option to redirect the root path
 -   Simple UI
 
-## Todo
+## Environment variables
 
--   [x] Account Settings
-    -   [x] Email
-    -   [x] Password
-    -   [x] Username
--   [ ] Import
-    -   [x] Shlink
-    -   [x] Lynx
-    -   [x] YOURLS
--   [x] Export
--   [ ] Full error handling
-    -   [x] Invalid Inputs
-    -   [ ] Check sanitization
-    -   [x] Crashes
+Fill in all of these environment variables before running Lynx.
+
+For the normal installation: Rename `.example.env` to `.env` and fill the variables
+
+For the docker installation: Fill in the variables in `docker-compose.yml`
+
+| Environment Variable | Description | Example |
+| --- | --- | --- |
+| DB_HOST | The address of your mongodb database. | 127.0.0.1 |
+| DB_PORT | The port of your mongodb database. When using docker set this to `27017`. | 27017 |
+| DB_USER | Your mongodb database user. | admin |
+| DB_PASSWORD | Your mongodb password. Generate a secure one using a tool like [1password](https://1password.com/password-generator/). |  |
+|  |
+| JWT_KEY | The key used to verify and sign login-sessions. Use a site like [1password](https://1password.com/password-generator/) to generate a 32 character password. |  |
+|  |
+| URL_LENGTH | The length of your automatically generated slugs. | 8 |
+| URL_SET | The type of characters your automatically generated slug will use. | standard |
+| URL_ONLY_UNIQUE | Wether each new url has to be unique, e.g. if a link already redirects to `https://example.com` new links created cannot link to the same destination. | false |
+|  |
+| NODE_ENV | Wether Lynx is running in a `production` or `development` environment | production |
+
+## Installation
+
+### Normal Installation
+
+You need yarn (via npm), git and node installed for this guide. I recommend [pm2](https://www.npmjs.com/package/pm2) to run this project in the background.
+
+1.  Clone this repo
+
+    ```console
+    git clone https://github.com/JackBailey/Lynx
+    ```
+
+2.  Build the frontend
+
+    1.  Navigate to the frontend directory
+
+        ```console
+        cd frontend
+        ```
+
+    2.  Install the required files
+
+        ```console
+        yarn
+        ```
+
+    3.  Build the frontend (it will build to `../dist`)
+
+        ```console
+        yarn build
+        ```
+
+3.  Start the server
+
+    ```js
+    node .
+    ```
+
+### Docker Installation
+
+1. Create a docker-compose.yml file in a new directory with the following content:
+
+    ```yml
+    version: "3"
+    services:
+        db:
+            image: mongo
+            restart: always
+            environment:
+                MONGO_INITDB_ROOT_USERNAME:
+                MONGO_INITDB_ROOT_PASSWORD:
+            volumes:
+                - ./db:/data/db
+
+        lynx:
+            image: jackbailey/lynx
+            restart: always
+            ports:
+                - 3000:3000
+            depends_on:
+                - db
+            environment:
+                - NODE_ENV=production
+                - DB_USER=
+                - DB_PASSWORD=
+                - JWT_KEY=
+                - URL_LENGTH=8
+                - URL_SET=standard
+                - URL_ONLY_UNIQUE=false
+                - HOME_REDIRECT=/dash/overview
+
+                ## DO NOT CHANGE THESE:
+                - DB_HOST=db
+                - DB_PORT=27017
+    ```
+
+2. Set the environment variables above to your choosing. Follow the guide [here](#environment-variables)
+
+3. Start the container
+
+    ```console
+    docker compose up -d
+    ```
+
+Lynx should now be accessible at [localhost:3000](http://localhost:3000)
+
+## TODO
+
+-   [ ] Force password change on first login
+
 -   [ ] ShareX support
-    -   [ ] API Tokens
 
-## Roadmap
+    -   [ ] API Tokens
 
 -   [ ] Multi-user support
 
