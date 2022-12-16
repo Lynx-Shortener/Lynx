@@ -52,5 +52,8 @@ export default {
 		font-weight: bold;
 		margin-bottom: 2rem;
 	}
+	@media screen and (max-width: 768px) {
+		height: 100vh;
+	}
 }
 </style>
