@@ -19,12 +19,29 @@ import {
 	faFile,
 	faUpload,
 	faDownload,
+	faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
+import ContextMenu from "@imengyu/vue3-context-menu";
 
 const pinia = createPinia();
 
-library.add(faList, faGear, faRightFromBracket, faMoon, faSun, faPencil, faTrashCan, faX, faCheck, faFileArrowUp, faFile, faUpload, faDownload);
+library.add(
+	faList,
+	faGear,
+	faRightFromBracket,
+	faMoon,
+	faSun,
+	faPencil,
+	faTrashCan,
+	faX,
+	faCheck,
+	faFileArrowUp,
+	faFile,
+	faUpload,
+	faDownload,
+	faEllipsisVertical
+);
 
 var app = createApp(App);
 app.use(router);
@@ -32,4 +49,5 @@ app.use(pinia);
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(plugin, defaultConfig);
 app.use(VueObserveVisibility);
+app.use(ContextMenu);
 app.mount("#app");

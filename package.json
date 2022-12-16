@@ -7,6 +7,7 @@
 	"license": "MIT",
 	"private": false,
 	"dependencies": {
+		"@imengyu/vue3-context-menu": "^1.1.5",
 		"bcrypt": "^5.1.0",
 		"csv-parse": "^5.3.3",
 		"csv-stringify": "^6.2.3",

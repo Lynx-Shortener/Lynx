@@ -1,7 +1,7 @@
 <template>
 	<div class="information">
 		<h2>Link Deletion</h2>
-		<p>Are you sure you want to delete the selected links?</p>
+		<p>Are you sure you want to delete {{ title }}?</p>
 		<div class="buttons">
 			<FormKit type="button" label="Yes" button-type="danger" @click="deleteLink" />
 			<FormKit type="button" label="No" button-type="secondary" @click="close" />
@@ -60,9 +60,9 @@ export default {
 	},
 	mounted() {
 		if (this.data.length > 1) {
-			this.title = "selected links";
+			this.title = "the selected links";
 		} else {
-			this.title = "link ";
+			this.title = "this link";
 		}
 	},
 };
