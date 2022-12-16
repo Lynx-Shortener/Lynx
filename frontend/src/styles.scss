@@ -241,7 +241,8 @@ a {
 			}
 
 			&[button-type="secondary"] {
-				background: var(--bg-color-1);
+				background: var(--bg-color-2);
+				color: var(--color-1);
 			}
 
 			&[button-type="danger"] {
