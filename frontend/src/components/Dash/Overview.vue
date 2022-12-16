@@ -346,6 +346,9 @@ export default {
 							padding: 1rem 1rem;
 						}
 					}
+					&.menu {
+						cursor: pointer;
+					}
 				}
 			}
 
