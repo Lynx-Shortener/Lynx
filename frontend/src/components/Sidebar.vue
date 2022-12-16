@@ -13,7 +13,7 @@
 				<a @click="darkMode.toggle()" class="darkmode">
 					<font-awesome-icon :icon="darkMode.dark ? 'sun' : 'moon'" />
 				</a>
-				<a class="logout">
+				<a class="logout" @click="account.logout">
 					<font-awesome-icon icon="right-from-bracket" />
 				</a>
 			</div>
