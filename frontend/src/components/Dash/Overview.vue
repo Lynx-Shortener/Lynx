@@ -193,8 +193,7 @@ export default {
 
 <style lang="scss" scoped>
 .overview {
-	width: 80%;
-	margin: 5rem auto;
+	margin: 3rem auto;
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
