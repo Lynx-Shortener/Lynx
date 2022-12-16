@@ -16,38 +16,6 @@
 				<button @click="popups.addPopup('CreateLink', {})"> Add Link </button>
 			</div>
 		</div>
-		<div class="createLink" v-if="false">
-			<div class="header">
-				<h2>Create a new link</h2>
-			</div>
-			<div class="content">
-				<FormKit type="form" submit-label="Create Link" @submit="createLink" :actions="false">
-					<FormKit
-						type="text"
-						label="Destination URL"
-						placeholder="https://www.example.com..."
-						validation="trim"
-						v-model="newLink.data.destination"
-					/>
-					<FormKit type="text" label="Custom Slug" placeholder="shopping-list" v-model="newLink.data.slug" />
-					<FormKit type="submit" label="Create Link" primary></FormKit>
-					<div class="validation-error">
-						<p>{{ newLink.data.error }}</p>
-					</div>
-				</FormKit>
-			</div>
-		</div>
-		<div class="newLink" v-if="newLink.response.link">
-			<div class="content">
-				<h3>Your new link has been created!</h3>
-				<p
-					>Your short link is
-					<a :href="newLink.response.link" target="_blank"
-						><span>{{ newLink.response.link }}</span></a
-					></p
-				>
-			</div>
-		</div>
 		<div class="links">
 			<table>
 				<thead>
@@ -141,14 +109,6 @@ export default {
 			endVisible: true,
 			loadingMore: false,
 			remainingPages: 1,
-			newLink: {
-				data: {
-					slug: "",
-					destination: "",
-					error: "",
-				},
-				response: {},
-			},
 			selectedLinks: [],
 		};
 	},
@@ -238,152 +198,6 @@ export default {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
-
-	.createLink,
-	.newLink,
-	.links {
-		border: 1px solid var(--bg-color-3);
-		border-radius: 10px;
-		.header {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			border-bottom: 1px solid var(--bg-color-3);
-			h2 {
-				font-weight: 500;
-				font-size: 1.5rem;
-				text-align: left;
-			}
-			.buttons {
-				display: flex;
-				gap: 0.5rem;
-				:deep(.formkit-outer) {
-					.formkit-wrapper {
-						button {
-							padding-inline: 1rem;
-						}
-					}
-				}
-			}
-		}
-
-		.content,
-		.header {
-			padding: 1rem 2rem;
-		}
-	}
-
-	.createLink {
-		.content {
-			:deep(.formkit-form) {
-				display: grid;
-				grid-template-columns: 3fr 1fr;
-				gap: 0 1rem;
-				.formkit-outer {
-					margin-bottom: 1rem;
-					&[data-family="button"] {
-						grid-column: 1/3;
-					}
-				}
-				.validation-error {
-					grid-column: 1/3;
-					text-align: left;
-					color: var(--color-error);
-					font-weight: 5old;
-				}
-			}
-		}
-	}
-
-	.newLink {
-		h3 {
-			font-weight: 500;
-			font-size: 1.2rem;
-			line-height: 1.5;
-			margin-bottom: 1rem;
-		}
-	}
-
-	.linkss {
-		width: 100%;
-		table {
-			display: block;
-			border-collapse: collapse;
-			caption-side: bottom;
-			width: 100%;
-			table-layout: fixed;
-			thead,
-			tr {
-				width: 100%;
-				width: 100%;
-				display: table-header-group;
-
-				td,
-				th {
-					display: block;
-					padding: 0.8rem 0.4rem;
-					text-align: left;
-					position: relative;
-					vertical-align: middle;
-					strong {
-						display: none;
-					}
-
-					&.date {
-						white-space: nowrap;
-					}
-
-					span {
-						&[contenteditable="true"] {
-							color: var(--color-4);
-						}
-					}
-
-					&.slug {
-						span {
-							white-space: nowrap;
-						}
-					}
-
-					&.destination {
-						width: 100%;
-						span {
-							max-width: 100%;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-							position: absolute;
-							top: 50%;
-							left: 0;
-							transform: translateY(-50%);
-							box-sizing: border-box;
-							width: 100%;
-						}
-					}
-
-					:deep(.formkit-outer) {
-						.formkit-wrapper {
-							button {
-								border-radius: 5px;
-								padding: 0.4rem 0.8rem;
-								background: var(--accent);
-								color: var(--accent-color);
-								&.delete,
-								&.cancel {
-									background: var(--color-error);
-								}
-							}
-						}
-					}
-
-					&.actions {
-						display: flex;
-						gap: 0.2rem;
-					}
-				}
-			}
-		}
-	}
 
 	> .header {
 		display: flex;
