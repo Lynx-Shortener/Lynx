@@ -136,6 +136,12 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
 
 Lynx should now be accessible at [localhost:3000](http://localhost:3000)
 
+## Post Installation
+
+You should now be able to log in at `/dash`
+
+The default username is `admin` and the password is `changeme123` - Please change this
+
 ## TODO
 
 -   [ ] Force password change on first login
