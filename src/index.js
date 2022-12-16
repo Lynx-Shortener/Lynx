@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === "production") {
 	app.get("*", async (req, res) => {
 		const slug = req.originalUrl.slice(1);
 		const link = await getLink({ slug }, null, true);
-		if (link) {
+		if (link && process.env.FORCE_FRONTEND_REDIRECT !== "true") {
 			res.redirect(302, link.destination);
 		} else {
 			res.sendFile(path.resolve("dist", "index.html"));

@@ -25,6 +25,7 @@ services:
             - URL_SET=standard
             - URL_ONLY_UNIQUE=false
             - HOME_REDIRECT=/dash/overview
+            - FORCE_FRONTEND_REDIRECT=false
 
             ## DO NOT CHANGE THESE:
             - DB_HOST=db

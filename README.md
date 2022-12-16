@@ -49,6 +49,7 @@ For the docker installation: Fill in the variables in `docker-compose.yml`
 | URL_ONLY_UNIQUE | Wether each new url has to be unique, e.g. if a link already redirects to `https://example.com` new links created cannot link to the same destination. | false |
 |  |
 | NODE_ENV | Wether Lynx is running in a `production` or `development` environment | production |
+| FORCE_FRONTEND_REDIRECT | Use the frontend to redirect instead of express, useful for hiding embeds on discord for all your rickrolling needs | false |
 
 ## Installation
 
