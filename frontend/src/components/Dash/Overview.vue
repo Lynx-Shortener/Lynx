@@ -170,6 +170,7 @@ export default {
 		},
 		handleDelete(links) {
 			this.popups.addPopup("DeleteLink", links);
+			this.selectedLinks = [];
 		},
 		importLinks() {
 			this.popups.addPopup("Import-Service");
@@ -189,7 +190,6 @@ export default {
 			}
 		},
 		showContextMenu(e, link) {
-			console.log(e, link);
 			e.preventDefault();
 			ContextMenu.showContextMenu({
 				x: e.x,

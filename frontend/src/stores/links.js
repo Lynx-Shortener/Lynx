@@ -116,7 +116,6 @@ export const useLinks = defineStore("links", {
 			return response;
 		},
 		async delete({ ids }) {
-			console.log(ids);
 			const account = useAccountStore();
 			const response = await account.fetch("/link", {
 				method: "DELETE",
