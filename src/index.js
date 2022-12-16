@@ -43,24 +43,21 @@ const mongoDB = `mongodb://${process.env.DB_USER}:${encodeURIComponent(process.e
 
 mongoose.set("strictQuery", false);
 
-mongoose.connect(
-	mongoDB,
-	{
+mongoose
+	.connect(mongoDB, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
-	},
-	() => {
-		console.log("Connected to DB!");
-	}
-);
-
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-
-const listenPort = process.env.EXPRESS_PORT || 3000;
-setup().then(() => {
-	app.listen(listenPort, async () => {
-		console.log(`Listening on port ${listenPort}`);
+	})
+	.then(() => {
+		console.log("Connected to database");
+		const listenPort = process.env.EXPRESS_PORT || 3000;
+		setup().then(() => {
+			app.listen(listenPort, async () => {
+				console.log(`Listening on port ${listenPort}`);
+			});
+		});
+	})
+	.catch((error) => {
+		console.log("Couldn't connect to database!");
+		console.log(error);
 	});
-});
