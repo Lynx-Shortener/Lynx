@@ -35,7 +35,7 @@ My functionality I wanted:
 -   [ ] Import
     -   [x] Shlink
     -   [x] Lynx
-    -   [ ] YOURLS
+    -   [x] YOURLS
 -   [x] Export
 -   [ ] Full error handling
     -   [x] Invalid Inputs

@@ -14,7 +14,7 @@ export default {
 	data() {
 		return {
 			service: "",
-			services: ["Shlink", "Lynx"],
+			services: ["Shlink", "YOURLS", "Lynx"],
 			popups: usePopups(),
 		};
 	},
