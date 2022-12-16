@@ -8,6 +8,14 @@ const getLink = require("./db/modules/link/get");
 const mongoose = require("mongoose");
 const setup = require("./modules/setup");
 
+let undefinedEnv = ["DB_USER", "DB_PASSWORD", "DB_HOST", "JWT_KEY", "URL_SET", "URL_ONLY_UNIQUE", "URL_LENGTH"].filter(
+	(envFile) => !process.env.hasOwnProperty(envFile)
+);
+
+if (undefinedEnv.length > 0) {
+	throw new Error(`Required env variables were not provided: ${undefinedEnv.join(",")}`);
+}
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
