@@ -14,7 +14,7 @@ module.exports = async ({ pagesize, page, sort }) => {
 	links = await Promise.all(
 		links.map(async (link) => {
 			const account = await Account.findOne({ id: link.author });
-			link.account = account.username;
+			link.account = account ? account.username : "n/a";
 			return link;
 		})
 	);

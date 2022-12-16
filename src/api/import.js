@@ -8,6 +8,9 @@ const Link = require("../db/models/link");
 const { v4: uuid4 } = require("uuid");
 const requireLogin = require("./middleware/requireLogin");
 const requireFields = require("./middleware/requireFields");
+const Account = require("../db/models/account");
+
+let accounts = {};
 
 const upload = multer({ dest: "tmp/uploads/" });
 
@@ -80,6 +83,21 @@ router.post("/", requireLogin, upload.single("file"), requireFields(["service"])
 		} else if (filetype == "json") {
 			if (service == "lynx") {
 				links = JSON.parse(fs.readFileSync(filepath, "utf-8"));
+
+				links = await Promise.all(
+					links.map(async (link) => {
+						if (!accounts.hasOwnProperty(link.author)) {
+							let account = await Account.findOne({ id: link.author });
+							if (account) {
+								link.author = account.id;
+								accounts[account.id] = account;
+							} else {
+								link.author = req.account.id;
+							}
+						}
+						return link;
+					})
+				);
 				fs.unlinkSync(filepath);
 			}
 		}
