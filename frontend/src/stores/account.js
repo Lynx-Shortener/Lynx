@@ -79,5 +79,9 @@ export const useAccountStore = defineStore("account", {
 				};
 			}
 		},
+		logout() {
+			document.cookie = `token=${this.token};expires=${new Date(0).toUTCString()};path=/; SameSite=Strict; Secure;`;
+			document.location.reload();
+		},
 	},
 });

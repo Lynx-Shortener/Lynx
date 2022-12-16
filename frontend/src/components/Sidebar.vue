@@ -15,7 +15,7 @@
 				<font-awesome-icon :icon="darkMode.dark ? 'sun' : 'moon'" />
 				<p>{{ darkMode.dark ? "Light Mode" : "Dark Mode" }}</p>
 			</a>
-			<a class="logout">
+			<a class="logout" @click="account.logout">
 				<font-awesome-icon icon="right-from-bracket" />
 				<p>Logout</p>
 			</a>
@@ -25,10 +25,12 @@
 
 <script>
 import { useDarkMode } from "../stores/dark";
+import { useAccountStore } from "../stores/account";
 export default {
 	data() {
 		return {
 			darkMode: useDarkMode(),
+			account: useAccountStore(),
 		};
 	},
 };
