@@ -19,7 +19,7 @@ app.get("/", function (req, res) {
 	res.redirect(process.env.HOME_REDIRECT || "/dash/overview");
 });
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV === "production") {
 	app.use(express.static("dist"));
 
 	app.get("/dash/*", (req, res) => {
