@@ -69,19 +69,6 @@ export default {
 					],
 				});
 			}
-			// const account = useAccountStore();
-			// const response = await account.fetch("/link", {
-			// 	method: "PATCH",
-			// 	body: JSON.stringify({
-			// 		slug: this.data.slug,
-			// 		destination: this.data.destination,
-			// 		id: this.data.id,
-			// 	}),
-			// });
-
-			// if (response.useAccountStore) {
-			// 	this.links[index] = response.result;
-			// }
 		},
 	},
 	async mounted() {

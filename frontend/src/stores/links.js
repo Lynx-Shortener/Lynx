@@ -108,6 +108,7 @@ export const useLinks = defineStore("links", {
 			let link = response.result;
 
 			link.creationDate = this.formatDate(link.creationDate);
+			link.visits = new Intl.NumberFormat("default", {}).format(link.visits || 0);
 
 			link.link = `${window.location.origin}/${response.result.slug}`;
 

@@ -1,4 +1,5 @@
 const getLink = require("./get");
+const Account = require("../../models/account");
 
 module.exports = async ({ id, slug, destination }) => {
 	if (!slug)
@@ -53,6 +54,9 @@ module.exports = async ({ id, slug, destination }) => {
 	link.modifiedDate = new Date();
 
 	await link.save();
+
+	const account = await Account.findOne({ id: link.author });
+	link.account = account.username;
 
 	return [link, null];
 };

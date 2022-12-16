@@ -65,7 +65,9 @@
 							<font-awesome-icon icon="check" v-if="selectedLinks.includes(link.id)" />
 						</div>
 					</td>
-					<td class="author">{{ link.account }}</td>
+					<td class="author">
+						<strong>Author:&nbsp;</strong> <span>{{ link.account }}</span></td
+					>
 					<td class="date"><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
 					<td class="slug"
 						><strong>Slug:&nbsp;</strong>
@@ -81,8 +83,18 @@
 						<strong>Visits:&nbsp;</strong>
 						<span>{{ link.visits }} </span>
 					</td>
-					<td @click="showContextMenu($event, link)">
+					<td @click="showContextMenu($event, link)" class="menu">
 						<font-awesome-icon icon="ellipsis-vertical" />
+					</td>
+					<td class="buttons">
+						<button @click="handleEdit(link)">
+							<font-awesome-icon icon="pencil" />
+							<span>Edit</span>
+						</button>
+						<button @click="handleDelete([link.id])">
+							<font-awesome-icon icon="trash-can" />
+							<span>Delete</span>
+						</button>
 					</td>
 				</tr>
 				<span v-observe-visibility="visibilityChanged"></span>
@@ -547,7 +559,71 @@ export default {
 	}
 
 	@media screen and (max-width: 768px) {
-		margin: 2rem auto;
+		// margin: 2rem;
+		width: 100%;
+		margin: 0;
+		padding: 2rem;
+		box-sizing: border-box;
+		> .header {
+			flex-direction: column;
+			gap: 1rem;
+			margin-bottom: 2rem;
+		}
+		.links {
+			table {
+				display: block;
+				thead {
+					display: none;
+				}
+
+				tr {
+					display: block;
+					td {
+						display: block;
+						font-size: 1rem;
+						padding-inline: 0;
+						&:first-of-type {
+							// hide checkbox
+							display: none;
+						}
+						&.destination {
+							overflow: scroll;
+							span {
+								position: static;
+								padding: 0;
+							}
+						}
+						&.menu {
+							display: none;
+						}
+						&.buttons {
+							display: grid;
+							grid-template-columns: 1fr 1fr;
+							gap: 1rem;
+
+							button {
+								border: none;
+								padding: 0.8em 1em;
+								display: flex;
+								gap: 1rem;
+								justify-content: center;
+								font-size: 1rem;
+								border-radius: 5px;
+								font: inherit;
+								&:first-of-type {
+									background-color: var(--accent);
+									color: var(--accent-color);
+								}
+								&:last-of-type {
+									background-color: var(--color-error);
+									color: var(--accent-color);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		.createLink {
 			.content {
 				:deep(.formkit-form) {
