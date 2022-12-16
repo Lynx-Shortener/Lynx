@@ -23,10 +23,12 @@
 
 <script>
 import { useDarkMode } from "../stores/dark";
+import { useAccountStore } from "../stores/account";
 export default {
 	data() {
 		return {
 			darkMode: useDarkMode(),
+			account: useAccountStore(),
 		};
 	},
 };

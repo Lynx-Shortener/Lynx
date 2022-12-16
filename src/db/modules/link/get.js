@@ -1,10 +1,14 @@
 const Link = require("../../models/link");
 
 module.exports = async ({ slug, destination, id }, ignoredID, countVisit) => {
+	const findLink = async (obj) => {
+		if (!ignoredID) delete obj.id;
+		return await Link.findOne(obj);
+	};
 	let link;
-	if (slug) link = await Link.findOne({ slug, id: { $ne: ignoredID } });
-	if (destination) link = await Link.findOne({ destination, id: { $ne: ignoredID } });
-	if (id) link = await Link.findOne({ id });
+	if (slug) link = await findLink({ slug, id: { $ne: ignoredID } });
+	if (destination) link = await findLink({ destination, id: { $ne: ignoredID } });
+	if (id) link = await findLink({ id });
 
 	if (countVisit && link) {
 		if (link.visits) link.visits += 1;

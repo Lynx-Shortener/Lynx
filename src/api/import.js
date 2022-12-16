@@ -14,6 +14,7 @@ const upload = multer({ dest: "tmp/uploads/" });
 const fields = {
 	shlink: ["shortUrl", "longUrl", "createdAt", "visits"],
 	lynx: ["id", "slug", "destination", "author", "creationDate", "modifiedDate", "visits"],
+	yourls: ["source", "target", "hits"],
 };
 
 const processFile = async (path) => {
@@ -51,12 +52,25 @@ router.post("/", requireLogin, upload.single("file"), requireFields(["service"])
 				let link = {};
 				if (service == "shlink") {
 					link.id = uuid4();
-					link.slug = new URL(row.shortUrl).pathname.slice(1);
+					link.slug = new URL(row.shortUrl).pathname.slice(1).slice(-1);
 					link.destination = row.longUrl;
 					link.author = req.account.id;
 					link.creationDate = new Date(row.createdAt);
 					link.modifiedDate = new Date(row.createdAt);
 					link.visits = row.visits;
+				} else if (service == "yourls") {
+					let slug = row.source.split("");
+					slug.shift();
+					slug.pop();
+					slug = slug.join("");
+
+					link.id == uuid4();
+					link.slug = slug;
+					link.destination = row.target;
+					link.author = req.account.id;
+					link.creationDate = new Date();
+					link.modifiedDate = new Date();
+					link.visits = row.hits;
 				} else if (service == "lynx") {
 					link = row;
 				}

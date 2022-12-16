@@ -19,7 +19,7 @@ export default {
 		const response = await fetch(
 			"/api/link?" +
 				new URLSearchParams({
-					slug: this.$route.params.pathMatch[0],
+					slug: this.$route.params.pathMatch.join("/"),
 				}),
 			{
 				method: "GET",
