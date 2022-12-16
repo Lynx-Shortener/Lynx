@@ -324,7 +324,7 @@ export default {
 					box-sizing: border-box;
 					vertical-align: middle;
 					font-size: 0.8rem;
-					color: var(--color-3);
+					color: var(--color-2);
 					font-weight: 400;
 					@media screen and (min-width: 768px) {
 						strong {
