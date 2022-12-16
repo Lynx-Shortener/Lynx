@@ -8,6 +8,7 @@ module.exports = async ({ pagesize, page, sort }) => {
 		limit: pagesize,
 		sort: {
 			creationDate: sort === "desc" ? -1 : 1,
+			id: -1,
 		},
 	});
 
