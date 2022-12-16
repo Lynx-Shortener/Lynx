@@ -349,7 +349,6 @@ export default {
 			}
 
 			.bulkManagement {
-				background: linear-gradient(to top, white, transparent);
 				position: fixed;
 				bottom: 2rem;
 				left: calc(50% + 4rem);
