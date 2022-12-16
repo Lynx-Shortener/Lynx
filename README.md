@@ -59,6 +59,10 @@ My functionality I wanted:
 
 -   [ ] QR codes
 
+-   [ ] Searching
+
+-   [ ] Sorting
+
 ## Naming
 
 Each item including a slug, destination and id is called a [`Link`](src/db/models/link.js), the plural being links.
