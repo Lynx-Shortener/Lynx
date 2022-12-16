@@ -73,6 +73,7 @@
 					</button>
 				</div>
 			</table>
+			<p class="empty" v-if="links.remainingPages === 0 && links.links.length === 0">No links have currently been added.</p>
 		</div>
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
 			<!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
@@ -108,7 +109,6 @@ export default {
 			pagesize: 5,
 			endVisible: true,
 			loadingMore: false,
-			remainingPages: 1,
 			selectedLinks: [],
 		};
 	},
@@ -366,6 +366,9 @@ export default {
 					color: var(--accent-color);
 				}
 			}
+		}
+		.empty {
+			margin-top: 0.5rem;
 		}
 	}
 
