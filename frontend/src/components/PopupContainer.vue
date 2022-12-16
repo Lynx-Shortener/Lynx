@@ -42,7 +42,7 @@ export default {
 	display: grid;
 	place-items: center;
 	.popup {
-		background: var(--bg-color-2);
+		background: var(--bg-color-1);
 		border-radius: 10px;
 		position: relative;
 		padding: 1rem;
