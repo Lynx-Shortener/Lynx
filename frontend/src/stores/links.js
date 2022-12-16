@@ -7,7 +7,7 @@ export const useLinks = defineStore("links", {
 			links: [],
 			sort: "desc",
 			remainingPages: 1,
-			pagesize: 2,
+			pagesize: 80,
 			page: 0,
 		};
 	},
