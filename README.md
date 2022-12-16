@@ -46,12 +46,10 @@ My functionality I wanted:
     -   [x] Invalid Inputs
     -   [ ] Check sanitization
     -   [x] Crashes
+-   [ ] ShareX support
+    -   [ ] API Tokens
 
 ## Roadmap
-
--   [ ] ShareX support
-
-    Maybe compatible with YOURLS?
 
 -   [ ] Multi-user support
 
