@@ -69,7 +69,7 @@ router.post("/", requireLogin, requireFields(["slug", "destination"]), async fun
 		const { slug, destination } = req.body;
 
 		const [link, linkError] = await create({
-			author: req.account.id,
+			author: req.account,
 			slug,
 			destination,
 		});

@@ -1,7 +1,7 @@
 <template>
 	<div class="information">
 		<h2>{{ data.title }}</h2>
-		<p>{{ data.description }}</p>
+		<p v-html="data.description"></p>
 		<div class="buttons">
 			<FormKit
 				type="button"

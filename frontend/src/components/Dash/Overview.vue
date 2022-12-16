@@ -13,7 +13,7 @@
 					<font-awesome-icon icon="download" />
 					<span>Export</span>
 				</button>
-				<button> Add Link </button>
+				<button @click="popups.addPopup('CreateLink', {})"> Add Link </button>
 			</div>
 		</div>
 		<div class="createLink" v-if="false">
