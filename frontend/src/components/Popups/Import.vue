@@ -26,6 +26,7 @@ export default {
 			links: useLinks(),
 			filetypes: {
 				Shlink: [".csv"],
+				Lynx: [".json", ".csv"],
 			},
 			file: {
 				data: null,
