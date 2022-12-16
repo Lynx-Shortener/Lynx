@@ -12,6 +12,29 @@ export const useLinks = defineStore("links", {
 		};
 	},
 	actions: {
+		formatDate(date) {
+			function ordinal_suffix_of(i) {
+				var j = i % 10,
+					k = i % 100;
+				if (j == 1 && k != 11) {
+					return i + "st";
+				}
+				if (j == 2 && k != 12) {
+					return i + "nd";
+				}
+				if (j == 3 && k != 13) {
+					return i + "rd";
+				}
+				return i + "th";
+			}
+
+			date = new Date(date);
+			const day = ordinal_suffix_of(date.getDate());
+			const month = date.toLocaleString("default", { month: "short" });
+			const year = date.getFullYear();
+
+			return `${month} ${day}, ${year}`;
+		},
 		async paginate() {
 			const account = useAccountStore();
 			const response = await account.fetch(
@@ -27,7 +50,7 @@ export const useLinks = defineStore("links", {
 			this.page++;
 
 			const links = response.result.links.map((link) => {
-				link.creationDate = new Date(link.creationDate).toLocaleString();
+				link.creationDate = this.formatDate(link.creationDate);
 				link.visits = new Intl.NumberFormat("default", {}).format(link.visits || 0);
 				return link;
 			});
@@ -48,7 +71,7 @@ export const useLinks = defineStore("links", {
 
 			let link = response.result;
 
-			link.creationDate = new Date(link.creationDate).toLocaleString();
+			link.creationDate = this.formatDate(link.creationDate);
 
 			link.link = `${window.location.origin}/${response.result.slug}`;
 
@@ -84,7 +107,7 @@ export const useLinks = defineStore("links", {
 			const index = this.links.findIndex((link) => link.id === id);
 			let link = response.result;
 
-			link.creationDate = new Date(link.creationDate).toLocaleString();
+			link.creationDate = this.formatDate(link.creationDate);
 
 			link.link = `${window.location.origin}/${response.result.slug}`;
 
@@ -92,18 +115,19 @@ export const useLinks = defineStore("links", {
 
 			return response;
 		},
-		async delete({ id }) {
+		async delete({ ids }) {
+			console.log(ids);
 			const account = useAccountStore();
 			const response = await account.fetch("/link", {
 				method: "DELETE",
 				body: JSON.stringify({
-					id,
+					ids,
 				}),
 			});
 
 			if (!response.success) return response;
 
-			this.links = this.links.filter((link) => link.id !== id);
+			this.links = this.links.filter((link) => !ids.includes(link.id));
 
 			return response;
 		},

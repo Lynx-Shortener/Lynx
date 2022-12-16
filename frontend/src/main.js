@@ -17,12 +17,14 @@ import {
 	faCheck,
 	faFileArrowUp,
 	faFile,
+	faUpload,
+	faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
 
 const pinia = createPinia();
 
-library.add(faList, faGear, faRightFromBracket, faMoon, faSun, faPencil, faTrashCan, faX, faCheck, faFileArrowUp, faFile);
+library.add(faList, faGear, faRightFromBracket, faMoon, faSun, faPencil, faTrashCan, faX, faCheck, faFileArrowUp, faFile, faUpload, faDownload);
 
 var app = createApp(App);
 app.use(router);

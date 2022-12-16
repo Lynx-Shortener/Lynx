@@ -122,12 +122,12 @@ router.patch("/", requireLogin, requireFields(["slug", "destination", "id"]), as
 	}
 });
 
-router.delete("/", requireLogin, requireFields(["id"]), async function (req, res) {
+router.delete("/", requireLogin, requireFields(["ids"]), async function (req, res) {
 	try {
-		const { id } = req.body;
+		const { ids } = req.body;
 
 		const [link, deleteError] = await remove({
-			id,
+			ids,
 		});
 
 		if (deleteError)

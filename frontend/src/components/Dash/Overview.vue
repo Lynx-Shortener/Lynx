@@ -1,6 +1,22 @@
 <template>
 	<div class="overview">
-		<div class="createLink">
+		<div class="header">
+			<div class="title">
+				<h1>Lynx</h1>
+			</div>
+			<div class="actions">
+				<button @click="importLinks">
+					<font-awesome-icon icon="upload" />
+					<span>Import</span>
+				</button>
+				<button @click="exportLinks">
+					<font-awesome-icon icon="download" />
+					<span>Export</span>
+				</button>
+				<button> Add Link </button>
+			</div>
+		</div>
+		<div class="createLink" v-if="false">
 			<div class="header">
 				<h2>Create a new link</h2>
 			</div>
@@ -33,48 +49,46 @@
 			</div>
 		</div>
 		<div class="links">
-			<div class="header">
-				<h2>Existing Links</h2>
-				<div class="buttons">
-					<FormKit type="button" label="Import" button-type="primary" @click="importLinks" />
-					<FormKit type="button" label="Export" button-type="primary" @click="exportLinks" />
+			<table>
+				<thead>
+					<th></th>
+					<th>Author</th>
+					<th>Created At</th>
+					<th>Slug</th>
+					<th>Destination</th>
+					<th>Visits</th>
+				</thead>
+				<tr class="link" v-for="link in links.links" :key="link.id">
+					<td>
+						<div class="checkbox" @click="toggleSelection(link)" :selected="selectedLinks.includes(link.id)">
+							<font-awesome-icon icon="check" v-if="selectedLinks.includes(link.id)" />
+						</div>
+					</td>
+					<td class="author">{{ link.account }}</td>
+					<td class="date"><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
+					<td class="slug"
+						><strong>Slug:&nbsp;</strong>
+						<span>
+							<a :href="`/${link.slug}`" target="_blank">{{ link.slug }}</a></span
+						>
+					</td>
+					<td class="destination"
+						><strong>Destination:&nbsp;</strong>
+						<span>{{ link.destination }}</span>
+					</td>
+					<td>
+						<strong>Visits:&nbsp;</strong>
+						<span>{{ link.visits }} </span>
+					</td>
+				</tr>
+				<span v-observe-visibility="visibilityChanged"></span>
+				<div class="bulkManagement" v-if="selectedLinks.length > 0">
+					<button @click="handleDelete(selectedLinks)">
+						<font-awesome-icon icon="trash-can" />
+						Delete Selected Links
+					</button>
 				</div>
-			</div>
-			<div class="content">
-				<table>
-					<thead>
-						<th>Created At</th>
-						<th>Slug</th>
-						<th>Destination</th>
-						<th>Visits</th>
-						<th></th>
-					</thead>
-					<tr class="link" v-for="link in links.links" :key="link.id">
-						<td class="date"><strong>Created:&nbsp;</strong>{{ link.creationDate }}</td>
-						<td class="slug"
-							><strong>Slug:&nbsp;</strong>
-							<span>{{ link.slug }}</span>
-						</td>
-						<td class="destination"
-							><strong>Destination:&nbsp;</strong>
-							<span>{{ link.destination }}</span>
-						</td>
-						<td>
-							<strong>Visits:&nbsp;</strong>
-							<span>{{ link.visits }} </span>
-						</td>
-						<td class="actions">
-							<FormKit type="button" input-class="edit" @click="handleEdit(link)">
-								<font-awesome-icon icon="pencil" />
-							</FormKit>
-							<FormKit type="button" input-class="delete" @click="handleDelete(link)">
-								<font-awesome-icon icon="trash-can" />
-							</FormKit>
-						</td>
-					</tr>
-					<span v-observe-visibility="visibilityChanged"></span>
-				</table>
-			</div>
+			</table>
 		</div>
 	</div>
 </template>
@@ -100,6 +114,7 @@ export default {
 				},
 				response: {},
 			},
+			selectedLinks: [],
 		};
 	},
 	methods: {
@@ -130,8 +145,8 @@ export default {
 		handleEdit(link) {
 			this.popups.addPopup("EditLink", { id: link.id });
 		},
-		handleDelete(link) {
-			this.popups.addPopup("DeleteLink", link);
+		handleDelete(links) {
+			this.popups.addPopup("DeleteLink", links);
 		},
 		importLinks() {
 			this.popups.addPopup("Import-Service");
@@ -142,6 +157,13 @@ export default {
 		visibilityChanged(visibile) {
 			this.endVisible = visibile;
 			if (!this.loadingMore && visibile && this.remainingPages > 0) this.loadMore();
+		},
+		toggleSelection(link) {
+			if (this.selectedLinks.includes(link.id)) {
+				this.selectedLinks = this.selectedLinks.filter((id) => id !== link.id);
+			} else {
+				this.selectedLinks.push(link.id);
+			}
 		},
 	},
 	mounted() {
@@ -223,7 +245,7 @@ export default {
 		}
 	}
 
-	.links {
+	.linkss {
 		width: 100%;
 		table {
 			display: block;
@@ -239,6 +261,7 @@ export default {
 
 				td,
 				th {
+					display: block;
 					padding: 0.8rem 0.4rem;
 					text-align: left;
 					position: relative;
@@ -298,6 +321,174 @@ export default {
 						display: flex;
 						gap: 0.2rem;
 					}
+				}
+			}
+		}
+	}
+
+	> .header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		.title {
+			h1 {
+				font-size: 3rem;
+				font-weight: 500;
+			}
+		}
+		.actions {
+			display: flex;
+			gap: 0.3rem;
+			height: max-content;
+			button {
+				padding: 0.5rem 1rem;
+				border-radius: 5px;
+				font-family: inherit;
+				cursor: pointer;
+				span {
+					font-weight: 400;
+				}
+				&:last-of-type {
+					color: var(--accent-color);
+					background: var(--accent);
+					border: 1px solid var(--accent);
+				}
+				&:not(:last-of-type) {
+					display: flex;
+					gap: 0.5rem;
+					font-weight: 300;
+					background: transparent;
+					border: 1px solid var(--bg-color-2);
+					color: var(--color-2);
+				}
+			}
+			:deep(.formkit-outer) {
+				height: 100%;
+				display: block;
+				margin: 0;
+				&:last-of-type {
+					.formkit-wrapper {
+						button {
+							padding-inline: 1rem;
+							white-space: nowrap;
+						}
+					}
+				}
+				&:not(:last-of-type) {
+					display: block;
+					height: 100%;
+					aspect-ratio: 1/1;
+					.formkit-wrapper {
+						height: 100%;
+						button {
+							background: var(--bg-color-3);
+							color: var(--accent-color);
+							padding: 0.5rem;
+							height: 100%;
+							display: block;
+							box-sizing: border-box;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.links {
+		border: none;
+		table {
+			border-collapse: collapse;
+			caption-side: bottom;
+			table-layout: auto;
+			width: 100%;
+			position: relative;
+
+			thead,
+			tr {
+				td,
+				th {
+					text-align: left;
+					&:first-of-type {
+						width: 2rem;
+						.checkbox {
+							width: 1rem;
+							height: 1rem;
+							border-radius: 5px;
+							background: var(--bg-color-2);
+							display: grid;
+							place-items: center;
+							cursor: pointer;
+							&[selected="true"] {
+								background: var(--accent);
+								color: var(--accent-color);
+							}
+						}
+					}
+				}
+			}
+			thead {
+				border-bottom: 2px solid var(--bg-color-2);
+				color: var(--color-3);
+				font-weight: 400;
+				th {
+					padding: 0.8rem 1rem;
+					padding: 0.8 1rem 1rem;
+					box-sizing: border-box;
+					font-size: 0.8rem;
+					font-weight: 600;
+				}
+			}
+			tr {
+				text-align: left;
+				border-bottom: 1px solid var(--bg-color-2);
+				td {
+					white-space: nowrap;
+					padding: 0.8rem 1rem;
+					box-sizing: border-box;
+					vertical-align: middle;
+					font-size: 0.8rem;
+					color: var(--color-3);
+					font-weight: 300;
+					@media screen and (min-width: 768px) {
+						strong {
+							display: none;
+						}
+					}
+					position: relative;
+					&.destination {
+						width: 100%;
+						span {
+							max-width: 100%;
+							overflow-x: hidden;
+							text-overflow: ellipsis;
+							position: absolute;
+							top: 50%;
+							left: 0;
+							transform: translateY(-50%);
+							box-sizing: border-box;
+							padding: 1rem 1rem;
+						}
+					}
+				}
+			}
+
+			.bulkManagement {
+				background: linear-gradient(to top, white, transparent);
+				position: fixed;
+				bottom: 2rem;
+				left: calc(50% + 4rem);
+				transform: translateX(-50%);
+				button {
+					background: var(--color-error);
+					border: none;
+					padding: 0.5rem 1rem;
+					border-radius: 5px;
+					font-family: inherit;
+					cursor: pointer;
+					display: flex;
+					align-items: center;
+					gap: 0.5rem;
+					color: var(--accent-color);
 				}
 			}
 		}
