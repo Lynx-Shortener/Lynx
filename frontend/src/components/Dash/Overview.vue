@@ -484,6 +484,9 @@ export default {
 							}
 						}
 					}
+					&.buttons {
+						display: none;
+					}
 				}
 			}
 			thead {
