@@ -55,7 +55,10 @@ router.post("/", requireLogin, upload.single("file"), requireFields(["service"])
 				let link = {};
 				if (service == "shlink") {
 					link.id = uuid4();
-					link.slug = new URL(row.shortUrl).pathname.slice(1).slice(-1);
+					let slug = new URL(row.shortUrl).pathname.split("");
+					if (slug.at(0) == "/") slug.shift();
+					if (slug.at(-1) == "/") slug.pop();
+					link.slug = slug.join("");
 					link.destination = row.longUrl;
 					link.author = req.account.id;
 					link.creationDate = new Date(row.createdAt);
