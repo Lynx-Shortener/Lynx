@@ -1,13 +1,12 @@
 <template>
 	<div class="login">
-		<h2>Login</h2>
+		<h2>Register</h2>
 		<FormKit type="form" submit-label="Login" :submit-attrs="{ 'data-type': 'primary' }" @submit="login" :actions="false">
 			<FormKit type="text" label="Your username" v-model="logindata.username" validation="required:trim" />
 			<FormKit type="password" label="Your password" v-model="logindata.password" validation="required:trim" />
 			<FormKit type="submit" label="Login" primary></FormKit>
 			<p>{{ response }}</p>
 		</FormKit>
-		<a @click="gotoRegister"> Register </a>
 	</div>
 </template>
 
@@ -35,13 +34,6 @@ export default {
 			} else {
 				this.response = data.message;
 			}
-		},
-		gotoRegister() {
-			console.log("ok");
-			this.$router.push({
-				path: "/dash/register",
-				query: this.$route.query,
-			});
 		},
 	},
 };

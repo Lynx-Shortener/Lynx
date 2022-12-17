@@ -2,6 +2,7 @@ const Link = require("../../models/link");
 const Account = require("../../models/link");
 const { v4: uuid4 } = require("uuid");
 const getLink = require("./get");
+const { url: validUrl } = require("../valid");
 
 const chars = {
 	alpha: "abcdefghijklmnopqrstuvwxyz",
@@ -24,7 +25,7 @@ function generateSlug() {
 }
 
 module.exports = async ({ author, slug, destination }) => {
-	if (/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(destination) === false) {
+	if (!validUrl(destination)) {
 		return [
 			null,
 			{
