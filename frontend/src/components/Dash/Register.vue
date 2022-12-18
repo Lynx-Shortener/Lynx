@@ -46,9 +46,9 @@ export default {
 	data() {
 		return {
 			registerdata: {
-				username: "jackbailey",
-				email: "test@jck.cx",
-				password: "Z-.iJzc3NLZXeWRT9XUA.rjkz",
+				username: "",
+				email: "",
+				password: "",
 			},
 			errors: {
 				username: [],
