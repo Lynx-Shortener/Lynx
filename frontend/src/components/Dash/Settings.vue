@@ -31,11 +31,6 @@ export default {
 			popups: usePopups(),
 		};
 	},
-	methods: {
-		handleClick() {
-			console.log("ok");
-		},
-	},
 };
 </script>
 

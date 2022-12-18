@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const requireFields = require("./middleware/requireFields");
+const countAccounts = require("../db/modules/account/count");
 
 const {
 	login,
 	get: { current: currentAccount },
 	update: { email: updateEmail, password: updatePassword, username: updateUsername },
+	register,
 } = require("../db/modules/account");
 
 router.post("/login", requireFields(["username", "password"]), async function (req, res) {
@@ -32,6 +34,43 @@ router.post("/login", requireFields(["username", "password"]), async function (r
 		return res.status(500).json({
 			success: false,
 			message: "Internal Server Error when logging in",
+		});
+	}
+});
+
+router.post("/register", requireFields(["email", "username", "password"]), async function (req, res) {
+	const accountsCount = await countAccounts();
+	if (accountsCount !== 0 && process.env.ENABLE_REGISTRATION !== "true")
+		return res.status(412).json({
+			success: false,
+			message: "Registration is not enabled",
+		});
+	try {
+		const { email, username, password } = req.body;
+
+		const [data, error] = await register({
+			email,
+			username,
+			password,
+			role: accountsCount === 0 ? "admin" : "standard",
+		});
+
+		if (error)
+			return res.status(error.code).json({
+				success: false,
+				message: error.message,
+				details: error.details,
+			});
+
+		return res.status(200).json({
+			success: true,
+			result: data,
+		});
+	} catch (e) {
+		console.log(e);
+		return res.status(500).json({
+			success: false,
+			message: "Internal Server Error when registering",
 		});
 	}
 });

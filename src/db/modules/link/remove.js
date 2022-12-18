@@ -1,6 +1,22 @@
 const Link = require("../../models/link");
 
-module.exports = async ({ ids }) => {
+module.exports = async ({ ids, account }) => {
+	const links = await Link.find({
+		id: {
+			$in: ids,
+		},
+	});
+	if (account.role !== "admin") {
+		const ownedLinks = links.filter((link) => link.author === account.id);
+		if (ownedLinks.length !== links.length)
+			return [
+				null,
+				{
+					code: 403,
+					message: "You do not have the permissions to delete some of or all of the selected links. No links were deleted",
+				},
+			];
+	}
 	try {
 		await Link.deleteMany({
 			id: {

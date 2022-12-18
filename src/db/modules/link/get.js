@@ -2,7 +2,7 @@ const Link = require("../../models/link");
 
 module.exports = async ({ slug, destination, id }, ignoredID, countVisit) => {
 	const findLink = async (obj) => {
-		if (!ignoredID) delete obj.id;
+		if (!ignoredID && !id) delete obj.id;
 		return await Link.findOne(obj);
 	};
 	let link;

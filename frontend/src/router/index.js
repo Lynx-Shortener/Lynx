@@ -24,7 +24,7 @@ const routes = [
 				component: () => import("../components/Dash/Settings.vue"),
 				meta: {
 					requiresLogin: true,
-					title: "Settings"
+					title: "Settings",
 				},
 			},
 			{
@@ -32,7 +32,15 @@ const routes = [
 				component: () => import("../components/Dash/Login.vue"),
 				meta: {
 					hideSidebar: true,
-					title: "Login"
+					title: "Login",
+				},
+			},
+			{
+				path: "/dash/register",
+				component: () => import("../components/Dash/Register.vue"),
+				meta: {
+					hideSidebar: true,
+					title: "Register",
 				},
 			},
 		],
@@ -52,9 +60,9 @@ router.beforeEach(async (to, from, next) => {
 	const account = useAccountStore();
 	if (to.meta) {
 		if (to.meta.title) {
-			document.title = `${to.meta.title} | Lynx`
+			document.title = `${to.meta.title} | Lynx`;
 		} else {
-			document.title = "Lynx"
+			document.title = "Lynx";
 		}
 		if (to.meta.requiresLogin) {
 			if (account.account === null && account.token !== null) {

@@ -7,6 +7,7 @@
 			<FormKit type="submit" label="Login" primary></FormKit>
 			<p>{{ response }}</p>
 		</FormKit>
+		<a @click="gotoRegister"> Register </a>
 	</div>
 </template>
 
@@ -35,6 +36,12 @@ export default {
 				this.response = data.message;
 			}
 		},
+		gotoRegister() {
+			this.$router.push({
+				path: "/dash/register",
+				query: this.$route.query,
+			});
+		},
 	},
 };
 </script>
@@ -51,6 +58,10 @@ export default {
 		font-size: 2.5rem;
 		font-weight: bold;
 		margin-bottom: 2rem;
+	}
+	> a {
+		margin-top: 0.5rem;
+		cursor: pointer;
 	}
 	@media screen and (max-width: 768px) {
 		height: 100vh;

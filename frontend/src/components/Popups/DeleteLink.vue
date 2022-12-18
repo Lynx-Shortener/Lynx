@@ -31,7 +31,7 @@ export default {
 			if (!response.success) {
 				this.popups.addPopup("Information", {
 					title: "Error deleting your link",
-					description: "Please try again later",
+					description: response.message,
 					buttons: [
 						{
 							name: "Okay",
@@ -43,7 +43,7 @@ export default {
 			} else {
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {
-					title: "Successfully deleted your link",
+					title: `Successfully deleted your link${ids.length > 1 ? "s" : ""}`,
 					buttons: [
 						{
 							name: "Okay",
