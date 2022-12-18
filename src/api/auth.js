@@ -80,7 +80,7 @@ router.get("/me", async function (req, res) {
 		const [account, error] = await currentAccount(req);
 		if (error) return res.status(error.code).send(error.message);
 
-		const { email, id, username } = account;
+		const { email, id, username, role } = account;
 
 		return res.status(200).send({
 			success: true,
@@ -88,6 +88,7 @@ router.get("/me", async function (req, res) {
 				email,
 				id,
 				username,
+				role,
 			},
 		});
 	} catch (e) {
