@@ -83,7 +83,13 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
         yarn build
         ```
 
-3.  Start the server
+3.  Install the server's required files
+
+    ```console
+    yarn
+    ```
+
+4.  Start the server
 
     ```js
     node .
