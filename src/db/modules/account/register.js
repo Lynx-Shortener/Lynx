@@ -2,7 +2,7 @@ const Account = require("../../models/account");
 const valid = require("../valid");
 const createAccount = require("../account/create");
 
-module.exports = async ({ email, username, password }) => {
+module.exports = async ({ email, username, password, role }) => {
 	const invalid = {
 		email: false,
 		username: false,
@@ -52,6 +52,7 @@ module.exports = async ({ email, username, password }) => {
 		username,
 		email,
 		password,
+		role,
 	});
 
 	if (account) return ["Account created", null];

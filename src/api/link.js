@@ -14,7 +14,7 @@ router.get("/list", requireLogin, requireFields(["pagesize", "page", "sort"], "q
 				message: "Pagesize limit is 100 items",
 			});
 
-		const data = await list({ pagesize, page, sort });
+		const data = await list({ pagesize, page, sort, account: req.account });
 
 		data.links = data.links.map((link) => returnLink(link));
 
@@ -101,6 +101,7 @@ router.patch("/", requireLogin, requireFields(["slug", "destination", "id"]), as
 			id,
 			slug,
 			destination,
+			account: req.account,
 		});
 
 		if (linkError)
@@ -128,6 +129,7 @@ router.delete("/", requireLogin, requireFields(["ids"]), async function (req, re
 
 		const [link, deleteError] = await remove({
 			ids,
+			account: req.account,
 		});
 
 		if (deleteError)

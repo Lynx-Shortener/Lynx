@@ -1,9 +1,13 @@
 const Link = require("../../models/link");
 const Account = require("../../models/account");
 
-module.exports = async ({ pagesize, page, sort }) => {
+module.exports = async ({ pagesize, page, sort, account }) => {
 	const total = await Link.count();
-	let links = await Link.find({}, null, {
+	const query = {};
+	if (account.role !== "admin") {
+		query.author = account.id;
+	}
+	let links = await Link.find(query, null, {
 		skip: page * pagesize,
 		limit: pagesize,
 		sort: {

@@ -1,7 +1,7 @@
 const getLink = require("./get");
 const Account = require("../../models/account");
 
-module.exports = async ({ id, slug, destination }) => {
+module.exports = async ({ id, slug, destination, account }) => {
 	if (!slug)
 		return [
 			null,
@@ -29,7 +29,17 @@ module.exports = async ({ id, slug, destination }) => {
 			},
 		];
 
-	if (await getLink({ slug }, id))
+	if (link && account.role !== "admin" && account.id !== link.author)
+		return [
+			null,
+			{
+				message: "You do not have the permissions to delete this link",
+				code: 403,
+			},
+		];
+
+	const matchingSlug = await getLink({ slug }, id);
+	if (matchingSlug)
 		return [
 			null,
 			{
@@ -55,8 +65,9 @@ module.exports = async ({ id, slug, destination }) => {
 
 	await link.save();
 
-	const account = await Account.findOne({ id: link.author });
-	link.account = account.username;
+	const linkAuthor = await Account.findOne({ id: link.author });
+
+	link.account = linkAuthor ? linkAuthor.username : "n/a";
 
 	return [link, null];
 };
