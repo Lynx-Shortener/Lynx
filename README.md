@@ -50,6 +50,7 @@ For the docker installation: Fill in the variables in `docker-compose.yml`
 |  |
 | NODE_ENV | Wether Lynx is running in a `production` or `development` environment | production |
 | FORCE_FRONTEND_REDIRECT | Use the frontend to redirect instead of express, useful for hiding embeds on discord for all your rickrolling needs | false |
+| ENABLE_REGISTRATION | Whether or not to allow registration. If not accounts exist you will be allowed to register either way. This first account will also be an admin account. | false |
 
 ## Installation
 
@@ -121,6 +122,7 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
                 - URL_SET=standard
                 - URL_ONLY_UNIQUE=false
                 - HOME_REDIRECT=/dash/overview
+                - ENABLE_REGISTRATION=false # First registration will always be allowed
 
                 ## DO NOT CHANGE THESE:
                 - DB_HOST=db
@@ -139,19 +141,15 @@ Lynx should now be accessible at [localhost:3000](http://localhost:3000)
 
 ## Post Installation
 
-You should now be able to log in at `/dash`
-
-The default username is `admin` and the password is `changeme123` - Please change this
+You should now be able to register at `/dash`
 
 ## TODO
-
--   [ ] Force password change on first login
 
 -   [ ] ShareX support
 
     -   [ ] API Tokens
 
--   [ ] Multi-user support
+-   [x] Multi-user support
 
 -   [ ] Image uploads?
 
