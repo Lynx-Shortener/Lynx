@@ -37,6 +37,17 @@ export const useAccountStore = defineStore("account", {
 
 			return data;
 		},
+		async register(registerdata) {
+			const response = await fetch("/api/auth/register", {
+				method: "POST",
+				body: JSON.stringify(registerdata),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			const data = await response.json();
+			return data;
+		},
 		async getAccount() {
 			const data = await this.fetch("/auth/me", {});
 

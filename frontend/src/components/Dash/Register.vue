@@ -1,12 +1,42 @@
 <template>
-	<div class="login">
+	<div class="register">
 		<h2>Register</h2>
-		<FormKit type="form" submit-label="Login" :submit-attrs="{ 'data-type': 'primary' }" @submit="login" :actions="false">
-			<FormKit type="text" label="Your username" v-model="logindata.username" validation="required:trim" />
-			<FormKit type="password" label="Your password" v-model="logindata.password" validation="required:trim" />
-			<FormKit type="submit" label="Login" primary></FormKit>
-			<p>{{ response }}</p>
+		<FormKit type="form" submit-label="Register" :submit-attrs="{ 'data-type': 'primary' }" @submit="register" :actions="false">
+			<FormKit
+				type="text"
+				label="Username"
+				v-model="registerdata.username"
+				help="Alphanumeric, underscores and periods allowed but not at the start or end of the username."
+				:validation="[['required'], ['matches', /^(?=.{3,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/]]"
+				:validation-messages="{
+					matches: 'Username does not match requirements.',
+				}"
+				:errors="errors.username"
+			/>
+			<FormKit type="email" label="Email" v-model="registerdata.email" validation="required:trim" :errors="errors.email" />
+			<FormKit
+				type="password"
+				name="password"
+				label="Password"
+				help="At least 1 lowercase, 1 uppercase, 1 number and 1 special character. Minimum of 12 characters"
+				v-model="registerdata.password"
+				:validation="[['required'], ['matches', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{12,}$/]]"
+				:validation-messages="{
+					matches: 'Password does not match requirements.',
+				}"
+				:errors="errors.password"
+			/>
+			<FormKit
+				type="password"
+				name="password_confirm"
+				label="Confirm password"
+				validation="required|confirm:password"
+				validation-label="Password confirmation"
+			/>
+			<FormKit type="submit" label="Register" primary></FormKit>
 		</FormKit>
+		<p>{{ response }}</p>
+		<a @click="gotoLogin">Already have an account? Log in</a>
 	</div>
 </template>
 
@@ -15,36 +45,72 @@ import { useAccountStore } from "../../stores/account";
 export default {
 	data() {
 		return {
-			logindata: {
-				username: "",
-				password: "",
+			registerdata: {
+				username: "jackbailey",
+				email: "test@jck.cx",
+				password: "Z-.iJzc3NLZXeWRT9XUA.rjkz",
+			},
+			errors: {
+				username: [],
+				password: [],
+				email: [],
 			},
 			response: null,
 		};
 	},
 	methods: {
-		async login() {
+		async register() {
+			this.errors = {
+				username: [],
+				password: [],
+				email: [],
+			};
 			this.response = null;
 			const account = useAccountStore();
-			const data = await account.login(this.logindata);
+			const data = await account.register(this.registerdata);
 			if (data.success) {
-				this.response = "Logged in!";
+				this.response = "Registered!";
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
-				this.$router.push("/dash");
+				this.$router.push({
+					path: "/dash/login",
+					query: this.$route.query,
+				});
 			} else {
-				this.response = data.message;
+				if (data.message == "Field(s) are already used") {
+					Object.keys(data.details.exists)
+						.filter((field) => data.details.exists[field])
+						.forEach((field) => {
+							this.errors[field] = [`This ${field} already exists`];
+						});
+					console.log(this.errors);
+				} else if (data.message == "Invalid field(s)") {
+					Object.keys(data.details.invalid)
+						.filter((field) => data.details.invalid[field])
+						.forEach((field) => {
+							this.errors[field] = [`This ${field} does not match the criteria`];
+						});
+					console.log(this.errors);
+				} else {
+					this.response = data.message;
+				}
 			}
+		},
+		gotoLogin() {
+			this.$router.push({
+				path: "/dash/login",
+				query: this.$route.query,
+			});
 		},
 	},
 };
 </script>
 
 <style lang="scss" scoped>
-.login {
+.register {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-	height: 100%;
+	min-height: 100%;
 	width: 20rem;
 	margin: 0 auto;
 	h2 {
@@ -54,9 +120,11 @@ export default {
 	}
 	> a {
 		margin-top: 0.5rem;
+		cursor: pointer;
 	}
 	@media screen and (max-width: 768px) {
-		height: 100vh;
+		min-height: 100vh;
+		padding-block: 2rem;
 	}
 }
 </style>

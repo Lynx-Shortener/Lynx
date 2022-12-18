@@ -1,11 +1,9 @@
 module.exports = (username) => {
-	return /^(?=.{3,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(username);
-	//       └─────┬────┘└───┬──┘└─────┬─────┘└─────┬─────┘ └───┬───┘
-	//             │         │         │            │           no _ or . at the end
-	//             │         │         │            │
-	//             │         │         │            allowed characters
+	return /^(?=.{3,20}$)(?![_.])[a-zA-Z0-9._]+(?<![_.])$/.test(username);
+	//       └─────┬────┘└───┬──┘└─────┬─────┘ └───┬───┘
+	//             │         │         │           no _ or . at the end
 	//             │         │         │
-	//             │         │         no __ or _. or ._ or .. inside
+	//             │         │         allowed characters
 	//             │         │
 	//             │         no _ or . at the beginning
 	//             │

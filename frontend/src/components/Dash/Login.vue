@@ -37,7 +37,6 @@ export default {
 			}
 		},
 		gotoRegister() {
-			console.log("ok");
 			this.$router.push({
 				path: "/dash/register",
 				query: this.$route.query,
@@ -62,6 +61,7 @@ export default {
 	}
 	> a {
 		margin-top: 0.5rem;
+		cursor: pointer;
 	}
 	@media screen and (max-width: 768px) {
 		height: 100vh;

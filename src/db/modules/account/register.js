@@ -14,19 +14,11 @@ module.exports = async ({ email, username, password }) => {
 	invalid.password = !valid.password(password);
 
 	if (invalid.password || invalid.username || invalid.email) {
-		let invalidFields = Object.keys(invalid).filter((field) => invalid[field]);
-		const last = invalidFields.pop();
-		let response;
-		if (invalidFields.length > 0) {
-			response = invalidFields.join(", ") + ` and ${last}`;
-		} else {
-			response = last;
-		}
 		return [
 			null,
 			{
 				code: 400,
-				message: `Invalid ${response}`,
+				message: `Invalid field(s)`,
 				details: { invalid },
 			},
 		];
@@ -46,19 +38,11 @@ module.exports = async ({ email, username, password }) => {
 	exists.email = (await Account.findOne({ email: emailRegex })) !== null;
 
 	if (exists.email || exists.username) {
-		let invalidFields = Object.keys(exists).filter((field) => exists[field]);
-		const last = invalidFields.pop();
-		let response;
-		if (invalidFields.length > 0) {
-			response = invalidFields.join(", ") + ` and ${last}`;
-		} else {
-			response = last;
-		}
 		return [
 			null,
 			{
 				code: 400,
-				message: `${response} are already used`,
+				message: `Field(s) are already used`,
 				details: { exists },
 			},
 		];
