@@ -1,11 +1,11 @@
 <template>
 	<div class="register">
 		<h2>Register</h2>
-		<FormKit type="form" submit-label="Register" :submit-attrs="{ 'data-type': 'primary' }" @submit="register" :actions="false">
+		<FormKit type="form" submit-label="Register" :submit-attrs="{ 'button-type': 'primary' }" @submit="register">
 			<FormKit
+				name="username"
 				type="text"
 				label="Username"
-				v-model="registerdata.username"
 				help="Alphanumeric, underscores and periods allowed but not at the start or end of the username."
 				:validation="[['required'], ['matches', /^(?=.{3,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/]]"
 				:validation-messages="{
@@ -13,13 +13,12 @@
 				}"
 				:errors="errors.username"
 			/>
-			<FormKit type="email" label="Email" v-model="registerdata.email" validation="required:trim" :errors="errors.email" />
+			<FormKit name="email" type="email" label="Email" validation="required:trim" :errors="errors.email" />
 			<FormKit
 				type="password"
 				name="password"
 				label="Password"
 				help="At least 1 lowercase, 1 uppercase, 1 number and 1 special character. Minimum of 12 characters"
-				v-model="registerdata.password"
 				:validation="[['required'], ['matches', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{12,}$/]]"
 				:validation-messages="{
 					matches: 'Password does not match requirements.',
@@ -33,7 +32,6 @@
 				validation="required|confirm:password"
 				validation-label="Password confirmation"
 			/>
-			<FormKit type="submit" label="Register" primary></FormKit>
 		</FormKit>
 		<p>{{ response }}</p>
 		<a @click="gotoLogin">Already have an account? Log in</a>
@@ -45,11 +43,6 @@ import { useAccountStore } from "../../stores/account";
 export default {
 	data() {
 		return {
-			registerdata: {
-				username: "",
-				email: "",
-				password: "",
-			},
 			errors: {
 				username: [],
 				password: [],
@@ -59,7 +52,7 @@ export default {
 		};
 	},
 	methods: {
-		async register() {
+		async register(request) {
 			this.errors = {
 				username: [],
 				password: [],
@@ -67,7 +60,7 @@ export default {
 			};
 			this.response = null;
 			const account = useAccountStore();
-			const data = await account.register(this.registerdata);
+			const data = await account.register(request);
 			if (data.success) {
 				this.response = "Registered!";
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
