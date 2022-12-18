@@ -11,7 +11,7 @@ async function getAccountByUsername(username) {
 
 async function getAccountByEmail(email) {
 	return await Account.findOne({
-		"email.address": email,
+		email,
 	});
 }
 
