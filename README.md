@@ -84,15 +84,21 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
         yarn build
         ```
 
-3.  Install the server's required files
+3. Navigate back to the server's directory
+
+    ```console
+    cd ..
+    ```
+
+4.  Install the server's required files
 
     ```console
     yarn
     ```
 
-4.  Start the server
+5.  Start the server
 
-    ```js
+    ```console
     node .
     ```
 
