@@ -26,7 +26,7 @@
 				<div class="input secret">
 					<label>Your Secret</label>
 					<div>
-						<p>{{ secretVisible ? account.account.secret : Array(32).fill("&#8226;").join("") }}</p>
+						<p>{{ secretVisible ? account.account.secret || "No secret set." : Array(32).fill("&#8226;").join("") }}</p>
 						<div class="actions">
 							<div class="action view" @click="secretVisible = !secretVisible">
 								<font-awesome-icon :icon="secretVisible ? 'eye-slash' : 'eye'" />
@@ -41,8 +41,8 @@
 					</div>
 				</div>
 				<div class="input">
-					<label>Download your ShareX Config</label>
-					<button @click="getConfig">Download</button>
+					<label>Download your ShareX Config (requires a secret to be set)</label>
+					<button @click="getConfig" :disabled="account.account.secret === undefined">Download</button>
 				</div>
 			</div>
 		</div>
@@ -168,6 +168,7 @@ export default {
 							margin: 0;
 							height: max-content;
 							line-height: 1;
+							width: calc(32ch + 1rem);
 						}
 						.actions {
 							display: flex;
@@ -224,6 +225,10 @@ export default {
 					font: inherit;
 					cursor: pointer;
 					font-size: 1rem;
+					&[disabled] {
+						opacity: 0.5;
+						cursor: not-allowed;
+					}
 				}
 				label {
 					font-weight: 500;
