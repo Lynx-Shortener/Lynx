@@ -22,6 +22,9 @@ import {
 	faEllipsisVertical,
 	faMagnifyingGlass,
 	faArrowsRotate,
+	faEye,
+	faEyeSlash,
+	faClipboard,
 } from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
 import ContextMenu from "@imengyu/vue3-context-menu";
@@ -44,7 +47,10 @@ library.add(
 	faDownload,
 	faEllipsisVertical,
 	faMagnifyingGlass,
-	faArrowsRotate
+	faArrowsRotate,
+	faEye,
+	faEyeSlash,
+	faClipboard
 );
 
 var app = createApp(App);

@@ -1,38 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const account = require("../db/modules/account");
 const upload = multer();
 const Link = require("../db/modules/link");
 const requireLogin = require("./middleware/requireLogin");
+const getAccountBySecret = require("../db/modules/account/get/bySecret");
 
-const getAccountDirectly = async (req, res, { username, password }) => {
-	const [loginData, loginError] = await account.login({ username, password });
-	if (loginError) {
-		res.status(loginError.code).json({
-			success: false,
-			error: loginError.message,
-		});
-		return;
-	}
-
-	const [Account, AccountError] = await account.get.current(null, loginData.token);
-	if (AccountError) {
-		res.status(500).json({
-			success: false,
-			error: "Login successful but authentication unsuccessful",
-		});
-		return;
-	}
-
-	return Account;
-};
+const domain = process.env.DOMAIN || "http://localhost:3000";
 
 router.post("/", upload.none(), async (req, res) => {
-	const { url } = req.body;
+	const { secret, url } = req.body;
 
-	const Account = await getAccountDirectly(req, res, req.body);
-	if (!Account) return;
+	const Account = await getAccountBySecret({ secret });
+	if (!Account)
+		return res.status(403).json({
+			success: false,
+			error: "Invalid Secret.",
+		});
 
 	const [link, linkError] = await Link.create({
 		author: Account,
@@ -50,13 +34,11 @@ router.post("/", upload.none(), async (req, res) => {
 
 	res.status(200).json({
 		success: true,
-		url: slug,
-		deletion: `/api/sharex/delete/${slug}`,
+		url: `${domain}/${slug}`,
 	});
 });
 
 router.get("/config", requireLogin, async (req, res) => {
-	const domain = process.env.DOMAIN || "http://localhost:3000";
 	const config = {
 		Version: "14.1.0",
 		Name: "Lynx",
@@ -65,8 +47,7 @@ router.get("/config", requireLogin, async (req, res) => {
 		RequestURL: `${domain}/api/sharex`,
 		Body: "MultipartFormData",
 		Arguments: {
-			username: req.account.username,
-			password: "PASSWORD",
+			secret: req.account.secret,
 			url: "{input}",
 		},
 		URL: "{json:url}",

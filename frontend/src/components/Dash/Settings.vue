@@ -20,8 +20,31 @@
 		</div>
 		<div class="integration">
 			<h2>Integration</h2>
-			<p>Here you can access your ShareX configuration file.</p>
-			<button @click="getConfig">Download</button>
+			<p>Here you can access your ShareX configuration file and manage your secret.</p>
+
+			<div class="inputs">
+				<div class="input secret">
+					<label>Your Secret</label>
+					<div>
+						<p>{{ secretVisible ? account.account.secret : Array(32).fill("&#8226;").join("") }}</p>
+						<div class="actions">
+							<div class="action view" @click="secretVisible = !secretVisible">
+								<font-awesome-icon :icon="secretVisible ? 'eye-slash' : 'eye'" />
+							</div>
+							<div class="action new" @click="newSecret">
+								<font-awesome-icon :icon="newSecretData.success ? 'check' : 'arrows-rotate'" :spinning="newSecretData.loading" />
+							</div>
+							<div class="action copy" @click="copySecret">
+								<font-awesome-icon :icon="clipboard.success ? 'check' : 'clipboard'" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="input">
+					<label>Download your ShareX Config</label>
+					<button @click="getConfig">Download</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -34,6 +57,14 @@ export default {
 		return {
 			account: useAccountStore(),
 			popups: usePopups(),
+			secretVisible: false,
+			newSecretData: {
+				loading: false,
+				success: false,
+			},
+			clipboard: {
+				success: false,
+			},
 		};
 	},
 	methods: {
@@ -43,7 +74,7 @@ export default {
 			});
 
 			if (!data.success) {
-				alert("uhoh");
+				alert("Error retrieving ShareX config.");
 			}
 
 			const config = JSON.stringify(data.result.config, null, 4);
@@ -58,6 +89,23 @@ export default {
 			a.click();
 
 			document.body.removeChild(a);
+		},
+		async newSecret() {
+			this.newSecretData.success = false;
+			this.newSecretData.loading = true;
+			await this.account.newSecret();
+			this.newSecretData.loading = false;
+			this.newSecretData.success = true;
+			setTimeout(() => {
+				this.newSecretData.success = false;
+			}, 2000);
+		},
+		async copySecret() {
+			this.clipboard.success = true;
+			navigator.clipboard.writeText(this.account.account.secret);
+			setTimeout(() => {
+				this.clipboard.success = false;
+			}, 2000);
 		},
 	},
 };
@@ -91,32 +139,99 @@ export default {
 			gap: 2rem;
 			width: max-content;
 			.input {
-				width: 100%;
+				&:not(.secret) {
+					width: 100%;
+					div {
+						border: 1px solid var(--bg-color-2);
+						padding: 0.5rem;
+						border-radius: 5px;
+						min-width: 10rem;
+						cursor: pointer;
+					}
+				}
+				&.secret {
+					> div {
+						display: flex;
+						flex-wrap: row;
+						align-items: center;
+						border: 1px solid var(--bg-color-2);
+						border-radius: 5px;
+						width: max-content;
+						margin-top: 1rem;
+						height: max-content;
+						overflow: hidden;
+
+						p {
+							padding: 0.5rem;
+							font-family: monospace;
+							box-sizing: border-box;
+							margin: 0;
+							height: max-content;
+							line-height: 1;
+						}
+						.actions {
+							display: flex;
+							align-items: center;
+							> div {
+								padding: 0.5rem;
+								display: grid;
+								place-content: center;
+								box-sizing: border-box;
+								cursor: pointer;
+								width: 2rem;
+								&.view {
+									background: var(--accent);
+									&:hover {
+										background: var(--accent-hover);
+									}
+								}
+								&.copy {
+									background: #3ca4e9;
+									&:hover {
+										background: lighten(#3ca4e9, 5%);
+									}
+								}
+								&.new {
+									background: var(--color-error);
+									&:hover {
+										background: var(--color-error-hover);
+									}
+									svg {
+										&[spinning="true"] {
+											animation: spin 1s linear infinite;
+											@keyframes spin {
+												from {
+													transform: rotate(0deg);
+												}
+												to {
+													transform: rotate(180deg);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				> button {
+					background: var(--accent);
+					width: max-content;
+					padding: 0.5rem 1rem;
+					color: var(--accent-color);
+					border: none;
+					border-radius: 5px;
+					font: inherit;
+					cursor: pointer;
+					font-size: 1rem;
+				}
 				label {
 					font-weight: 500;
 					font-size: 0.9rem;
 					margin-bottom: 1rem;
 					display: block;
 				}
-				div {
-					border: 1px solid var(--bg-color-2);
-					padding: 0.5rem;
-					border-radius: 5px;
-					min-width: 10rem;
-					cursor: pointer;
-				}
 			}
-		}
-		> button {
-			background: var(--accent);
-			width: max-content;
-			padding: 0.5rem 1rem;
-			color: var(--accent-color);
-			border: none;
-			border-radius: 5px;
-			font: inherit;
-			cursor: pointer;
-			font-size: 1rem;
 		}
 	}
 

@@ -6,6 +6,7 @@ const schema = new mongoose.Schema({
 	password: String,
 	email: String,
 	role: String, // admin || standard
+	secret: String,
 });
 
 const Account = mongoose.model("Account", schema);
