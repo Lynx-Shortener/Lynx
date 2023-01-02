@@ -54,6 +54,16 @@ For the docker installation: Fill in the variables in `docker-compose.yml`
 
 ## Installation
 
+You need a MongoDB instance to use Lynx.
+
+Installation guides:
+
+-   [Ubuntu](https://www.cherryservers.com/blog/how-to-install-and-start-using-mongodb-on-ubuntu-20-04)
+
+-   [Windows](https://medium.com/@LondonAppBrewery/how-to-download-install-mongodb-on-windows-4ee4b3493514)
+
+-   For docker this is provided in [`docker-compose.yml`](/docker-compose.yml)
+
 ### Normal Installation
 
 You need yarn (via npm), git and node installed for this guide. I recommend [pm2](https://www.npmjs.com/package/pm2) to run this project in the background.
