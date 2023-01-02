@@ -241,7 +241,8 @@ export default {
 	}
 
 	@media screen and (max-width: 768px) {
-		.account {
+		padding-inline: 2rem;
+		> div {
 			h2 {
 				font-size: 3rem;
 			}
@@ -250,11 +251,38 @@ export default {
 			}
 
 			.inputs {
+				width: 100%;
 				.input {
 					label {
 						font-size: 1.1rem;
+						line-height: 1.5;
 					}
 					div {
+						font-size: 1.2rem;
+					}
+					&.secret {
+						width: 100%;
+						> div {
+							width: 100%;
+							flex-direction: column;
+							box-sizing: border-box;
+							align-items: flex-start;
+							p {
+								font-size: 1.3rem;
+								text-align: left;
+							}
+							.actions {
+								display: grid;
+								grid-template-columns: repeat(3, 1fr);
+								width: 100%;
+								.action {
+									width: 100%;
+								}
+							}
+						}
+					}
+					button {
+						padding: 1rem 1.5rem;
 						font-size: 1.2rem;
 					}
 				}
