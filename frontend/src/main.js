@@ -21,6 +21,7 @@ import {
 	faDownload,
 	faEllipsisVertical,
 	faMagnifyingGlass,
+	faArrowsRotate,
 } from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
 import ContextMenu from "@imengyu/vue3-context-menu";
@@ -42,7 +43,8 @@ library.add(
 	faUpload,
 	faDownload,
 	faEllipsisVertical,
-	faMagnifyingGlass
+	faMagnifyingGlass,
+	faArrowsRotate
 );
 
 var app = createApp(App);

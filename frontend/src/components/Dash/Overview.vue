@@ -5,6 +5,9 @@
 				<h1>Lynx</h1>
 			</div>
 			<div class="actions">
+				<div class="icon refresh">
+					<font-awesome-icon icon="arrows-rotate" :spinning="refreshSpinning" ref="refreshButton" @click="refresh" />
+				</div>
 				<div class="custom search" @click.self="$refs.searchbox.focus()">
 					<input type="text" v-model="search.value" placeholder="Search" ref="searchbox" />
 					<font-awesome-icon icon="magnifying-glass" @click="$refs.searchbox.focus()" />
@@ -121,12 +124,14 @@ export default {
 				timeout: null,
 				value: "",
 			},
+			refreshSpinning: true,
 		};
 	},
 	methods: {
 		async loadMore() {
 			if (this.loadingMore) return;
 			this.loadingMore = true;
+			this.refreshSpinning = true;
 			await this.links.paginate({ search: this.search.value });
 			this.loadingMore = false;
 
@@ -199,13 +204,23 @@ export default {
 			this.links.clear();
 			this.loadMore();
 		},
+		refresh() {
+			this.links.clear();
+			this.loadMore();
+		},
 	},
 	mounted() {
 		this.loadMore();
+		this.$refs.refreshButton.$el.addEventListener("animationiteration", () => {
+			if (this.loadingMore === false) {
+				this.refreshSpinning = false;
+			}
+		});
 	},
 	watch: {
 		"search.value"(value) {
 			const typingInterval = 500;
+			this.refreshSpinning = true;
 			clearTimeout(this.search.timeout);
 			this.search.timeout = setTimeout(this.createSearch, typingInterval);
 		},
@@ -234,6 +249,31 @@ export default {
 			display: flex;
 			gap: 0.3rem;
 			height: max-content;
+			.icon {
+				display: grid;
+				place-content: center;
+				padding: 0.5rem;
+				> svg {
+					cursor: pointer;
+					color: var(--color-3);
+					transition: color 250ms ease-in-out;
+					&:hover {
+						color: var(--color-1);
+					}
+					@keyframes spin {
+						from {
+							transform: rotate(0deg);
+						}
+						to {
+							transform: rotate(180deg);
+						}
+					}
+					animation: spin 1s linear infinite;
+					&[spinning="false"] {
+						animation: none;
+					}
+				}
+			}
 			.custom,
 			button {
 				display: flex;
@@ -462,6 +502,14 @@ export default {
 					padding: 1rem;
 					input {
 						flex-grow: 1;
+						width: 100%;
+					}
+				}
+				.icon {
+					&.refresh {
+						svg {
+							font-size: 1.5rem;
+						}
 					}
 				}
 				button {
