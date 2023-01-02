@@ -180,6 +180,7 @@ export default {
 								box-sizing: border-box;
 								cursor: pointer;
 								width: 2rem;
+								color: var(--accent-color);
 								&.view {
 									background: var(--accent);
 									&:hover {
