@@ -18,6 +18,11 @@
 				</div>
 			</div>
 		</div>
+		<div class="integration">
+			<h2>Integration</h2>
+			<p>Here you can access your ShareX configuration file.</p>
+			<button @click="getConfig">Download</button>
+		</div>
 	</div>
 </template>
 
@@ -31,15 +36,42 @@ export default {
 			popups: usePopups(),
 		};
 	},
+	methods: {
+		async getConfig() {
+			const data = await this.account.fetch("/sharex/config", {
+				method: "GET",
+			});
+
+			if (!data.success) {
+				alert("uhoh");
+			}
+
+			const config = JSON.stringify(data.result.config, null, 4);
+
+			const a = document.createElement("a");
+			a.setAttribute("href", "data:application/json;charset=utf-8," + encodeURIComponent(config));
+			a.setAttribute("download", "Lynx.sxcu");
+
+			a.style.display = "none";
+			document.body.appendChild(a);
+
+			a.click();
+
+			document.body.removeChild(a);
+		},
+	},
 };
 </script>
 
 .<style lang="scss" scoped>
 .settings {
-	padding: 2rem;
+	padding-block: 2rem;
 	text-align: left;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
 
-	.account {
+	> div {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
@@ -74,6 +106,17 @@ export default {
 					cursor: pointer;
 				}
 			}
+		}
+		> button {
+			background: var(--accent);
+			width: max-content;
+			padding: 0.5rem 1rem;
+			color: var(--accent-color);
+			border: none;
+			border-radius: 5px;
+			font: inherit;
+			cursor: pointer;
+			font-size: 1rem;
 		}
 	}
 

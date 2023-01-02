@@ -51,6 +51,7 @@ For the docker installation: Fill in the variables in `docker-compose.yml`
 | NODE_ENV | Wether Lynx is running in a `production` or `development` environment | production |
 | FORCE_FRONTEND_REDIRECT | Use the frontend to redirect instead of express, useful for hiding embeds on discord for all your rickrolling needs | false |
 | ENABLE_REGISTRATION | Whether or not to allow registration. If not accounts exist you will be allowed to register either way. This first account will also be an admin account. | false |
+| DOMAIN | Your Lynx installation domain | http://example.com |
 
 ## Installation
 
