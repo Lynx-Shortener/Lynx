@@ -3,17 +3,17 @@ const checkPassword = require("../password/check");
 const jwt = require("jsonwebtoken");
 require("dotenv").config("../../../.env");
 
-async function getAccountByUsername(username) {
+const getAccountByUsername = async (username) => {
 	return await Account.findOne({
 		username,
 	});
-}
+};
 
-async function getAccountByEmail(email) {
+const getAccountByEmail = async (email) => {
 	return await Account.findOne({
 		email,
 	});
-}
+};
 
 module.exports = async ({ username, password }) => {
 	let errors = [];

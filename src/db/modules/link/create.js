@@ -9,7 +9,7 @@ const chars = {
 	numeric: "0123456789",
 };
 
-function generateSlug() {
+const generateSlug = () => {
 	let charset;
 	switch (process.env.URL_SET) {
 		case "standard":
@@ -22,7 +22,7 @@ function generateSlug() {
 	}
 
 	return [...new Array(parseInt(process.env.URL_LENGTH))].map((_) => charset[Math.floor(Math.random() * charset.length)]).join("");
-}
+};
 
 module.exports = async ({ author, slug, destination }) => {
 	if (!validUrl(destination)) {

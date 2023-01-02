@@ -9,7 +9,7 @@ router.use("/import", require("./import.js"));
 
 router.use("/export", require("./export.js"));
 
-router.get("/", function (req, res) {
+router.get("/", (req, res) => {
 	res.send("OK");
 });
 

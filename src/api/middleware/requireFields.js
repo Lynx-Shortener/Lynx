@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = (fields, fieldLocation) => {
-	return function (req, res, next) {
+	return (req, res, next) => {
 		const unmetFields = fields.filter((field) => !Object.keys(req[fieldLocation || "body"]).includes(field));
 		if (unmetFields.length !== 0) {
 			if (req.file) {
