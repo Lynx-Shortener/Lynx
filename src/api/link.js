@@ -5,16 +5,16 @@ const returnLink = require("../modules/returnLink");
 const requireFields = require("./middleware/requireFields");
 const requireLogin = require("./middleware/requireLogin");
 
-router.get("/list", requireLogin, requireFields(["pagesize", "page", "sort"], "query"), async function (req, res) {
+router.get("/list", requireLogin, requireFields(["pagesize", "page", "sort", "search"], "query"), async function (req, res) {
 	try {
-		const { pagesize, page, sort } = req.query;
+		const { pagesize, page, sort, search } = req.query;
 		if (pagesize > 100)
 			return res.status(400).json({
 				success: false,
 				message: "Pagesize limit is 100 items",
 			});
 
-		const data = await list({ pagesize, page, sort, account: req.account });
+		const data = await list({ pagesize, page, sort, account: req.account, search });
 
 		data.links = data.links.map((link) => returnLink(link));
 

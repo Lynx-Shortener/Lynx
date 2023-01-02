@@ -94,7 +94,7 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
         yarn build
         ```
 
-3. Navigate back to the server's directory
+3.  Navigate back to the server's directory
 
     ```console
     cd ..
@@ -177,7 +177,7 @@ You should now be able to register at `/dash`
 
 -   [ ] QR codes
 
--   [ ] Searching
+-   [x] Searching
 
 -   [ ] Sorting
 

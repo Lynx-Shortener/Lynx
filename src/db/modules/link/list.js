@@ -1,11 +1,18 @@
 const Link = require("../../models/link");
 const Account = require("../../models/account");
 
-module.exports = async ({ pagesize, page, sort, account }) => {
+module.exports = async ({ pagesize, page, sort, account, search }) => {
 	const total = await Link.count();
 	const query = {};
 	if (account.role !== "admin") {
 		query.author = account.id;
+	}
+	if (search) {
+		// search destination and slug
+		const filter = [];
+		filter.push({ slug: new RegExp(search, "i") });
+		filter.push({ destination: new RegExp(search, "i") });
+		query["$or"] = filter;
 	}
 	let links = await Link.find(query, null, {
 		skip: page * pagesize,

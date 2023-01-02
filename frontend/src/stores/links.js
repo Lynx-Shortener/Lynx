@@ -12,6 +12,11 @@ export const useLinks = defineStore("links", {
 		};
 	},
 	actions: {
+		clear() {
+			this.links = [];
+			this.remainingPages = 1;
+			this.page = 0;
+		},
 		formatDate(date) {
 			function ordinal_suffix_of(i) {
 				var j = i % 10,
@@ -35,7 +40,7 @@ export const useLinks = defineStore("links", {
 
 			return `${month} ${day}, ${year}`;
 		},
-		async paginate() {
+		async paginate({ search }) {
 			const account = useAccountStore();
 			const response = await account.fetch(
 				"/link/list?" +
@@ -43,6 +48,7 @@ export const useLinks = defineStore("links", {
 						page: this.page,
 						pagesize: this.pagesize,
 						sort: "desc",
+						search,
 					}),
 				{}
 			);

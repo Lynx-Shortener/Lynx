@@ -5,6 +5,10 @@
 				<h1>Lynx</h1>
 			</div>
 			<div class="actions">
+				<div class="custom search" @click.self="$refs.searchbox.focus()">
+					<input type="text" v-model="search.value" placeholder="Search" ref="searchbox" />
+					<font-awesome-icon icon="magnifying-glass" @click="$refs.searchbox.focus()" />
+				</div>
 				<button @click="importLinks">
 					<font-awesome-icon icon="upload" />
 					<span>Import</span>
@@ -73,7 +77,11 @@
 				</div>
 			</table>
 			<p class="empty" v-observe-visibility="visibilityChanged">{{
-				links.remainingPages === 0 && links.links.length === 0 ? "No links have currently been added." : ""
+				links.remainingPages === 0 && links.links.length === 0
+					? search.value
+						? "No links match that search"
+						: "No links have currently been added."
+					: ""
 			}}</p>
 		</div>
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -106,18 +114,20 @@ export default {
 		return {
 			popups: usePopups(),
 			links: useLinks(),
-			page: 0,
-			pagesize: 5,
 			endVisible: true,
 			loadingMore: false,
 			selectedLinks: [],
+			search: {
+				timeout: null,
+				value: "",
+			},
 		};
 	},
 	methods: {
 		async loadMore() {
 			if (this.loadingMore) return;
 			this.loadingMore = true;
-			await this.links.paginate();
+			await this.links.paginate({ search: this.search.value });
 			this.loadingMore = false;
 
 			if (this.endVisible && this.links.remainingPages !== 0) {
@@ -185,9 +195,20 @@ export default {
 				],
 			});
 		},
+		createSearch() {
+			this.links.clear();
+			this.loadMore();
+		},
 	},
 	mounted() {
 		this.loadMore();
+	},
+	watch: {
+		"search.value"(value) {
+			const typingInterval = 500;
+			clearTimeout(this.search.timeout);
+			this.search.timeout = setTimeout(this.createSearch, typingInterval);
+		},
 	},
 };
 </script>
@@ -213,7 +234,10 @@ export default {
 			display: flex;
 			gap: 0.3rem;
 			height: max-content;
+			.custom,
 			button {
+				display: flex;
+				align-items: center;
 				padding: 0.5rem 1rem;
 				border-radius: 5px;
 				font-family: inherit;
@@ -221,6 +245,44 @@ export default {
 				span {
 					font-weight: 400;
 				}
+			}
+			.custom {
+				border: 1px solid var(--bg-color-2);
+				input {
+					background: none;
+					margin: 0;
+					padding: 0;
+					border: none;
+				}
+				svg {
+					margin: 0;
+				}
+
+				&.search {
+					padding: 0 0.5rem;
+					input {
+						transition: 250ms ease-in-out;
+						padding: 0.5rem 0;
+						color: var(--color-2);
+						font: inherit;
+						width: 0;
+						&:focus {
+							border: none;
+							outline: none;
+						}
+						&:focus,
+						&:not(:placeholder-shown) {
+							width: 8rem;
+						}
+					}
+					&:focus {
+						input {
+							width: 8rem;
+						}
+					}
+				}
+			}
+			button {
 				&:last-of-type {
 					color: var(--accent-color);
 					background: var(--accent);
@@ -390,6 +452,24 @@ export default {
 			flex-direction: column;
 			gap: 1rem;
 			margin-bottom: 2rem;
+			.actions {
+				width: 100%;
+				flex-wrap: wrap;
+				justify-content: space-evenly;
+				gap: 0.8rem;
+				.search {
+					width: 100%;
+					padding: 1rem;
+					input {
+						flex-grow: 1;
+					}
+				}
+				button {
+					flex-grow: 1;
+					justify-content: center;
+					padding-block: 0.5rem;
+				}
+			}
 		}
 		.links {
 			table {
