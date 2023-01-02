@@ -168,9 +168,9 @@ You should now be able to register at `/dash`
 
 ## TODO
 
--   [ ] ShareX support
+-   [x] ShareX support
 
-    -   [ ] API Tokens
+    -   [x] API Tokens
 
 -   [x] Multi-user support
 
