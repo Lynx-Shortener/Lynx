@@ -94,5 +94,18 @@ export const useAccountStore = defineStore("account", {
 			document.cookie = `token=${this.token};expires=${new Date(0).toUTCString()};path=/; SameSite=Strict; Secure;`;
 			document.location.reload();
 		},
+		async newSecret() {
+			const data = await this.fetch("/auth/newSecret", {
+				method: "POST",
+			});
+
+			if (!data.success) {
+				alert(data.message);
+				return;
+			}
+
+			this.account.secret = data.result.secret;
+			return;
+		},
 	},
 });

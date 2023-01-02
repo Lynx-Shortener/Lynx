@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const requireFields = require("./middleware/requireFields");
+const requireAuth = require("./middleware/requireLogin");
 const countAccounts = require("../db/modules/account/count");
+const createSecret = require("../db/modules/secret/create");
 
 const {
 	login,
@@ -80,7 +82,7 @@ router.get("/me", async (req, res) => {
 		const [account, error] = await currentAccount(req);
 		if (error) return res.status(error.code).send(error.message);
 
-		const { email, id, username, role } = account;
+		const { email, id, username, role, secret } = account;
 
 		return res.status(200).send({
 			success: true,
@@ -89,6 +91,7 @@ router.get("/me", async (req, res) => {
 				id,
 				username,
 				role,
+				secret,
 			},
 		});
 	} catch (e) {
@@ -194,6 +197,16 @@ router.patch("/username", requireFields(["newUsername", "password"]), async (req
 			message: "Internal Server Error when updating username",
 		});
 	}
+});
+
+router.post("/newSecret", requireAuth, async function (req, res) {
+	const secret = await createSecret(req.account);
+	return res.status(200).json({
+		success: true,
+		result: {
+			secret,
+		},
+	});
 });
 
 module.exports = router;

@@ -10,6 +10,7 @@ module.exports = async ({ username, email, password, role }) => {
 			password: hashPassword(password),
 			email,
 			role,
+			secret: null,
 		});
 
 		await account.save();

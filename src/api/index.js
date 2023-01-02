@@ -9,6 +9,8 @@ router.use("/import", require("./import.js"));
 
 router.use("/export", require("./export.js"));
 
+router.use("/sharex", require("./sharex.js"));
+
 router.get("/", (req, res) => {
 	res.send("OK");
 });
