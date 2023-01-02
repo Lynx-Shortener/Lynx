@@ -12,7 +12,7 @@ const {
 	register,
 } = require("../db/modules/account");
 
-router.post("/login", requireFields(["username", "password"]), async function (req, res) {
+router.post("/login", requireFields(["username", "password"]), async (req, res) => {
 	try {
 		const { username, password } = req.body;
 
@@ -40,7 +40,7 @@ router.post("/login", requireFields(["username", "password"]), async function (r
 	}
 });
 
-router.post("/register", requireFields(["email", "username", "password"]), async function (req, res) {
+router.post("/register", requireFields(["email", "username", "password"]), async (req, res) => {
 	const accountsCount = await countAccounts();
 	if (accountsCount !== 0 && process.env.ENABLE_REGISTRATION !== "true")
 		return res.status(412).json({
@@ -77,7 +77,7 @@ router.post("/register", requireFields(["email", "username", "password"]), async
 	}
 });
 
-router.get("/me", async function (req, res) {
+router.get("/me", async (req, res) => {
 	try {
 		const [account, error] = await currentAccount(req);
 		if (error) return res.status(error.code).send(error.message);
@@ -103,7 +103,7 @@ router.get("/me", async function (req, res) {
 	}
 });
 
-router.patch("/email", requireFields(["newEmail", "password"]), async function (req, res) {
+router.patch("/email", requireFields(["newEmail", "password"]), async (req, res) => {
 	try {
 		const [account, accountError] = await currentAccount(req);
 		if (accountError) return res.status(accountError.code).send(accountError.message);
@@ -135,7 +135,7 @@ router.patch("/email", requireFields(["newEmail", "password"]), async function (
 	}
 });
 
-router.patch("/password", requireFields(["password", "newPassword"]), async function (req, res) {
+router.patch("/password", requireFields(["password", "newPassword"]), async (req, res) => {
 	try {
 		const [account, accountError] = await currentAccount(req);
 		if (accountError) return res.status(accountError.code).send(accountError.message);
@@ -167,7 +167,7 @@ router.patch("/password", requireFields(["password", "newPassword"]), async func
 	}
 });
 
-router.patch("/username", requireFields(["newUsername", "password"]), async function (req, res) {
+router.patch("/username", requireFields(["newUsername", "password"]), async (req, res) => {
 	try {
 		const [account, accountError] = await currentAccount(req);
 		if (accountError) return res.status(accountError.code).send(accountError.message);

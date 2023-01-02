@@ -23,7 +23,7 @@ app.use(mongoSanitize({ allowDots: true }));
 
 app.use("/api", require("./api"));
 
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
 	res.redirect(process.env.HOME_REDIRECT || "/dash/overview");
 });
 

@@ -11,7 +11,7 @@ router.use("/export", require("./export.js"));
 
 router.use("/sharex", require("./sharex.js"));
 
-router.get("/", function (req, res) {
+router.get("/", (req, res) => {
 	res.send("OK");
 });
 

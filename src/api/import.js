@@ -42,7 +42,7 @@ router.post("/", requireLogin, upload.single("file"), requireFields(["service"])
 			});
 		let links;
 		const filepath = path.join("tmp", "uploads", req.file.filename);
-		if (filetype == "csv") {
+		if (filetype === "csv") {
 			const rows = await processFile(filepath);
 			fs.unlinkSync(filepath);
 			if (fields[service].filter((requirement) => !Object.keys(rows[0]).includes(requirement)).length != 0) {
@@ -53,21 +53,21 @@ router.post("/", requireLogin, upload.single("file"), requireFields(["service"])
 
 			links = rows.map((row) => {
 				let link = {};
-				if (service == "shlink") {
+				if (service === "shlink") {
 					link.id = uuid4();
 					let slug = new URL(row.shortUrl).pathname.split("");
-					if (slug.at(0) == "/") slug.shift();
-					if (slug.at(-1) == "/") slug.pop();
+					if (slug.at(0) === "/") slug.shift();
+					if (slug.at(-1) === "/") slug.pop();
 					link.slug = slug.join("");
 					link.destination = row.longUrl;
 					link.author = req.account.id;
 					link.creationDate = new Date(row.createdAt);
 					link.modifiedDate = new Date(row.createdAt);
 					link.visits = row.visits;
-				} else if (service == "yourls") {
+				} else if (service === "yourls") {
 					let slug = row.source.split("");
-					if (slug.at(0) == "/") slug.shift();
-					if (slug.at(-1) == "/") slug.pop();
+					if (slug.at(0) === "/") slug.shift();
+					if (slug.at(-1) === "/") slug.pop();
 					slug = slug.join("");
 
 					link.id = uuid4();
@@ -77,14 +77,14 @@ router.post("/", requireLogin, upload.single("file"), requireFields(["service"])
 					link.creationDate = new Date();
 					link.modifiedDate = new Date();
 					link.visits = row.hits;
-				} else if (service == "lynx") {
+				} else if (service === "lynx") {
 					link = row;
 				}
 
 				return link;
 			});
-		} else if (filetype == "json") {
-			if (service == "lynx") {
+		} else if (filetype === "json") {
+			if (service === "lynx") {
 				links = JSON.parse(fs.readFileSync(filepath, "utf-8"));
 
 				links = await Promise.all(
