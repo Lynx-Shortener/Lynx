@@ -56,6 +56,7 @@ export default {
 			font-weight: 800;
 			background: linear-gradient(to bottom, var(--color-1), transparent);
 			background-clip: text;
+                        -webkit-background-clip: text;
 			color: transparent;
 		}
 		p {
