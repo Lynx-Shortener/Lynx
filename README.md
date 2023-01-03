@@ -180,7 +180,7 @@ You should now be able to register at `/dash`
 
 -   [x] Searching
 
--   [ ] Sorting
+-   [x] Sorting
 
 ## Naming
 

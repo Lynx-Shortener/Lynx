@@ -1,7 +1,7 @@
 const Link = require("../../models/link");
 const Account = require("../../models/account");
 
-module.exports = async ({ pagesize, page, sort, account, search }) => {
+module.exports = async ({ pagesize, page, sortType, sortField, account, search }) => {
 	const total = await Link.count();
 	const query = {};
 	if (account.role !== "admin") {
@@ -14,13 +14,17 @@ module.exports = async ({ pagesize, page, sort, account, search }) => {
 		filter.push({ destination: new RegExp(search, "i") });
 		query["$or"] = filter;
 	}
+
+	let sort = {};
+
+	sort[sortField] = parseInt(sortType);
+
+	sort.id = -1;
+
 	let links = await Link.find(query, null, {
 		skip: page * pagesize,
 		limit: pagesize,
-		sort: {
-			creationDate: sort === "desc" ? -1 : 1,
-			id: -1,
-		},
+		sort,
 	});
 
 	links = await Promise.all(

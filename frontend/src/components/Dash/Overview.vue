@@ -22,16 +22,42 @@
 				</button>
 				<button @click="popups.addPopup('CreateLink', {})"> Add Link </button>
 			</div>
+			<div class="sort">
+				<p @click="$refs.mobileSort.click()" :style="`--maxLength: ${Math.max(...Object.values(sortOptions).map((el) => el.length))}ch;`"
+					>{{ sortOptions[links.sort.field] }}
+					<select v-model="links.sort.field" ref="mobileSort">
+						<option :value="field" v-for="(fieldName, field) in sortOptions">{{ fieldName }}</option>
+					</select></p
+				>
+				<div class="icon" :sortType="links.sort.type" @click="links.sort.type *= -1">
+					<font-awesome-icon icon="sort-down" />
+				</div>
+			</div>
 		</div>
 		<div class="links">
 			<table>
 				<thead>
 					<th></th>
-					<th>Author</th>
-					<th>Created At</th>
-					<th>Slug</th>
-					<th>Destination</th>
-					<th>Visits</th>
+					<th
+						><span @click="toggleSort('author')" :sortType="links.sort.field == 'author' ? links.sort.type : 0"
+							>Author <font-awesome-icon icon="sort-down" /></span
+					></th>
+					<th
+						><span @click="toggleSort('creationDate')" :sortType="links.sort.field == 'creationDate' ? links.sort.type : 0"
+							>Created At <font-awesome-icon icon="sort-down" /></span
+					></th>
+					<th
+						><span @click="toggleSort('slug')" :sortType="links.sort.field == 'slug' ? links.sort.type : 0"
+							>Slug <font-awesome-icon icon="sort-down" /></span
+					></th>
+					<th
+						><span @click="toggleSort('destination')" :sortType="links.sort.field == 'destination' ? links.sort.type : 0"
+							>Destination <font-awesome-icon icon="sort-down" /></span
+					></th>
+					<th
+						><span @click="toggleSort('visits')" :sortType="links.sort.field == 'visits' ? links.sort.type : 0"
+							>Visits <font-awesome-icon icon="sort-down" /></span
+					></th>
 					<th></th>
 				</thead>
 				<tr class="link" v-for="link in links.links" :key="link.id">
@@ -125,6 +151,13 @@ export default {
 				value: "",
 			},
 			refreshSpinning: true,
+			sortOptions: {
+				author: "Author",
+				creationDate: "Creation Date",
+				slug: "Slug",
+				destination: "Destination",
+				visits: "Visits",
+			},
 		};
 	},
 	methods: {
@@ -208,6 +241,17 @@ export default {
 			this.links.clear();
 			this.loadMore();
 		},
+		toggleSort(id) {
+			let newId = this.links.sort.field !== id;
+			this.links.sort.field = id;
+
+			if (newId) return (this.links.sort.type = -1);
+			this.links.sort.type *= -1;
+		},
+		applySort() {
+			this.links.clear();
+			this.loadMore();
+		},
 	},
 	mounted() {
 		this.loadMore();
@@ -223,6 +267,12 @@ export default {
 			this.refreshSpinning = true;
 			clearTimeout(this.search.timeout);
 			this.search.timeout = setTimeout(this.createSearch, typingInterval);
+		},
+		"links.sort.field"() {
+			this.applySort();
+		},
+		"links.sort.type"() {
+			this.applySort();
 		},
 	},
 };
@@ -367,6 +417,47 @@ export default {
 				}
 			}
 		}
+		.sort {
+			display: none;
+			padding: 0.5rem;
+			gap: 2px;
+			> p {
+				border: 1px solid var(--bg-color-2);
+				padding: 0.5rem 0.8rem;
+				position: relative;
+				margin: 0;
+				text-align: left;
+				border-top-left-radius: 5px;
+				border-bottom-left-radius: 5px;
+				width: max-content;
+				width: calc(var(--maxLength) - 1.6rem);
+
+				select {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					opacity: 0;
+					background: var(--bg-color-2);
+					color: var(--color-1);
+				}
+			}
+			.icon {
+				border: 1px solid var(--bg-color-2);
+				display: grid;
+				place-content: center;
+				padding: 0.5rem;
+				border-top-right-radius: 5px;
+				border-bottom-right-radius: 5px;
+				cursor: pointer;
+				&[sortType="1"] {
+					svg {
+						transform: rotate(180deg);
+					}
+				}
+			}
+		}
 	}
 
 	.links {
@@ -415,6 +506,23 @@ export default {
 					box-sizing: border-box;
 					font-size: 0.8rem;
 					font-weight: 600;
+					span {
+						display: inline-flex;
+						align-items: center;
+						justify-content: center;
+						gap: 0.5rem;
+						cursor: pointer;
+						&[sortType="0"] {
+							svg {
+								visibility: hidden;
+							}
+						}
+						&[sortType="1"] {
+							svg {
+								transform: rotate(180deg);
+							}
+						}
+					}
 				}
 			}
 			tr {
@@ -517,6 +625,9 @@ export default {
 					justify-content: center;
 					padding-block: 0.5rem;
 				}
+			}
+			.sort {
+				display: flex;
 			}
 		}
 		.links {

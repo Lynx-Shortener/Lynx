@@ -25,6 +25,7 @@ import {
 	faEye,
 	faEyeSlash,
 	faClipboard,
+	faSortDown,
 } from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
 import ContextMenu from "@imengyu/vue3-context-menu";
@@ -50,7 +51,8 @@ library.add(
 	faArrowsRotate,
 	faEye,
 	faEyeSlash,
-	faClipboard
+	faClipboard,
+	faSortDown
 );
 
 var app = createApp(App);

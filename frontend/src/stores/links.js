@@ -5,7 +5,10 @@ export const useLinks = defineStore("links", {
 	state: () => {
 		return {
 			links: [],
-			sort: "desc",
+			sort: {
+				field: "creationDate",
+				type: 1,
+			},
 			remainingPages: 1,
 			pagesize: 80,
 			page: 0,
@@ -47,7 +50,8 @@ export const useLinks = defineStore("links", {
 					new URLSearchParams({
 						page: this.page,
 						pagesize: this.pagesize,
-						sort: "desc",
+						sortType: this.sort.type,
+						sortField: this.sort.field,
 						search,
 					}),
 				{}
