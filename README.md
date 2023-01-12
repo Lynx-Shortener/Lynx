@@ -145,7 +145,9 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
                 - URL_SET=standard
                 - URL_ONLY_UNIQUE=false
                 - HOME_REDIRECT=/dash/overview
+                - FORCE_FRONTEND_REDIRECT=false
                 - ENABLE_REGISTRATION=false # First registration will always be allowed
+                - DOMAIN=http://example.com
 
                 ## DO NOT CHANGE THESE:
                 - DB_HOST=db
