@@ -3,13 +3,16 @@
 </p>
 <p align="center">
 <a href="https://hub.docker.com/r/jackbailey/lynx">
-    <img alt="Image Size" src="https://img.shields.io/docker/image-size/jackbailey/lynx?label=Image%20Size">
+    <img alt="Image Size" src="https://img.shields.io/docker/image-size/jackbailey/lynx?label=docker%20image%20size">
 </a>
 <a href="https://hub.docker.com/r/jackbailey/lynx">
-    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/jackbailey/lynx?label=Docker%20Pulls">
+    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/jackbailey/lynx?label=docker%20pulls">
 </a>
 <a href="https://github.com/JackBailey/Lynx">
-    <img alt="Image Size" src="https://img.shields.io/github/license/jackbailey/lynx?label=License">
+    <img alt="Image Size" src="https://img.shields.io/github/license/jackbailey/lynx?label=license">
+</a>
+<a href="https://github.com/JackBailey/Lynx">
+    <img alt="Lines of code" src="https://tokei.ekzhang.com/b1/github/JackBailey/Lynx?category=code">
 </a>
 </p>
 
