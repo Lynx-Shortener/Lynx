@@ -179,7 +179,10 @@ You should now be able to register at `/dash`
 
 -   [x] Multi-user support
 
--   [ ] Image uploads?
+-   [ ] File uploads
+
+    -   [ ] Embeds for discord
+    -   [ ] Plaintext results
 
 -   [ ] QR codes
 
