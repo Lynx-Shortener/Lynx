@@ -3,7 +3,7 @@ name: Docker Image CI
 on:
     push:
         branches: ["main"]
-        paths-ignore: ["**.md"]
+        paths-ignore: ["**.md", ".github/**"]
 
 jobs:
     build:
