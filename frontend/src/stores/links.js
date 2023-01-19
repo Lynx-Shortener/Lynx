@@ -12,6 +12,7 @@ export const useLinks = defineStore("links", {
 			remainingPages: 1,
 			pagesize: 80,
 			page: 0,
+			selectedLinks: []
 		};
 	},
 	actions: {
@@ -138,6 +139,7 @@ export const useLinks = defineStore("links", {
 			if (!response.success) return response;
 
 			this.links = this.links.filter((link) => !ids.includes(link.id));
+			this.selectedLinks = this.selectedLinks.filter((id) => !ids.includes(id));
 
 			return response;
 		},

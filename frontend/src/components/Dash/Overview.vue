@@ -62,8 +62,8 @@
 				</thead>
 				<tr class="link" v-for="link in links.links" :key="link.id">
 					<td>
-						<div class="checkbox" @click="toggleSelection(link)" :selected="selectedLinks.includes(link.id)">
-							<font-awesome-icon icon="check" v-if="selectedLinks.includes(link.id)" />
+						<div class="checkbox" @click="toggleSelection(link)" :selected="links.selectedLinks.includes(link.id)">
+							<font-awesome-icon icon="check" v-if="links.selectedLinks.includes(link.id)" />
 						</div>
 					</td>
 					<td class="author">
@@ -98,8 +98,8 @@
 						</button>
 					</td>
 				</tr>
-				<div class="bulkManagement" v-if="selectedLinks.length > 0">
-					<button @click="handleDelete(selectedLinks)">
+				<div class="bulkManagement" v-if="links.selectedLinks.length > 0">
+					<button @click="handleDelete(links.selectedLinks)">
 						<font-awesome-icon icon="trash-can" />
 						Delete Selected Links
 					</button>
@@ -145,7 +145,6 @@ export default {
 			links: useLinks(),
 			endVisible: true,
 			loadingMore: false,
-			selectedLinks: [],
 			search: {
 				timeout: null,
 				value: "",
@@ -191,7 +190,6 @@ export default {
 		},
 		handleDelete(links) {
 			this.popups.addPopup("DeleteLink", links);
-			this.selectedLinks = [];
 		},
 		importLinks() {
 			this.popups.addPopup("Import-Service");
@@ -204,10 +202,10 @@ export default {
 			if (!this.loadingMore && visible && this.links.remainingPages > 0) this.loadMore();
 		},
 		toggleSelection(link) {
-			if (this.selectedLinks.includes(link.id)) {
-				this.selectedLinks = this.selectedLinks.filter((id) => id !== link.id);
+			if (this.links.selectedLinks.includes(link.id)) {
+				this.links.selectedLinks = this.links.selectedLinks.filter((id) => id !== link.id);
 			} else {
-				this.selectedLinks.push(link.id);
+				this.links.selectedLinks.push(link.id);
 			}
 		},
 		showContextMenu(e, link) {
