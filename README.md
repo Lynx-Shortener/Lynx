@@ -200,6 +200,22 @@ You're welcome to make a PR adding any features/fixing any issues and I'll merge
 
 -   [x] Sorting
 
+-   [ ] Demo mode
+
+    -   [ ] Login you can't change
+
+    -   [ ] Delete urls after x minutes
+
+    -   [ ] Limit features
+
+        -   [ ] Upload size
+
+        -   [ ] No credential changing
+
+        -   [ ] No extra registration
+
+
+
 ## Naming
 
 Each item including a slug, destination and id is called a [`Link`](src/db/models/link.js), the plural being links.
