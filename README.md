@@ -171,6 +171,8 @@ Lynx should now be accessible at [localhost:3000](http://localhost:3000)
 
 You should now be able to register at `/dash`
 
+The first account registration will always be allowed, further registrations depend on your `ENABLE_REGISTRATION` setting
+
 ## Development/Contribution
 
 I'm actively using and trying to add features/fix bugs with Lynx, I'm just busy.
