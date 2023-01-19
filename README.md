@@ -3,13 +3,16 @@
 </p>
 <p align="center">
 <a href="https://hub.docker.com/r/jackbailey/lynx">
-    <img alt="Image Size" src="https://img.shields.io/docker/image-size/jackbailey/lynx?label=Image%20Size">
+    <img alt="Image Size" src="https://img.shields.io/docker/image-size/jackbailey/lynx?label=docker%20image%20size">
 </a>
 <a href="https://hub.docker.com/r/jackbailey/lynx">
-    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/jackbailey/lynx?label=Docker%20Pulls">
+    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/jackbailey/lynx?label=docker%20pulls">
 </a>
 <a href="https://github.com/JackBailey/Lynx">
-    <img alt="Image Size" src="https://img.shields.io/github/license/jackbailey/lynx?label=License">
+    <img alt="Image Size" src="https://img.shields.io/github/license/jackbailey/lynx?label=license">
+</a>
+<a href="https://github.com/JackBailey/Lynx">
+    <img alt="Lines of code" src="https://tokei.ekzhang.com/b1/github/JackBailey/Lynx?category=code">
 </a>
 </p>
 
@@ -145,7 +148,9 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
                 - URL_SET=standard
                 - URL_ONLY_UNIQUE=false
                 - HOME_REDIRECT=/dash/overview
+                - FORCE_FRONTEND_REDIRECT=false
                 - ENABLE_REGISTRATION=false # First registration will always be allowed
+                - DOMAIN=http://example.com
 
                 ## DO NOT CHANGE THESE:
                 - DB_HOST=db
@@ -166,6 +171,8 @@ Lynx should now be accessible at [localhost:3000](http://localhost:3000)
 
 You should now be able to register at `/dash`
 
+The first account registration will always be allowed, further registrations depend on your `ENABLE_REGISTRATION` setting
+
 ## Development/Contribution
 
 I'm actively using and trying to add features/fix bugs with Lynx, I'm just busy.
@@ -182,7 +189,10 @@ You're welcome to make a PR adding any features/fixing any issues and I'll merge
 
 -   [x] Multi-user support
 
--   [ ] Image uploads?
+-   [ ] File uploads
+
+    -   [ ] Embeds for discord
+    -   [ ] Plaintext results
 
 -   [ ] QR codes
 
