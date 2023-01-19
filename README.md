@@ -171,6 +171,14 @@ Lynx should now be accessible at [localhost:3000](http://localhost:3000)
 
 You should now be able to register at `/dash`
 
+## Development/Contribution
+
+I'm actively using and trying to add features/fix bugs with Lynx, I'm just busy.
+
+The TODO section below and my issues I've created _will_ get resolved/completed but may just take a while to do so.
+
+You're welcome to make a PR adding any features/fixing any issues and I'll merge them.
+
 ## TODO
 
 -   [x] ShareX support
