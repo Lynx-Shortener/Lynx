@@ -21,6 +21,7 @@
 		<div class="integration">
 			<h2>Integration</h2>
 			<p>Here you can access your ShareX configuration file and manage your secret.</p>
+			<p v-if="config.data.demo">This secret is automatically recreated on the hour.</p>
 
 			<div class="inputs">
 				<div class="input secret">
