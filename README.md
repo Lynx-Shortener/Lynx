@@ -43,18 +43,19 @@ For the docker installation: Fill in the variables in `docker-compose.yml`
 | DB_HOST | The address of your mongodb database. | 127.0.0.1 |
 | DB_PORT | The port of your mongodb database. When using docker set this to `27017`. | 27017 |
 | DB_USER | Your mongodb database user. | admin |
-| DB_PASSWORD | Your mongodb password. Generate a secure one using a tool like [1password](https://1password.com/password-generator/). |  |
-|  |
-| JWT_KEY | The key used to verify and sign login-sessions. Use a site like [1password](https://1password.com/password-generator/) to generate a 32 character password. |  |
-|  |
+| DB_PASSWORD | Your mongodb password. Generate a secure one using a tool like[1password](https://1password.com/password-generator/). |  |
+|  |  |  |
+| JWT_KEY | The key used to verify and sign login-sessions. Use a site like[1password](https://1password.com/password-generator/) to generate a 32 character password. |  |
+|  |  |  |
 | URL_LENGTH | The length of your automatically generated slugs. | 8 |
 | URL_SET | The type of characters your automatically generated slug will use. | standard |
 | URL_ONLY_UNIQUE | Wether each new url has to be unique, e.g. if a link already redirects to `https://example.com` new links created cannot link to the same destination. | false |
-|  |
+|  |  |  |
 | NODE_ENV | Wether Lynx is running in a `production` or `development` environment | production |
 | FORCE_FRONTEND_REDIRECT | Use the frontend to redirect instead of express, useful for hiding embeds on discord for all your rickrolling needs | false |
 | ENABLE_REGISTRATION | Whether or not to allow registration. If not accounts exist you will be allowed to register either way. This first account will also be an admin account. | false |
 | DOMAIN | Your Lynx installation domain | http://example.com |
+| DEMO | Whether or not to enable the demo mode. In this mode features will be limited and links will be deleted after 10 minutes. | false |
 
 ## Installation
 
@@ -63,54 +64,52 @@ You need a MongoDB instance to use Lynx.
 Installation guides:
 
 -   [Ubuntu](https://www.cherryservers.com/blog/how-to-install-and-start-using-mongodb-on-ubuntu-20-04)
-
 -   [Windows](https://medium.com/@LondonAppBrewery/how-to-download-install-mongodb-on-windows-4ee4b3493514)
-
 -   For docker this is provided in [`docker-compose.yml`](/docker-compose.yml)
 
 ### Normal Installation
 
 You need yarn (via npm), git and node installed for this guide. I recommend [pm2](https://www.npmjs.com/package/pm2) to run this project in the background.
 
-1.  Clone this repo
+1. Clone this repo
 
     ```console
     git clone https://github.com/JackBailey/Lynx
     ```
 
-2.  Build the frontend
+2. Build the frontend
 
-    1.  Navigate to the frontend directory
+    1. Navigate to the frontend directory
 
         ```console
         cd frontend
         ```
 
-    2.  Install the required files
+    2. Install the required files
 
         ```console
         yarn
         ```
 
-    3.  Build the frontend (it will build to `../dist`)
+    3. Build the frontend (it will build to `../dist`)
 
         ```console
         yarn build
         ```
 
-3.  Navigate back to the server's directory
+3. Navigate back to the server's directory
 
     ```console
     cd ..
     ```
 
-4.  Install the server's required files
+4. Install the server's required files
 
     ```console
     yarn
     ```
 
-5.  Start the server
+5. Start the server
 
     ```console
     node .
@@ -151,6 +150,7 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
                 - FORCE_FRONTEND_REDIRECT=false
                 - ENABLE_REGISTRATION=false # First registration will always be allowed
                 - DOMAIN=http://example.com
+                - DEMO=false
 
                 ## DO NOT CHANGE THESE:
                 - DB_HOST=db
@@ -158,7 +158,6 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
     ```
 
 2. Set the environment variables above to your choosing. Follow the guide [here](#environment-variables)
-
 3. Start the container
 
     ```console
@@ -188,33 +187,23 @@ You're welcome to make a PR adding any features/fixing any issues and I'll merge
     -   [x] API Tokens
 
 -   [x] Multi-user support
-
 -   [ ] File uploads
 
     -   [ ] Embeds for discord
     -   [ ] Plaintext results
 
 -   [ ] QR codes
-
 -   [x] Searching
-
 -   [x] Sorting
+-   [x] Demo mode
 
--   [ ] Demo mode
-
-    -   [ ] Login you can't change
-
-    -   [ ] Delete urls after x minutes
-
-    -   [ ] Limit features
+    -   [x] Login you can't change
+    -   [x] Delete urls after x minutes
+    -   [x] Limit features
 
         -   [ ] Upload size
-
-        -   [ ] No credential changing
-
-        -   [ ] No extra registration
-
-
+        -   [x] No credential changing
+        -   [x] No extra registration
 
 ## Naming
 

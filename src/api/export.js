@@ -7,14 +7,18 @@ const requireFields = require("./middleware/requireFields");
 const requireLogin = require("./middleware/requireLogin");
 
 router.post("/", requireLogin, requireFields(["format"]), async (req, res) => {
+	if (process.env.DEMO === "true")
+		return res.status(406).json({
+			success: false,
+			message: "Exports are not enabled in demo mode.",
+		});
 	try {
 		const { format } = req.body;
 
 		let links = await Link.find();
 		links = links.map((link) => returnLink(link));
 
-		if (req.account.role !== 'admin') links = links.filter(link => link.author === req.account.id);
-		
+		if (req.account.role !== "admin") links = links.filter((link) => link.author === req.account.id);
 
 		let exported;
 

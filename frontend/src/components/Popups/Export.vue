@@ -39,37 +39,24 @@ export default {
 				this.popups.closeSelf(this);
 			}
 
-			// if (!response.success) {
-			// 	this.popups.addPopup("Information", {
-			// 		title: "Error completing import",
-			// 		description: response.message || "Please try again later",
-			// 		buttons: [
-			// 			{
-			// 				name: "Retry",
-			// 				type: "secondary",
-			// 				action: "return",
-			// 			},
-			// 			{
-			// 				name: "Okay",
-			// 				type: "primary",
-			// 				action: "close-all",
-			// 			},
-			// 		],
-			// 	});
-			// } else {
-			// 	this.popups.closeSelf(this);
-			// 	this.popups.addPopup("Information", {
-			// 		title: "Successfully completed import",
-			// 		description: response.message,
-			// 		buttons: [
-			// 			{
-			// 				name: "Okay",
-			// 				type: "primary",
-			// 				action: "close-all",
-			// 			},
-			// 		],
-			// 	});
-			// }
+			if (!response.success) {
+				this.popups.addPopup("Information", {
+					title: "Error completing import",
+					description: response.message || "Please try again later",
+					buttons: [
+						{
+							name: "Retry",
+							type: "secondary",
+							action: "return",
+						},
+						{
+							name: "Okay",
+							type: "primary",
+							action: "close-all",
+						},
+					],
+				});
+			}
 		},
 	},
 };
