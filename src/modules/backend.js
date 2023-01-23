@@ -1,5 +1,7 @@
 var CronJob = require("cron").CronJob;
 const Link = require("../db/models/link");
+const Account = require("../db/models/account");
+const createSecret = require("../db/modules/secret/create");
 
 const removeDemoLinks = async () => {
 	const oldLinkCount = await Link.count({
@@ -15,18 +17,33 @@ const removeDemoLinks = async () => {
 	console.log(`Deleted ${oldLinkCount} old links due to demo instance.`);
 };
 
-const task = () => {
-	if (process.env.DEMO === "true") removeDemoLinks();
+const regenSecrets = async () => {
+	const accounts = await Account.find();
+	accounts.forEach(async (account) => {
+		await createSecret(account);
+	});
 };
 
-const job = new CronJob({
+const oldLinkDeletionJob = new CronJob({
 	cronTime: "0 * * * * *",
-	onTick: task,
+	onTick: () => {
+		if (process.env.DEMO === "true") removeDemoLinks();
+	},
+	runOnInit: true,
+	timeZone: "UTC",
+});
+
+const secretRegenJob = new CronJob({
+	cronTime: "0 0 * * * *",
+	onTick: () => {
+		if (process.env.DEMO === "true") regenSecrets();
+	},
 	runOnInit: true,
 	timeZone: "UTC",
 });
 
 module.exports.start = () => {
 	console.log("Backend started!");
-	job.start();
+	oldLinkDeletionJob.start();
+	secretRegenJob.start();
 };

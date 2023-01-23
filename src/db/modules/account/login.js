@@ -47,6 +47,9 @@ module.exports = async ({ username, password }) => {
 			},
 		];
 
+	// expire jwt logins in an hour if demo
+	const expiresIn = process.env.DEMO === "true" ? "1h" : "7d";
+
 	const token = jwt.sign(
 		{
 			id: account.id,
@@ -54,7 +57,7 @@ module.exports = async ({ username, password }) => {
 		process.env.JWT_KEY,
 		{
 			algorithm: "HS256",
-			expiresIn: "7d",
+			expiresIn,
 		}
 	);
 
