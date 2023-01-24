@@ -40,9 +40,11 @@
 
 <script>
 import { useAccountStore } from "../../stores/account";
+import { useConfig } from "../../stores/config";
 export default {
 	data() {
 		return {
+			config: useConfig(),
 			errors: {
 				username: [],
 				password: [],

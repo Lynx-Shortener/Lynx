@@ -4,6 +4,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const bodyParser = require("body-parser");
 const path = require("path");
 const getLink = require("./db/modules/link/get");
+const backend = require("./modules/backend")
 
 const mongoose = require("mongoose");
 const setup = require("./modules/setup");
@@ -62,6 +63,7 @@ mongoose
 		setup().then(() => {
 			app.listen(listenPort, async () => {
 				console.log(`Listening on port ${listenPort}`);
+				backend.start()
 			});
 		});
 	})

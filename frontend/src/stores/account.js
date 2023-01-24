@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-
+import { useConfig } from "./config";
 export const useAccountStore = defineStore("account", {
 	state: () => {
 		let token;
@@ -18,6 +18,7 @@ export const useAccountStore = defineStore("account", {
 	},
 	actions: {
 		async login(logindata) {
+			const config = useConfig();
 			const response = await fetch("/api/auth/login", {
 				method: "POST",
 				body: JSON.stringify(logindata),
@@ -27,10 +28,12 @@ export const useAccountStore = defineStore("account", {
 			});
 			const data = await response.json();
 
+			// expire in an hour if demo, 7 days if not demo
+			const expiryTime = config.data.demo ? 3600 * 1000 : 86400 * 1000 * 7;
+
 			if (data.success) {
 				this.token = data.result.token;
-				// expire in 7 days
-				var expires = new Date(Date.now() + 86400 * 1000 * 7).toUTCString();
+				var expires = new Date(Date.now() + expiryTime).toUTCString();
 				document.cookie = `token=${this.token};expires=${expires};path=/;SameSite=Strict; Secure;`;
 				await this.getAccount();
 			}

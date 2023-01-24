@@ -31,6 +31,11 @@ const processFile = async (path) => {
 };
 
 router.post("/", requireLogin, upload.single("file"), requireFields(["service"]), async (req, res) => {
+	if (process.env.DEMO === "true")
+		return res.status(406).json({
+			success: false,
+			message: "Imports are not enabled in demo mode.",
+		});
 	try {
 		const { service } = req.body;
 

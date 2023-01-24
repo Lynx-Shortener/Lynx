@@ -6,21 +6,22 @@
 			<div class="inputs">
 				<div class="input">
 					<label>Email</label>
-					<div @click="popups.addPopup('ChangeEmail', {})">{{ account.account.email }}</div>
+					<div @click="changeSetting('Email')" :disabled="config.data.demo">{{ account.account.email }}</div>
 				</div>
 				<div class="input">
 					<label>Username</label>
-					<div @click="popups.addPopup('ChangeUsername', {})">{{ account.account.username }}</div>
+					<div @click="changeSetting('Username')" :disabled="config.data.demo">{{ account.account.username }}</div>
 				</div>
 				<div class="input">
 					<label>Password</label>
-					<div @click="popups.addPopup('ChangePassword', {})">***********</div>
+					<div @click="changeSetting('Password')" :disabled="config.data.demo">***********</div>
 				</div>
 			</div>
 		</div>
 		<div class="integration">
 			<h2>Integration</h2>
 			<p>Here you can access your ShareX configuration file and manage your secret.</p>
+			<p v-if="config.data.demo">This secret is automatically recreated on the hour.</p>
 
 			<div class="inputs">
 				<div class="input secret">
@@ -31,7 +32,7 @@
 							<div class="action view" @click="secretVisible = !secretVisible">
 								<font-awesome-icon :icon="secretVisible ? 'eye-slash' : 'eye'" />
 							</div>
-							<div class="action new" @click="newSecret">
+							<div class="action new" @click="newSecret" :disabled="config.data.demo">
 								<font-awesome-icon :icon="newSecretData.success ? 'check' : 'arrows-rotate'" :spinning="newSecretData.loading" />
 							</div>
 							<div class="action copy" @click="copySecret">
@@ -52,11 +53,13 @@
 <script>
 import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
+import { useConfig } from "../../stores/config";
 export default {
 	data() {
 		return {
 			account: useAccountStore(),
 			popups: usePopups(),
+			config: useConfig(),
 			secretVisible: false,
 			newSecretData: {
 				loading: false,
@@ -68,6 +71,10 @@ export default {
 		};
 	},
 	methods: {
+		changeSetting(name) {
+			if (this.config.data.demo) return;
+			this.popups.addPopup("Change" + name, {});
+		},
 		async getConfig() {
 			const data = await this.account.fetch("/sharex/config", {
 				method: "GET",
@@ -91,6 +98,7 @@ export default {
 			document.body.removeChild(a);
 		},
 		async newSecret() {
+			if (this.config.data.demo) return;
 			this.newSecretData.success = false;
 			this.newSecretData.loading = true;
 			await this.account.newSecret();
@@ -147,6 +155,10 @@ export default {
 						border-radius: 5px;
 						min-width: 10rem;
 						cursor: pointer;
+						&[disabled="true"] {
+							opacity: 0.5;
+							cursor: not-allowed !important;
+						}
 					}
 				}
 				&.secret {
@@ -174,6 +186,10 @@ export default {
 							display: flex;
 							align-items: center;
 							> div {
+								&[disabled="true"] {
+									opacity: 0.5;
+									cursor: not-allowed !important;
+								}
 								padding: 0.5rem;
 								display: grid;
 								place-content: center;

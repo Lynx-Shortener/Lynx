@@ -23,7 +23,6 @@ export default {
 <style lang="scss" scoped>
 main {
 	width: 100%;
-	overflow-y: scroll;
 	padding-right: 4rem;
 	box-sizing: border-box;
 	@media screen and (max-width: 768px) {
