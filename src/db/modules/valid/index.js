@@ -3,4 +3,5 @@ module.exports = {
 	password: require("./password"),
 	email: require("./email"),
 	url: require("./url"),
+	upload: require("./upload"),
 };

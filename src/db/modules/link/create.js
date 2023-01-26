@@ -2,7 +2,9 @@ const Link = require("../../models/link");
 const Account = require("../../models/link");
 const { v4: uuid4 } = require("uuid");
 const getLink = require("./get");
-const { url: validUrl } = require("../valid");
+const { url: validUrl, upload: validUpload } = require("../valid");
+const fs = require("fs");
+const path = require("path");
 
 const chars = {
 	alpha: "abcdefghijklmnopqrstuvwxyz",
@@ -24,15 +26,34 @@ const generateSlug = () => {
 	return [...new Array(parseInt(process.env.URL_LENGTH))].map((_) => charset[Math.floor(Math.random() * charset.length)]).join("");
 };
 
-module.exports = async ({ author, slug, destination }) => {
-	if (!validUrl(destination)) {
-		return [
-			null,
-			{
-				message: "Invalid destination url format",
-				code: 409,
-			},
-		];
+const storeFile = (file) => {
+	const extension = file.originalname.split(".").at(-1);
+	const id = uuid4();
+	const filename = `${id}.${extension}`;
+	fs.writeFileSync(path.join("uploads", filename), file.buffer);
+	return {
+		id,
+		extension,
+		size: file.size.toString(),
+	};
+};
+
+module.exports = async ({ author, slug, destination, file }) => {
+	if (file) {
+		const [validUploadData, validUploadError] = validUpload(author, file);
+		if (validUploadError) {
+			return [null, validUploadError];
+		}
+	} else {
+		if (!validUrl(destination)) {
+			return [
+				null,
+				{
+					message: "Invalid destination url format",
+					code: 409,
+				},
+			];
+		}
 	}
 
 	if (!slug || slug === "") {
@@ -54,7 +75,7 @@ module.exports = async ({ author, slug, destination }) => {
 			];
 	}
 
-	if (process.env.URL_ONLY_UNIQUE === "true") {
+	if (process.env.URL_ONLY_UNIQUE === "true" && !file) {
 		const existingLink = await getLink({ destination });
 		if (existingLink)
 			return [
@@ -66,6 +87,12 @@ module.exports = async ({ author, slug, destination }) => {
 			];
 	}
 
+	let storedFile;
+
+	if (file) {
+		storedFile = storeFile(file);
+	}
+
 	const link = new Link({
 		id: uuid4(),
 		slug,
@@ -74,6 +101,7 @@ module.exports = async ({ author, slug, destination }) => {
 		creationDate: new Date(),
 		modifiedDate: new Date(),
 		visits: 0,
+		file: storedFile,
 	});
 
 	await link.save();

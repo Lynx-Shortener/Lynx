@@ -1,14 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const upload = multer();
 const Link = require("../db/modules/link");
 const requireLogin = require("./middleware/requireLogin");
 const getAccountBySecret = require("../db/modules/account/get/bySecret");
 
 const domain = process.env.DOMAIN || "http://localhost:3000";
 
-router.post("/", upload.none(), async (req, res) => {
+const multerStorage = multer.memoryStorage();
+const upload = multer({ storage: multerStorage });
+
+router.post("/", upload.single("file"), async (req, res) => {
+	console.log(req.file);
 	const { secret, url } = req.body;
 
 	const Account = await getAccountBySecret({ secret });
@@ -21,6 +24,7 @@ router.post("/", upload.none(), async (req, res) => {
 	const [link, linkError] = await Link.create({
 		author: Account,
 		destination: url,
+		file: req.file,
 	});
 
 	if (linkError) {

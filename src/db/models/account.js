@@ -7,6 +7,9 @@ const schema = new mongoose.Schema({
 	email: String,
 	role: String, // admin || standard
 	secret: String,
+	uploads: {
+		quota: String,
+	},
 });
 
 const Account = mongoose.model("Account", schema);

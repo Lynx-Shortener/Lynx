@@ -8,6 +8,11 @@ const schema = new mongoose.Schema({
 	creationDate: Date,
 	modifiedDate: Date,
 	visits: Number,
+	file: {
+		id: String,
+		size: String,
+		extension: String,
+	},
 });
 
 const Link = mongoose.model("Link", schema);
