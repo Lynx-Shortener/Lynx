@@ -70,9 +70,20 @@ body {
 		}
 	}
 	@media screen and (max-width: 768px) {
-		main .content {
+		.pageWrapper {
 			flex-direction: column;
 			gap: 0;
+			.demoBanner {
+				padding: 0;
+				display: block;
+				position: static;
+				p {
+					border-radius: 0;
+				}
+			}
+			&[demo="true"] {
+				margin: 0;
+			}
 		}
 	}
 }
