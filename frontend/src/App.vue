@@ -45,7 +45,6 @@ body {
 		display: flex;
 		box-sizing: border-box;
 		gap: 4rem;
-		overflow: hidden;
 		height: 100%;
 		.demoBanner {
 			position: absolute;
@@ -63,7 +62,7 @@ body {
 			}
 		}
 		main {
-			height: 100%;
+			overflow-y: scroll;
 		}
 		&[demo="true"] {
 			margin-top: 5rem;
