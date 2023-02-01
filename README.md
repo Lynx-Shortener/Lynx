@@ -182,28 +182,7 @@ You're welcome to make a PR adding any features/fixing any issues and I'll merge
 
 ## TODO
 
--   [x] ShareX support
-
-    -   [x] API Tokens
-
--   [x] Multi-user support
--   [ ] File uploads
-
-    -   [ ] Embeds for discord
-    -   [ ] Plaintext results
-
--   [ ] QR codes
--   [x] Searching
--   [x] Sorting
--   [x] Demo mode
-
-    -   [x] Login you can't change
-    -   [x] Delete urls after x minutes
-    -   [x] Limit features
-
-        -   [ ] Upload size
-        -   [x] No credential changing
-        -   [x] No extra registration
+Visit the TODO list [here](https://github.com/users/JackBailey/projects/5/views/1)
 
 ## Naming
 
