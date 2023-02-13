@@ -30,6 +30,8 @@ My functionality I wanted:
 -   Option to redirect the root path
 -   Simple UI
 
+A mirror of this repository is available at [git.jackbailey.cloud](https://git.jackbailey.cloud/jackbailey/Lynx)
+
 ## Environment variables
 
 Fill in all of these environment variables before running Lynx.
