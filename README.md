@@ -18,6 +18,8 @@
 
 # Lynx
 
+![link list](https://cdn.jackbailey.dev/screenshots/lynx.png)
+
 ## About
 
 A fullstack application using the MEVN stack to shorten your URLs.
