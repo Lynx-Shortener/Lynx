@@ -1,0 +1,39 @@
+version: "3"
+services:
+    lynx-db:
+        image: mongo
+        restart: always
+        container_name: lynx-db
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=user
+            - MONGO_INITDB_ROOT_PASSWORD=paswd
+        volumes:
+            - ./db:/data/db
+        ports:
+            - 27017:27017
+
+    lynx:
+        build:
+            context: .
+        restart: always
+        ports:
+            - 3000:3000
+        depends_on:
+            - lynx-db
+        environment:
+            - NODE_ENV=production
+            - DB_USER=user
+            - DB_PASSWORD=paswd
+            - JWT_KEY=1234567890
+            - URL_LENGTH=8
+            - URL_SET=standard
+            - URL_ONLY_UNIQUE=false
+            - HOME_REDIRECT=/dash/overview
+            - FORCE_FRONTEND_REDIRECT=false
+            - ENABLE_REGISTRATION=false # First registration will always be allowed
+            - DOMAIN=http://example.com
+            - DEMO=false
+
+            ## DO NOT CHANGE THESE:
+            - DB_HOST=lynx-db
+            - DB_PORT=27017
