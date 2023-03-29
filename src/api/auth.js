@@ -11,7 +11,6 @@ const {
 	update: { email: updateEmail, password: updatePassword, username: updateUsername },
 	register,
 } = require("../db/modules/account");
-const requireLogin = require("./middleware/requireLogin");
 
 router.post("/login", requireFields(["username", "password"]), async (req, res) => {
 	try {
