@@ -2,7 +2,7 @@
 	<div class="import">
 		<h2>Upload your exported data</h2>
 		<div class="upload">
-			<div class="uploadBox" @click="uploadFile">
+			<div class="uploadBox" @click="uploadFile" @drop="handleDrop" @dragover.prevent @dragenter.self="dragging=true" @dragleave.self="dragging=false" :dragging="dragging">
 				<font-awesome-icon :icon="file.data ? 'file' : 'file-arrow-up'" />
 				<p>{{ file.name }}</p>
 			</div>
@@ -33,14 +33,34 @@ export default {
 				data: null,
 				name: null,
 			},
+			dragging: false
 		};
 	},
 	methods: {
 		back() {
 			this.popups.closeSelf(this);
 		},
+		handleDragStart () {
+			this.dragging = true;
+		},
+		handleDragEnd () {
+			this.dragging = false;
+		},
 		uploadFile() {
 			this.$refs.fileInput.click();
+		},
+		handleDragOver(e) {
+			e.preventDefault();
+		},
+		handleDrop(e) {
+			e.preventDefault();
+			if (e.dataTransfer.items) {
+				let file = [...e.dataTransfer.items][0]
+				file = file.getAsFile();
+				console.log(file)
+				this.file.data = file;
+				this.file.name = file.name;
+			}
 		},
 		fileUpload() {
 			const file = this.$refs.fileInput.files[0];
@@ -110,6 +130,12 @@ export default {
 			overflow: hidden;
 			svg {
 				font-size: 2rem;
+			}
+			&[dragging=true] {
+				background: var(--bg-color-2);
+				svg, p {
+					pointer-events: none;
+				}
 			}
 		}
 		input {
