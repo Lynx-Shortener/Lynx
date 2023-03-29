@@ -1,13 +1,33 @@
-const { current: currentAccount } = require("../../db/modules/account/get");
+const { current: currentAccount, bySecret: getAccountBySecret } = require("../../db/modules/account/get");
 
-module.exports = async (req, res, next) => {
-	const [account, error] = await currentAccount(req);
-	if (error)
-		return res.status(error.code).json({
-			success: false,
-			message: error.message,
-		});
+module.exports = (disallowSecret) => {
+	return async (req, res, next) => {
+		let account;
+		let error;
 
-	req.account = account;
-	next();
+		if (req.body.secret || (req.headers.authorization && !req.headers.authorization.startsWith("Bearer"))) {
+			if (disallowSecret) {
+				return res.status(403).json({
+					success: false,
+					message: "You cannot use this endpoint with your API secret"
+				})
+			}
+
+			[account, error] = await getAccountBySecret({
+				secret: req.body.secret || req.headers.authorization
+			});
+		} else {
+			[account, error] = await currentAccount(req);
+		}
+
+		if (error)
+			return res.status(error.code).json({
+				success: false,
+				message: error.message,
+			});
+	
+		req.account = account;
+		console.log("returned")
+		next();
+	}
 };

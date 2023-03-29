@@ -4,6 +4,7 @@ const cookie = require("cookie");
 require("dotenv").config();
 
 module.exports = async (req, token) => {
+	
 	if (!token) {
 		const cookies = cookie.parse(req.headers.cookie || '');
 		if (!cookies.token) return [null, { code: 400, message: "No cookie token provided" }];
