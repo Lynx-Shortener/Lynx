@@ -30,7 +30,7 @@ const processFile = async (path) => {
 	return records;
 };
 
-router.post("/", requireLogin, upload.single("file"), requireFields(["service"]), async (req, res) => {
+router.post("/", requireLogin(), upload.single("file"), requireFields(["service"]), async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,

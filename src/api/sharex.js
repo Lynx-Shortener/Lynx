@@ -4,7 +4,7 @@ const multer = require("multer");
 const upload = multer();
 const Link = require("../db/modules/link");
 const requireLogin = require("./middleware/requireLogin");
-const getAccountBySecret = require("../db/modules/account/get/bySecret");
+
 
 const domain = process.env.DOMAIN || "http://localhost:3000";
 
@@ -38,7 +38,7 @@ router.post("/", upload.none(), async (req, res) => {
 	});
 });
 
-router.get("/config", requireLogin, async (req, res) => {
+router.get("/config", requireLogin(), async (req, res) => {
 	const config = {
 		Version: "14.1.0",
 		Name: "Lynx",

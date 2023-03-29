@@ -1,16 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const requireFields = require("./middleware/requireFields");
-const requireAuth = require("./middleware/requireLogin");
 const countAccounts = require("../db/modules/account/count");
 const createSecret = require("../db/modules/secret/create");
 
 const {
 	login,
-	get: { current: currentAccount },
 	update: { email: updateEmail, password: updatePassword, username: updateUsername },
 	register,
 } = require("../db/modules/account");
+const requireLogin = require("./middleware/requireLogin");
 
 router.post("/login", requireFields(["username", "password"]), async (req, res) => {
 	try {
@@ -77,12 +76,9 @@ router.post("/register", requireFields(["email", "username", "password"]), async
 	}
 });
 
-router.get("/me", async (req, res) => {
+router.get("/me", requireLogin(), async (req, res) => {
 	try {
-		const [account, error] = await currentAccount(req);
-		if (error) return res.status(error.code).send(error.message);
-
-		const { email, id, username, role, secret } = account;
+		const { email, id, username, role, secret } = req.account;
 
 		return res.status(200).send({
 			success: true,
@@ -103,15 +99,14 @@ router.get("/me", async (req, res) => {
 	}
 });
 
-router.patch("/email", requireFields(["newEmail", "password"]), async (req, res) => {
+router.patch("/email", requireLogin(true), requireFields(["newEmail", "password"]), async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,
 			message: "Updating of credentials is not enabled in demo mode.",
 		});
 	try {
-		const [account, accountError] = await currentAccount(req);
-		if (accountError) return res.status(accountError.code).send(accountError.message);
+		const account = req.account;
 
 		const { newEmail, password } = req.body;
 
@@ -140,16 +135,15 @@ router.patch("/email", requireFields(["newEmail", "password"]), async (req, res)
 	}
 });
 
-router.patch("/password", requireFields(["password", "newPassword"]), async (req, res) => {
+router.patch("/password", requireLogin(true), requireFields(["password", "newPassword"]), async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,
 			message: "Updating of credentials is not enabled in demo mode.",
 		});
 	try {
-		const [account, accountError] = await currentAccount(req);
-		if (accountError) return res.status(accountError.code).send(accountError.message);
-
+		const account = req.account;
+		
 		const { password, newPassword } = req.body;
 
 		const [updateResponse, updateError] = await updatePassword({
@@ -177,15 +171,14 @@ router.patch("/password", requireFields(["password", "newPassword"]), async (req
 	}
 });
 
-router.patch("/username", requireFields(["newUsername", "password"]), async (req, res) => {
+router.patch("/username", requireLogin(true), requireFields(["newUsername", "password"]), async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,
 			message: "Updating of credentials is not enabled in demo mode.",
 		});
 	try {
-		const [account, accountError] = await currentAccount(req);
-		if (accountError) return res.status(accountError.code).send(accountError.message);
+		const account = req.account;
 
 		const { newUsername, password } = req.body;
 
@@ -214,7 +207,7 @@ router.patch("/username", requireFields(["newUsername", "password"]), async (req
 	}
 });
 
-router.post("/newSecret", requireAuth, async function (req, res) {
+router.post("/newSecret", requireLogin(true), async function (req, res) {
 	const secret = await createSecret(req.account);
 	return res.status(200).json({
 		success: true,

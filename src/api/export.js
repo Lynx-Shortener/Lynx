@@ -6,7 +6,7 @@ const { v4: uuid4 } = require("uuid");
 const requireFields = require("./middleware/requireFields");
 const requireLogin = require("./middleware/requireLogin");
 
-router.post("/", requireLogin, requireFields(["format"]), async (req, res) => {
+router.post("/", requireLogin(), requireFields(["format"]), async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,

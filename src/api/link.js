@@ -5,7 +5,7 @@ const returnLink = require("../modules/returnLink");
 const requireFields = require("./middleware/requireFields");
 const requireLogin = require("./middleware/requireLogin");
 
-router.get("/list", requireLogin, requireFields(["pagesize", "page", "sortType", "sortField", "search"], "query"), async (req, res) => {
+router.get("/list", requireLogin(),  async (req, res) => {
 	try {
 		const { pagesize, page, search, sortType, sortField } = req.query;
 		if (pagesize > 100)
@@ -64,7 +64,7 @@ router.get("/", requireFields(["slug"], "query"), async (req, res) => {
 	}
 });
 
-router.post("/", requireLogin, requireFields(["slug", "destination"]), async (req, res) => {
+router.post("/", requireLogin(), requireFields(["slug", "destination"]), async (req, res) => {
 	try {
 		const { slug, destination } = req.body;
 
@@ -93,7 +93,7 @@ router.post("/", requireLogin, requireFields(["slug", "destination"]), async (re
 	}
 });
 
-router.patch("/", requireLogin, requireFields(["slug", "destination", "id"]), async (req, res) => {
+router.patch("/", requireLogin(), requireFields(["slug", "destination", "id"]), async (req, res) => {
 	try {
 		const { slug, destination, id } = req.body;
 
@@ -123,7 +123,7 @@ router.patch("/", requireLogin, requireFields(["slug", "destination", "id"]), as
 	}
 });
 
-router.delete("/", requireLogin, requireFields(["ids"]), async (req, res) => {
+router.delete("/", requireLogin(), requireFields(["ids"]), async (req, res) => {
 	try {
 		const { ids } = req.body;
 
