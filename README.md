@@ -12,7 +12,7 @@
     <img alt="Image Size" src="https://img.shields.io/github/license/jackbailey/lynx?label=license">
 </a>
 <a href="https://github.com/JackBailey/Lynx">
-    <img alt="Lines of code" src="https://tokei.ekzhang.com/b1/github/JackBailey/Lynx?category=code">
+    <img alt="Lines of code" src="https://www.aschey.tech/tokei/github/JackBailey/Lynx?category=code">
 </a>
 </p>
 
