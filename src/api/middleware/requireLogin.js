@@ -27,7 +27,6 @@ module.exports = (disallowSecret) => {
 			});
 	
 		req.account = account;
-		console.log("returned")
 		next();
 	}
 };
