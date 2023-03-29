@@ -13,9 +13,11 @@
 
 <script>
 import { useAccountStore } from "../../stores/account";
+import { useConfig } from "../../stores/config";
 export default {
 	data() {
 		return {
+			config: useConfig(),
 			logindata: {
 				username: "",
 				password: "",
@@ -43,6 +45,14 @@ export default {
 			});
 		},
 	},
+	mounted() {
+		if (this.config.data.demo) {
+			this.logindata = {
+				username: "demo",
+				password: "demo"
+			}
+		}
+	}
 };
 </script>
 
