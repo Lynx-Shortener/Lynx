@@ -72,7 +72,23 @@ export default {
 		},
 	},
 	async mounted() {
-		this.link = await this.links.get(this.data.id);
+		let link = await this.links.get(this.data.id);
+		if (!link) {
+			this.popups.closeSelf(this);
+			this.popups.addPopup("Information", {
+				title: "Error updating your link",
+				description: "Link not found",
+				buttons: [
+					{
+						name: "Okay",
+						type: "primary",
+						action: "close-all",
+					},
+				],
+			});
+		} else {
+			this.link = link;
+		}
 	},
 };
 </script>

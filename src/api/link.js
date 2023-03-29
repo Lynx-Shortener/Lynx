@@ -31,6 +31,41 @@ router.get("/list", requireLogin(),  async (req, res) => {
 	}
 });
 
+router.get("/single", requireLogin(), requireFields(["id"], "query"), async (req, res) => {
+	try {
+		const { id } = req.query;
+		const data = await get(
+			{
+				id,
+			},
+			null,
+			true
+		);
+
+		if (data) {
+			res.status(200).json({
+				success: true,
+				result: {
+					destination: data.destination,
+					id,
+					slug: data.slug
+				},
+			});
+		} else {
+			res.status(404).json({
+				success: false,
+				message: "invalid link",
+			});
+		}
+	} catch (e) {
+		console.log(e);
+		return res.status(500).json({
+			success: false,
+			message: "Internal Server Error when getting link",
+		});
+	}
+});
+
 router.get("/", requireFields(["slug"], "query"), async (req, res) => {
 	try {
 		const { slug } = req.query;

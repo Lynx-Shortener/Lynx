@@ -99,8 +99,13 @@ export const useLinks = defineStore("links", {
 			};
 		},
 		async get(id) {
-			const index = this.links.findIndex((link) => link.id === id);
-			return this.links[index];
+			const account = useAccountStore();
+			const link = await account.fetch(`/link/single?id=${id}`, {
+				method: "GET"
+			});
+
+			if (link.success) return link.result;
+			return null;
 		},
 		async update({ id, slug, destination }) {
 			const account = useAccountStore();

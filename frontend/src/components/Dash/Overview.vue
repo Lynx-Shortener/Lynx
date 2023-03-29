@@ -258,6 +258,15 @@ export default {
 				this.refreshSpinning = false;
 			}
 		});
+		if (this.$route.query.edit) {
+			let query = Object.assign({}, this.$route.query);
+
+			let queryID = query.edit;
+			this.handleEdit({id: queryID});
+
+			delete query.edit;
+			this.$router.replace({ query });
+		}
 	},
 	watch: {
 		"search.value"(value) {
