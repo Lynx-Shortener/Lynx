@@ -1,24 +1,12 @@
 import { defineStore } from "pinia";
-import { useConfig } from "./config";
 export const useAccountStore = defineStore("account", {
 	state: () => {
-		let token;
-		function getCookie(name) {
-			const value = `; ${document.cookie}`;
-			const parts = value.split(`; ${name}=`);
-			if (parts.length === 2) return parts.pop().split(";").shift();
-		}
-
-		token = getCookie("token");
-
 		return {
 			account: null,
-			token,
 		};
 	},
 	actions: {
 		async login(logindata) {
-			const config = useConfig();
 			const response = await fetch("/api/auth/login", {
 				method: "POST",
 				body: JSON.stringify(logindata),
@@ -29,12 +17,8 @@ export const useAccountStore = defineStore("account", {
 			const data = await response.json();
 
 			// expire in an hour if demo, 7 days if not demo
-			const expiryTime = config.data.demo ? 3600 * 1000 : 86400 * 1000 * 7;
 
 			if (data.success) {
-				this.token = data.result.token;
-				var expires = new Date(Date.now() + expiryTime).toUTCString();
-				document.cookie = `token=${this.token};expires=${expires};path=/;SameSite=Strict; Secure;`;
 				await this.getAccount();
 			}
 
@@ -58,9 +42,7 @@ export const useAccountStore = defineStore("account", {
 			return this.account;
 		},
 		async fetch(url, { body, headers, method, query, contentType }) {
-			let defaultHeaders = {
-				Authorization: `Bearer ${this.token}`,
-			};
+			let defaultHeaders = {};
 
 			if (contentType !== false) {
 				defaultHeaders = Object.assign(
@@ -94,7 +76,12 @@ export const useAccountStore = defineStore("account", {
 			}
 		},
 		logout() {
-			document.cookie = `token=${this.token};expires=${new Date(0).toUTCString()};path=/; SameSite=Strict; Secure;`;
+			this.fetch("/auth/me", {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
 			document.location.reload();
 		},
 		async newSecret() {

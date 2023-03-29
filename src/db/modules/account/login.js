@@ -1,6 +1,7 @@
 const Account = require("../../models/account");
 const checkPassword = require("../password/check");
 const jwt = require("jsonwebtoken");
+const cookie = require("cookie");
 require("dotenv").config("../../../.env");
 
 const getAccountByUsername = async (username) => {
@@ -61,9 +62,17 @@ module.exports = async ({ username, password }) => {
 		}
 	);
 
+	const serialized = cookie.serialize("token", token, {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === "production",
+		sameSite: "strict",
+		maxAge: process.env.DEMO ? 3600 * 1000 : 86400 * 1000 * 7,
+		path: "/"
+	})
+
 	return [
 		{
-			token,
+			serialized,
 		},
 		null,
 	];
