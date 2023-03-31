@@ -64,7 +64,7 @@ module.exports = async ({ username, password }) => {
 
 	const serialized = cookie.serialize("token", token, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === "production",
+		secure: process.env.USE_HTTPS === 'true',
 		sameSite: "strict",
 		maxAge: process.env.DEMO ? 3600 * 1000 : 86400 * 1000 * 7,
 		path: "/"

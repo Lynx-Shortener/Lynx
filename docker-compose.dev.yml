@@ -33,6 +33,7 @@ services:
             - ENABLE_REGISTRATION=false # First registration will always be allowed
             - DOMAIN=http://example.com
             - DEMO=false
+            - USE_HTTPS=false
 
             ## DO NOT CHANGE THESE:
             - DB_HOST=lynx-db

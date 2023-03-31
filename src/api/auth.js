@@ -45,7 +45,7 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 router.delete("/me", requireLogin, async (req, res) => {
 	const serialized = cookie.serialize('token', null, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === 'production',
+		secure: process.env.USE_HTTPS === 'true',
 		sameSite: 'strict',
 		maxAge: -1,
 		path: '/',
