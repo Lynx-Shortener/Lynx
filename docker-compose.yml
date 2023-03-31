@@ -29,6 +29,7 @@ services:
             - ENABLE_REGISTRATION=false # First registration will always be allowed
             - DOMAIN=http://example.com
             - DEMO=false
+            - USE_HTTPS=true
 
             ## DO NOT CHANGE THESE:
             - DB_HOST=db

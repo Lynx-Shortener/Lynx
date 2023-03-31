@@ -60,6 +60,7 @@ For the docker installation: Fill in the variables in `docker-compose.yml`
 | ENABLE_REGISTRATION | Whether or not to allow registration. If not accounts exist you will be allowed to register either way. This first account will also be an admin account. | false |
 | DOMAIN | Your Lynx installation domain | http://example.com |
 | DEMO | Whether or not to enable the demo mode. In this mode features will be limited and links will be deleted after 10 minutes. | false |
+| USE_HTTPS | If your Lynx installation will be at https://mydomain.com - this does not provide an SSL certificate, it only changes how cookies are handled. | true |
 
 ## Installation
 
@@ -121,45 +122,7 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
 
 ### Docker Installation
 
-1. Create a docker-compose.yml file in a new directory with the following content:
-
-    ```yml
-    version: "3"
-    services:
-        db:
-            image: mongo
-            restart: always
-            environment:
-                - MONGO_INITDB_ROOT_USERNAME=
-                - MONGO_INITDB_ROOT_PASSWORD=
-            volumes:
-                - ./db:/data/db
-
-        lynx:
-            image: jackbailey/lynx
-            restart: always
-            ports:
-                - 3000:3000
-            depends_on:
-                - db
-            environment:
-                - NODE_ENV=production
-                - DB_USER=
-                - DB_PASSWORD=
-                - JWT_KEY=
-                - URL_LENGTH=8
-                - URL_SET=standard
-                - URL_ONLY_UNIQUE=false
-                - HOME_REDIRECT=/dash/overview
-                - FORCE_FRONTEND_REDIRECT=false
-                - ENABLE_REGISTRATION=false # First registration will always be allowed
-                - DOMAIN=http://example.com
-                - DEMO=false
-
-                ## DO NOT CHANGE THESE:
-                - DB_HOST=db
-                - DB_PORT=27017
-    ```
+1. Copy the default [docker-compose.yml](./docker-compose.yml).
 
 2. Set the environment variables above to your choosing. Follow the guide [here](#environment-variables)
 3. Start the container

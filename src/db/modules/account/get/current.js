@@ -1,14 +1,14 @@
 const jwt = require("jsonwebtoken");
 const Account = require("../../../models/account");
+const cookie = require("cookie");
 require("dotenv").config();
 
 module.exports = async (req, token) => {
 	
 	if (!token) {
-		const auth = req.headers.authorization;
-		if (!auth) return [null, { code: 400, message: "No authorization header" }];
-		if (auth.split(" ").length != 2) return [null, { code: 400, message: "Invalid token format" }];
-		token = auth.split(" ")[1];
+		const cookies = cookie.parse(req.headers.cookie || '');
+		if (!cookies.token) return [null, { code: 400, message: "No cookie token provided" }];
+		token = cookies.token;
 	}
 
 	try {

@@ -1,15 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const requireFields = require("./middleware/requireFields");
+const requireLogin = require("./middleware/requireLogin");
 const countAccounts = require("../db/modules/account/count");
 const createSecret = require("../db/modules/secret/create");
+const cookie = require("cookie");
 
 const {
 	login,
 	update: { email: updateEmail, password: updatePassword, username: updateUsername },
 	register,
 } = require("../db/modules/account");
-const requireLogin = require("./middleware/requireLogin");
 
 router.post("/login", requireFields(["username", "password"]), async (req, res) => {
 	try {
@@ -26,9 +27,11 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 				message: error.message,
 			});
 
+		res.setHeader("Set-Cookie", data.serialized);
+
 		return res.status(200).json({
 			success: true,
-			result: data,
+			message: "Successfully logged in!"
 		});
 	} catch (e) {
 		console.log(e);
@@ -38,6 +41,23 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 		});
 	}
 });
+
+router.delete("/me", requireLogin, async (req, res) => {
+	const serialized = cookie.serialize('token', null, {
+		httpOnly: true,
+		secure: process.env.USE_HTTPS === 'true',
+		sameSite: 'strict',
+		maxAge: -1,
+		path: '/',
+	});
+
+	res.setHeader('Set-Cookie', serialized);
+
+	res.status(200).json({
+		success: true,
+		message: "Successfully logged out"
+	});
+})
 
 router.post("/register", requireFields(["email", "username", "password"]), async (req, res) => {
 	const accountsCount = await countAccounts();
