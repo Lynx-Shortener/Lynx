@@ -42,7 +42,8 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 	}
 });
 
-router.delete("/me", requireLogin, async (req, res) => {
+// Logout
+router.delete("/me", requireLogin(true), async (req, res) => {
 	const serialized = cookie.serialize('token', null, {
 		httpOnly: true,
 		secure: process.env.USE_HTTPS === 'true',
