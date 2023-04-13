@@ -32,7 +32,7 @@ My functionality I wanted:
 -   Option to redirect the root path
 -   Simple UI
 
-A mirror of this repository is available at [git.jackbailey.cloud](https://git.jackbailey.cloud/jackbailey/Lynx)
+A mirror of this repository is available at [git.jackbailey.uk](https://git.jackbailey.uk/jackbailey/Lynx)
 
 ## Environment variables
 
