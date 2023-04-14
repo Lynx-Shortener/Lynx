@@ -3,9 +3,9 @@
 
 
 "@imengyu/vue3-context-menu@^1.1.5":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@imengyu/vue3-context-menu/-/vue3-context-menu-1.2.4.tgz#4b487cb54187ddda01d05d08d6b8101cc11688a4"
-  integrity sha512-TaXBPBMlUzuFFgCwokXaOM1FYv5JE5SbgFTfr30U2B7JUNfzoyw0uzY+WPHdD3vsM3+g/x5wh0m9E/jeo1opfQ==
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@imengyu/vue3-context-menu/-/vue3-context-menu-1.2.5.tgz#3573c3d2ce53c87336600655de1e380530dd2a2c"
+  integrity sha512-Kf04lnWTomyu7xIE9t9sAoSvP9dMfrAhuhFbDxMge/N9I07u2UywcS2Awin/5UjWTqCtqgTsaWguGGR9qCw8/g==
 
 "@mapbox/node-pre-gyp@^1.0.10":
   version "1.0.10"
