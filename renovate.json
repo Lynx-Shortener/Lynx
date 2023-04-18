@@ -9,5 +9,6 @@
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
-  ]
+  ],
+  "platformAutomerge": true
 }
