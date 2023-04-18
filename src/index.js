@@ -4,7 +4,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const bodyParser = require("body-parser");
 const path = require("path");
 const getLink = require("./db/modules/link/get");
-const backend = require("./modules/backend")
+const backend = require("./modules/backend");
 
 const mongoose = require("mongoose");
 const setup = require("./modules/setup");
@@ -21,6 +21,11 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(mongoSanitize({ allowDots: true }));
+
+app.use((req, res, next) => {
+	res.setHeader("Access-Control-Allow-Origin", process.env.CORS || "*");
+	next();
+});
 
 app.use("/api", require("./api"));
 
@@ -63,7 +68,7 @@ mongoose
 		setup().then(() => {
 			app.listen(listenPort, async () => {
 				console.log(`Listening on port ${listenPort}`);
-				backend.start()
+				backend.start();
 			});
 		});
 	})

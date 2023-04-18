@@ -61,6 +61,7 @@ For the docker installation: Fill in the variables in `docker-compose.yml`
 | DOMAIN | Your Lynx installation domain | http://example.com |
 | DEMO | Whether or not to enable the demo mode. In this mode features will be limited and links will be deleted after 10 minutes. | false |
 | USE_HTTPS | If your Lynx installation will be at https://mydomain.com - this does not provide an SSL certificate, it only changes how cookies are handled. | true |
+| CORS | Your allowed CORS origin(s), `*` for any (default). | \* |
 
 ## Installation
 

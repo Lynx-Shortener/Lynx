@@ -30,6 +30,7 @@ services:
             - DOMAIN=http://example.com
             - DEMO=false
             - USE_HTTPS=true
+            - CORS=*
 
             ## DO NOT CHANGE THESE:
             - DB_HOST=db
