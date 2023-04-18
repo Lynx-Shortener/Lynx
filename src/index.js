@@ -24,6 +24,7 @@ app.use(mongoSanitize({ allowDots: true }));
 
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", process.env.CORS || "*");
+	res.setHeader("Access-Control-Allow-Headers", "*");
 	next();
 });
 
