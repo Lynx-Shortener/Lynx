@@ -2,7 +2,7 @@
 	"name": "lynx",
 	"version": "1.0.0",
 	"main": "src/index.js",
-	"repository": "https://github.com/JackBailey/Lynx.git",
+	"repository": "https://github.com/Lynx-Shortener/Lynx.git",
 	"author": "Jack Bailey <jack@jackbailey.dev>",
 	"license": "MIT",
 	"private": false,

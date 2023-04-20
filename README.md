@@ -8,10 +8,10 @@
 <a href="https://hub.docker.com/r/jackbailey/lynx">
     <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/jackbailey/lynx?label=docker%20pulls">
 </a>
-<a href="https://github.com/JackBailey/Lynx">
+<a href="https://github.com/Lynx-Shortener/Lynx">
     <img alt="Image Size" src="https://img.shields.io/github/license/jackbailey/lynx?label=license">
 </a>
-<a href="https://github.com/JackBailey/Lynx">
+<a href="https://github.com/Lynx-Shortener/Lynx">
     <img alt="Lines of code" src="https://www.aschey.tech/tokei/github/JackBailey/Lynx?category=code">
 </a>
 </p>
@@ -32,7 +32,7 @@ My functionality I wanted:
 -   Option to redirect the root path
 -   Simple UI
 
-A mirror of this repository is available at [git.jackbailey.uk](https://git.jackbailey.uk/jackbailey/Lynx)
+A mirror of this repository is available at [git.jackbailey.uk](https://git.jackbailey.uk/Lynx-Shortener/Lynx)
 
 ## Environment variables
 
@@ -47,9 +47,9 @@ For the docker installation: Fill in the variables in `docker-compose.yml`
 | DB_HOST | The address of your mongodb database. | 127.0.0.1 |
 | DB_PORT | The port of your mongodb database. When using docker set this to `27017`. | 27017 |
 | DB_USER | Your mongodb database user. | admin |
-| DB_PASSWORD | Your mongodb password. Generate a secure one using a tool like[1password](https://1password.com/password-generator/). |  |
+| DB_PASSWORD | Your mongodb password. Generate a secure one using a tool like [1password](https://1password.com/password-generator/). |  |
 |  |  |  |
-| JWT_KEY | The key used to verify and sign login-sessions. Use a site like[1password](https://1password.com/password-generator/) to generate a 32 character password. |  |
+| JWT_KEY | The key used to verify and sign login-sessions. Use a site like [1password](https://1password.com/password-generator/) to generate a 32 character password. |  |
 |  |  |  |
 | URL_LENGTH | The length of your automatically generated slugs. | 8 |
 | URL_SET | The type of characters your automatically generated slug will use. | standard |
@@ -80,7 +80,7 @@ You need yarn (via npm), git and node installed for this guide. I recommend [pm2
 1. Clone this repo
 
     ```console
-    git clone https://github.com/JackBailey/Lynx
+    git clone https://github.com/Lynx-Shortener/Lynx
     ```
 
 2. Build the frontend
@@ -150,7 +150,7 @@ You're welcome to make a PR adding any features/fixing any issues and I'll merge
 
 ## TODO
 
-Visit the TODO list [here](https://github.com/users/JackBailey/projects/5/views/1)
+Visit the TODO list [here](https://github.com/orgs/Lynx-Shortener/projects/2)
 
 ## Naming
 
