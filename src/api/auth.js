@@ -241,10 +241,11 @@ router.post("/newSecret", requireLogin(true), async function (req, res) {
 
 // Get new TOTP token, if it doesn't already exist.
 router.get("/totp", requireLogin(true), async function (req, res) {
-	if (req.account?.totp?.enabled === true) return res.status(412).json({
-		success: false,
-		message: "2FA already enabled"
-	})
+	if (req.account?.totp?.enabled === true)
+		return res.status(412).json({
+			success: false,
+			message: "2FA already enabled",
+		});
 
 	const [secret, totpCreationFailure] = totp.create();
 	if (totpCreationFailure)
@@ -264,9 +265,9 @@ router.get("/totp", requireLogin(true), async function (req, res) {
 		success: true,
 		message: "TOTP secret successfully generated",
 		result: {
-			secret
-		}
-	})
+			secret,
+		},
+	});
 });
 
 module.exports = router;
