@@ -1,8 +1,8 @@
 const OTPAuth = require("otpauth");
 
-module.exports = async () => {
+module.exports = () => {
 	try {
-		const secret = new OTPAuth.Secret().base32;
+		const secret = new OTPAuth.Secret();
 		return [secret.base32, null];
 	} catch (e) {
 		console.log(e);

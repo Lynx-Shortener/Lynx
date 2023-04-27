@@ -5,6 +5,7 @@ const requireLogin = require("./middleware/requireLogin");
 const countAccounts = require("../db/modules/account/count");
 const createSecret = require("../db/modules/secret/create");
 const cookie = require("cookie");
+const totp = require("../db/modules/totp");
 
 const {
 	login,
@@ -236,6 +237,36 @@ router.post("/newSecret", requireLogin(true), async function (req, res) {
 			secret,
 		},
 	});
+});
+
+// Get new TOTP token, if it doesn't already exist.
+router.get("/totp", requireLogin(true), async function (req, res) {
+	if (req.account?.totp?.enabled === true) return res.status(412).json({
+		success: false,
+		message: "2FA already enabled"
+	})
+
+	const [secret, totpCreationFailure] = totp.create();
+	if (totpCreationFailure)
+		return res.status(totpCreationFailure.code).json({
+			success: false,
+			message: totpCreationFailure.message,
+		});
+
+	req.account.totp = {
+		secret,
+		enabled: false,
+	};
+
+	await req.account.save();
+
+	res.status(200).json({
+		success: true,
+		message: "TOTP secret successfully generated",
+		result: {
+			secret
+		}
+	})
 });
 
 module.exports = router;

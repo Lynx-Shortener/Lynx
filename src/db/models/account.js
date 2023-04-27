@@ -7,6 +7,11 @@ const schema = new mongoose.Schema({
 	email: String,
 	role: String, // admin || standard
 	secret: String,
+	totp: {
+		enabled: Boolean,
+		secret: String
+	},
+	backupCodes: [String]
 });
 
 const Account = mongoose.model("Account", schema);
