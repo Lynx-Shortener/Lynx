@@ -276,7 +276,7 @@ router.get("/totp", requireLogin(true), async function (req, res) {
 			message: "2FA already enabled",
 		});
 
-	const [secret, totpCreationFailure] = totp.create();
+	const [totpResult, totpCreationFailure] = totp.create(req.account.username);
 	if (totpCreationFailure)
 		return res.status(totpCreationFailure.code).json({
 			success: false,
@@ -284,7 +284,7 @@ router.get("/totp", requireLogin(true), async function (req, res) {
 		});
 
 	req.account.totp = {
-		secret,
+		secret: totpResult.secret,
 		enabled: false,
 	};
 
@@ -293,9 +293,7 @@ router.get("/totp", requireLogin(true), async function (req, res) {
 	res.status(200).json({
 		success: true,
 		message: "TOTP secret successfully generated",
-		result: {
-			secret,
-		},
+		result: totpResult,
 	});
 });
 
