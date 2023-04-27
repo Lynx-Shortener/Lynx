@@ -9,9 +9,9 @@ const schema = new mongoose.Schema({
 	secret: String,
 	totp: {
 		enabled: Boolean,
-		secret: String
+		secret: String,
+		backupCodes: [String],
 	},
-	backupCodes: [String]
 });
 
 const Account = mongoose.model("Account", schema);

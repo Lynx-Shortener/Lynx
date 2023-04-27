@@ -13,6 +13,19 @@ const {
 	register,
 } = require("../db/modules/account");
 
+const randomString = (length) => {
+	let alphabet = [...Array(26)].map((_, i) => String.fromCharCode(i + 97)).join("");
+	let characters = []
+		.concat(
+			alphabet.split(""),
+			alphabet.toUpperCase().split(""),
+			[...Array(26)].map((_, i) => i + 1)
+		)
+		.join("");
+
+	return [...Array(length)].map(() => characters.at(Math.floor(Math.random() * characters.length))).join("");
+};
+
 router.post("/login", requireFields(["username", "password"]), async (req, res) => {
 	try {
 		const { username, password } = req.body;
@@ -269,5 +282,52 @@ router.get("/totp", requireLogin(true), async function (req, res) {
 		},
 	});
 });
+
+router.post("/totp", requireLogin(true), requireFields(["token"]), async function (req, res) {
+	if (!req.account?.totp?.secret)
+		return res.status(412).json({
+			success: false,
+			message: "2FA process hasn't been started",
+		});
+
+	if (req.account?.totp?.enabled === true)
+		return res.status(412).json({
+			success: false,
+			message: "2FA already enabled, no need to verify",
+		});
+
+	if (typeof req.body.token !== "string" || req.body.token.length != 6)
+		return res.status(412).json({
+			success: false,
+			message: "Invalid token format",
+		});
+
+	const [totpVerificationSuccess, totpVerificationFailure] = totp.verify(req.account.username, req.account.totp.secret, req.body.token);
+
+	if (totpVerificationFailure)
+		return res.status(totpVerificationFailure.code).json({
+			success: false,
+			message: totpVerificationFailure.message,
+		});
+
+	const backupCodes = [...Array(6)].map(() => randomString(12));
+
+	req.account.totp = {
+		secret: req.account.totp.secret,
+		backupCodes,
+		enabled: true,
+	};
+
+	await req.account.save();
+
+	res.status(200).json({
+		success: true,
+		message: "2FA successfully enabled",
+		result: {
+			backupCodes,
+		},
+	});
+});
+
 
 module.exports = router;
