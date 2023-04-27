@@ -31,7 +31,7 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 
 		return res.status(200).json({
 			success: true,
-			message: "Successfully logged in!"
+			message: "Successfully logged in!",
 		});
 	} catch (e) {
 		console.log(e);
@@ -44,21 +44,21 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 
 // Logout
 router.delete("/me", requireLogin(true), async (req, res) => {
-	const serialized = cookie.serialize('token', null, {
+	const serialized = cookie.serialize("token", null, {
 		httpOnly: true,
-		secure: process.env.USE_HTTPS === 'true',
-		sameSite: 'strict',
+		secure: process.env.USE_HTTPS === "true",
+		sameSite: "strict",
 		maxAge: -1,
-		path: '/',
+		path: "/",
 	});
 
-	res.setHeader('Set-Cookie', serialized);
+	res.setHeader("Set-Cookie", serialized);
 
 	res.status(200).json({
 		success: true,
-		message: "Successfully logged out"
+		message: "Successfully logged out",
 	});
-})
+});
 
 router.post("/register", requireFields(["email", "username", "password"]), async (req, res) => {
 	const accountsCount = await countAccounts();
@@ -164,7 +164,7 @@ router.patch("/password", requireLogin(true), requireFields(["password", "newPas
 		});
 	try {
 		const account = req.account;
-		
+
 		const { password, newPassword } = req.body;
 
 		const [updateResponse, updateError] = await updatePassword({
