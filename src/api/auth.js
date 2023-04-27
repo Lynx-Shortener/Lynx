@@ -330,4 +330,45 @@ router.post("/totp", requireLogin(true), requireFields(["token"]), async functio
 });
 
 
+router.post("/totp/recover", requireFields(["backupCode", "username", "password"]), async function (req, res) {
+	const { username, password, backupCode } = req.body;
+
+	const [data, error] = await login({
+		username,
+		password,
+	});
+
+	if (error)
+		return res.status(error.code).json({
+			success: false,
+			message: error.message,
+		});
+
+	const account = data.account;
+
+	if (!account.totp.enabled)
+		return res.status(412).json({
+			success: false,
+			message: "2FA is not enabled",
+		});
+
+	if (!account.totp.backupCodes.includes(backupCode))
+		return res.status(403).json({
+			success: false,
+			message: "Invalid backup code",
+		});
+
+	account.totp.enabled = false;
+	account.totp.backupCodes = [];
+	account.totp.secret = null;
+	account.save();
+
+	res.setHeader("Set-Cookie", data.serialized);
+
+	res.json({
+		success: true,
+		message: "2FA has been disabled and you have been logged in",
+	});
+});
+
 module.exports = router;
