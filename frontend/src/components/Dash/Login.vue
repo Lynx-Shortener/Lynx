@@ -4,6 +4,7 @@
 		<FormKit type="form" submit-label="Login" :submit-attrs="{ 'data-type': 'primary' }" @submit="login" :actions="false">
 			<FormKit type="text" label="Your username" v-model="logindata.username" validation="required:trim" />
 			<FormKit type="password" label="Your password" v-model="logindata.password" validation="required:trim" />
+			<FormKit type="text" label="Your 2FA token" v-model="logindata.token" validation="number:required|length:6,6" v-if="requires2FA"/>
 			<FormKit type="submit" label="Login" primary></FormKit>
 			<p>{{ response }}</p>
 		</FormKit>
@@ -21,8 +22,10 @@ export default {
 			logindata: {
 				username: "",
 				password: "",
+				token: ""
 			},
 			response: null,
+			requires2FA: false
 		};
 	},
 	methods: {
@@ -35,7 +38,10 @@ export default {
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
 				this.$router.push("/dash");
 			} else {
-				this.response = data.message;
+				this.requires2FA = data.message === "2FA token required"
+				if (!this.requires2FA) {
+					this.response = data.message;
+				}
 			}
 		},
 		gotoRegister() {
