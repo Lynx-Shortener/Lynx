@@ -28,7 +28,7 @@ const randomString = (length) => {
 
 router.post("/login", requireFields(["username", "password"]), async (req, res) => {
 	try {
-		const { username, password } = req.body;
+		const { username, password, token } = req.body;
 
 		const [data, error] = await login({
 			username,
@@ -40,6 +40,22 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 				success: false,
 				message: error.message,
 			});
+
+		if (data.account.totp.enabled) {
+			if (!token)
+				return res.status(403).json({
+					success: false,
+					message: "2FA token required",
+				});
+
+			const [totpVerificationSuccess, totpVerificationFailure] = totp.verify(username, data.account.totp.secret, token);
+
+			if (totpVerificationFailure)
+				return res.status(totpVerificationFailure.code).json({
+					success: false,
+					message: totpVerificationFailure.message,
+				});
+		}
 
 		res.setHeader("Set-Cookie", data.serialized);
 
