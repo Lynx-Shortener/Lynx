@@ -371,4 +371,30 @@ router.post("/totp/recover", requireFields(["backupCode", "username", "password"
 	});
 });
 
+router.delete("/totp", requireLogin(true), requireFields(["token"]), async function (req, res) {
+	if (!req.account.totp.enabled)
+		return res.status(412).json({
+			success: false,
+			message: "2FA is not enabled",
+		});
+
+	const [totpVerificationSuccess, totpVerificationFailure] = totp.verify(req.account.username, req.account.totp.secret, req.body.token);
+
+	if (totpVerificationFailure)
+		return res.status(totpVerificationFailure.code).json({
+			success: false,
+			message: totpVerificationFailure.message,
+		});
+
+	req.account.totp.enabled = false;
+	req.account.totp.backupCodes = [];
+	req.account.totp.secret = null;
+	await req.account.save();
+
+	res.json({
+		success: true,
+		message: "2FA has been successfully disabled",
+	});
+});
+
 module.exports = router;
