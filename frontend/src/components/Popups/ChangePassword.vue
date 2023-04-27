@@ -2,9 +2,9 @@
 	<div class="changePassword">
 		<h2>Change Password</h2>
 		<FormKit type="form" :actions="false" @submit="changePassword">
-			<FormKit type="password" label="Current Password" v-model="newData.password" />
-			<FormKit type="password" label="New Password" v-model="newData.newPassword" />
-			<FormKit type="password" label="New Password Confirmation" v-model="newData.newPasswordConfirmation" />
+			<FormKit type="password" label="Current Password" v-model="newData.password" autocomplete="current-password" />
+			<FormKit type="password" label="New Password" v-model="newData.newPassword" autocomplete="new-password" />
+			<FormKit type="password" label="New Password Confirmation" v-model="newData.newPasswordConfirmation" autocomplete="new-password" />
 			<FormKit type="submit" label="Change Password" primary />
 			<p>{{ response }}</p>
 		</FormKit>

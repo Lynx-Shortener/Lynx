@@ -2,8 +2,8 @@
 	<div class="login">
 		<h2>Login</h2>
 		<FormKit type="form" submit-label="Login" :submit-attrs="{ 'data-type': 'primary' }" @submit="login" :actions="false">
-			<FormKit type="text" label="Your username" v-model="logindata.username" validation="required:trim" />
-			<FormKit type="password" label="Your password" v-model="logindata.password" validation="required:trim" />
+			<FormKit type="text" label="Your username" v-model="logindata.username" validation="required:trim" autocomplete="username" />
+			<FormKit type="password" label="Your password" v-model="logindata.password" validation="required:trim" autocomplete="current-password" />
 			<FormKit type="submit" label="Login" primary></FormKit>
 			<p>{{ response }}</p>
 		</FormKit>

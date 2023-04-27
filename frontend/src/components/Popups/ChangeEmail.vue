@@ -2,8 +2,8 @@
 	<div class="changeEmail">
 		<h2>Change Email</h2>
 		<FormKit type="form" :actions="false" @submit="changeEmail">
-			<FormKit type="email" label="New Email" v-model="newData.newEmail" />
-			<FormKit type="password" label="Password" v-model="newData.password" />
+			<FormKit type="email" label="New Email" v-model="newData.newEmail" autocomplete="email" />
+			<FormKit type="password" label="Password" v-model="newData.password" autocomplete="current-password" />
 			<FormKit type="submit" label="Change Email" primary />
 			<p>{{ response }}</p>
 		</FormKit>
