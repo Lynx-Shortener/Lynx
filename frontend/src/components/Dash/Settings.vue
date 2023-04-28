@@ -23,7 +23,7 @@
 					<div @click="changeSetting('Password')" :disabled="config.data.demo">***********</div>
 				</div>
 				<div class="input totp">
-					<p>2FA settings</p>
+					<label>2FA settings</label>
 					<button @click="toggleTOTP">{{ account.account.totp ? "Disable" : "Enable" }} 2FA</button>
 				</div>
 			</div>
@@ -90,6 +90,8 @@ export default {
 			const totpEnabled = this.account.account.totp;
 			if (!totpEnabled) {
 				this.popups.addPopup("EnableTOTP", {});
+			} else {
+				this.popups.addPopup("DisableTOTP", {});
 			}
 
 		},
