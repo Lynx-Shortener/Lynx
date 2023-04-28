@@ -5,6 +5,7 @@
 			<FormKit type="text" label="Your username" v-model="logindata.username" validation="required:trim" />
 			<FormKit type="password" label="Your password" v-model="logindata.password" validation="required:trim" />
 			<FormKit type="text" label="Your 2FA token" v-model="logindata.token" validation="number:required|length:6,6" v-if="requires2FA"/>
+			<a @click="lostTOTP" v-if="requires2FA" class="lostTOTP">Lost your authenticator?</a>
 			<FormKit type="submit" label="Login" primary></FormKit>
 			<p>{{ response }}</p>
 		</FormKit>
@@ -15,10 +16,12 @@
 <script>
 import { useAccountStore } from "../../stores/account";
 import { useConfig } from "../../stores/config";
+import { usePopups } from '../../stores/popups';
 export default {
 	data() {
 		return {
 			config: useConfig(),
+			popups: usePopups(),
 			logindata: {
 				username: "",
 				password: "",
@@ -50,6 +53,9 @@ export default {
 				query: this.$route.query,
 			});
 		},
+		lostTOTP() {
+			this.popups.addPopup("LostTOTP", this.logindata);
+		}
 	},
 	mounted() {
 		if (this.config.data.demo) {
@@ -77,6 +83,12 @@ export default {
 	}
 	> a {
 		margin-top: 0.5rem;
+		cursor: pointer;
+	}
+	.lostTOTP {
+		text-align: left;
+		font-size: 0.8rem;
+		margin-top: 0;
 		cursor: pointer;
 	}
 	@media screen and (max-width: 768px) {
