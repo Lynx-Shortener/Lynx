@@ -67,6 +67,7 @@ export default {
 				this.response = totpResponse.message;
             } else {
 				this.popups.addPopup("BackupCodes", totpResponse.result);
+				this.account.getAccount();
             }
         },
 	},
