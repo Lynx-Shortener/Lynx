@@ -9,5 +9,7 @@
   * [ ] Username updating
   * [ ] Email updating
   * [ ] Password updating
-* [ ] Setting up 2FA
-* [ ] Verifying 2FA
+* [X] Setting up 2FA
+* [X] Verifying 2FA
+* [ ] Using backup codes
+* [ ] Disabling 2FA
