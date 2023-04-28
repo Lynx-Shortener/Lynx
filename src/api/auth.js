@@ -129,7 +129,14 @@ router.post("/register", requireFields(["email", "username", "password"]), async
 
 router.get("/me", requireLogin(), async (req, res) => {
 	try {
-		const { email, id, username, role, secret } = req.account;
+		const {
+			email,
+			id,
+			username,
+			role,
+			secret,
+			totp: { enabled: totpEnabled },
+		} = req.account;
 
 		return res.status(200).send({
 			success: true,
@@ -139,6 +146,7 @@ router.get("/me", requireLogin(), async (req, res) => {
 				username,
 				role,
 				secret,
+				totp: totpEnabled === true,
 			},
 		});
 	} catch (e) {
