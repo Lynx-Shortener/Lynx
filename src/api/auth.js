@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const requireFields = require("./middleware/requireFields");
 const requireLogin = require("./middleware/requireLogin");
+const requireTOTP = require("./middleware/requireTOTP");
 const countAccounts = require("../db/modules/account/count");
 const createSecret = require("../db/modules/secret/create");
 const cookie = require("cookie");
@@ -158,7 +159,7 @@ router.get("/me", requireLogin(), async (req, res) => {
 	}
 });
 
-router.patch("/email", requireLogin(true), requireFields(["newEmail", "password"]), async (req, res) => {
+router.patch("/email", requireLogin(true), requireFields(["newEmail", "password"]), requireTOTP, async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,
@@ -194,7 +195,7 @@ router.patch("/email", requireLogin(true), requireFields(["newEmail", "password"
 	}
 });
 
-router.patch("/password", requireLogin(true), requireFields(["password", "newPassword"]), async (req, res) => {
+router.patch("/password", requireLogin(true), requireFields(["password", "newPassword"]), requireTOTP, async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,
@@ -230,7 +231,7 @@ router.patch("/password", requireLogin(true), requireFields(["password", "newPas
 	}
 });
 
-router.patch("/username", requireLogin(true), requireFields(["newUsername", "password"]), async (req, res) => {
+router.patch("/username", requireLogin(true), requireFields(["newUsername", "password"]), requireTOTP, async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,

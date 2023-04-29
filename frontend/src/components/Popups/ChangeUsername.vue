@@ -4,6 +4,7 @@
 		<FormKit type="form" :actions="false" @submit="changeUsername">
 			<FormKit type="text" label="New Username" v-model="newData.newUsername" />
 			<FormKit type="password" label="Password" v-model="newData.password" />
+			<FormKit type="text" label="Your 2FA token" v-model="newData.token" validation="number:required|length:6,6" v-if="account.account.totp"/>
 			<FormKit type="submit" label="Change Username" primary />
 			<p>{{ response }}</p>
 		</FormKit>
@@ -21,19 +22,16 @@ export default {
 			newData: {
 				newUsername: "",
 				password: "",
+				token: ""
 			},
 			response: "",
 		};
 	},
 	methods: {
 		async changeUsername() {
-			const { newUsername, password } = this.newData;
 			const response = await this.account.fetch("/auth/username", {
 				method: "PATCH",
-				body: JSON.stringify({
-					newUsername,
-					password,
-				}),
+				body: JSON.stringify(this.newData),
 			});
 
 			if (!response.success) {

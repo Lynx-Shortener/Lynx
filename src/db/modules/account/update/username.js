@@ -15,7 +15,13 @@ module.exports = async ({ account, newUsername, password }) => {
 	account.username = newUsername;
 	await account.save();
 
-	const { email, id, username } = account;
+	const {
+		email,
+		id,
+		username,
+		totp: { enabled: totp },
+		secret,
+	} = account;
 
 	return [
 		{
@@ -24,6 +30,8 @@ module.exports = async ({ account, newUsername, password }) => {
 				email,
 				id,
 				username,
+				totp,
+				secret,
 			},
 		},
 		null,
