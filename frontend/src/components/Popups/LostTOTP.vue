@@ -25,7 +25,6 @@ export default {
 	},
 	methods: {
 		async recover() {
-			console.log(this.data)
 			const payload = {
 				username: this.data.username,
 				password: this.data.password,
@@ -39,9 +38,10 @@ export default {
             if (!totpResponse.success) {
 				this.response = totpResponse.message;
             } else {
+				this.popups.closeSelf(this);
 				this.account.getAccount();
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
-				this.$router.push("/dash");
+				this.$router.push("/dash/settings");
             }
         },
 	}

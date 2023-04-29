@@ -11,5 +11,5 @@
   * [ ] Password updating
 * [X] Setting up 2FA
 * [X] Verifying 2FA
-* [ ] Using backup codes
-* [ ] Disabling 2FA
+* [X] Using backup codes
+* [X] Disabling 2FA
