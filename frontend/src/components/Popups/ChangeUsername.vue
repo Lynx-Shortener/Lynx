@@ -2,8 +2,8 @@
 	<div class="changeUsername">
 		<h2>Change Username</h2>
 		<FormKit type="form" :actions="false" @submit="changeUsername">
-			<FormKit type="text" label="New Username" v-model="newData.newUsername" />
-			<FormKit type="password" label="Password" v-model="newData.password" />
+			<FormKit type="text" label="New Username" v-model="newData.newUsername" autocomplete="username" />
+			<FormKit type="password" label="Password" v-model="newData.password" autocomplete="current-password" />
 			<FormKit type="text" label="Your 2FA token" v-model="newData.token" validation="number:required|length:6,6" v-if="account.account.totp"/>
 			<FormKit type="submit" label="Change Username" primary />
 			<p>{{ response }}</p>
