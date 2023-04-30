@@ -73,6 +73,7 @@ module.exports = async ({ username, password }) => {
 	return [
 		{
 			serialized,
+			account,
 		},
 		null,
 	];

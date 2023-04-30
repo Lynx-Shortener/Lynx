@@ -4,6 +4,7 @@
 		<FormKit type="form" :actions="false" @submit="changeEmail">
 			<FormKit type="email" label="New Email" v-model="newData.newEmail" autocomplete="email" />
 			<FormKit type="password" label="Password" v-model="newData.password" autocomplete="current-password" />
+			<FormKit type="text" label="Your 2FA token" v-model="newData.token" validation="number:required|length:6,6" v-if="account.account.totp"  autocomplete="one-time-code" />
 			<FormKit type="submit" label="Change Email" primary />
 			<p>{{ response }}</p>
 		</FormKit>
@@ -21,19 +22,16 @@ export default {
 			newData: {
 				newEmail: "",
 				password: "",
+				token: ""
 			},
 			response: "",
 		};
 	},
 	methods: {
 		async changeEmail() {
-			const { newEmail, password } = this.newData;
 			const response = await this.account.fetch("/auth/email", {
 				method: "PATCH",
-				body: JSON.stringify({
-					newEmail,
-					password,
-				}),
+				body: JSON.stringify(this.newData),
 			});
 
 			if (!response.success) {

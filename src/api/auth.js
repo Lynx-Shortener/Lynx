@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 const requireFields = require("./middleware/requireFields");
 const requireLogin = require("./middleware/requireLogin");
+const requireTOTP = require("./middleware/requireTOTP");
 const countAccounts = require("../db/modules/account/count");
 const createSecret = require("../db/modules/secret/create");
 const cookie = require("cookie");
+const totp = require("../db/modules/totp");
 
 const {
 	login,
@@ -12,9 +14,22 @@ const {
 	register,
 } = require("../db/modules/account");
 
+const randomString = (length) => {
+	let alphabet = [...Array(26)].map((_, i) => String.fromCharCode(i + 97)).join("");
+	let characters = []
+		.concat(
+			alphabet.split(""),
+			alphabet.toUpperCase().split(""),
+			[...Array(26)].map((_, i) => i + 1)
+		)
+		.join("");
+
+	return [...Array(length)].map(() => characters.at(Math.floor(Math.random() * characters.length))).join("");
+};
+
 router.post("/login", requireFields(["username", "password"]), async (req, res) => {
 	try {
-		const { username, password } = req.body;
+		const { username, password, token } = req.body;
 
 		const [data, error] = await login({
 			username,
@@ -27,11 +42,27 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 				message: error.message,
 			});
 
+		if (data.account.totp.enabled) {
+			if (!token)
+				return res.status(403).json({
+					success: false,
+					message: "2FA token required",
+				});
+
+			const [totpVerificationSuccess, totpVerificationFailure] = totp.verify(username, data.account.totp.secret, token);
+
+			if (totpVerificationFailure)
+				return res.status(totpVerificationFailure.code).json({
+					success: false,
+					message: totpVerificationFailure.message,
+				});
+		}
+
 		res.setHeader("Set-Cookie", data.serialized);
 
 		return res.status(200).json({
 			success: true,
-			message: "Successfully logged in!"
+			message: "Successfully logged in!",
 		});
 	} catch (e) {
 		console.log(e);
@@ -44,21 +75,21 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 
 // Logout
 router.delete("/me", requireLogin(true), async (req, res) => {
-	const serialized = cookie.serialize('token', null, {
+	const serialized = cookie.serialize("token", null, {
 		httpOnly: true,
-		secure: process.env.USE_HTTPS === 'true',
-		sameSite: 'strict',
+		secure: process.env.USE_HTTPS === "true",
+		sameSite: "strict",
 		maxAge: -1,
-		path: '/',
+		path: "/",
 	});
 
-	res.setHeader('Set-Cookie', serialized);
+	res.setHeader("Set-Cookie", serialized);
 
 	res.status(200).json({
 		success: true,
-		message: "Successfully logged out"
+		message: "Successfully logged out",
 	});
-})
+});
 
 router.post("/register", requireFields(["email", "username", "password"]), async (req, res) => {
 	const accountsCount = await countAccounts();
@@ -99,7 +130,14 @@ router.post("/register", requireFields(["email", "username", "password"]), async
 
 router.get("/me", requireLogin(), async (req, res) => {
 	try {
-		const { email, id, username, role, secret } = req.account;
+		const {
+			email,
+			id,
+			username,
+			role,
+			secret,
+			totp: { enabled: totpEnabled },
+		} = req.account;
 
 		return res.status(200).send({
 			success: true,
@@ -109,6 +147,7 @@ router.get("/me", requireLogin(), async (req, res) => {
 				username,
 				role,
 				secret,
+				totp: totpEnabled === true,
 			},
 		});
 	} catch (e) {
@@ -120,7 +159,7 @@ router.get("/me", requireLogin(), async (req, res) => {
 	}
 });
 
-router.patch("/email", requireLogin(true), requireFields(["newEmail", "password"]), async (req, res) => {
+router.patch("/email", requireLogin(true), requireFields(["newEmail", "password"]), requireTOTP, async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,
@@ -156,7 +195,7 @@ router.patch("/email", requireLogin(true), requireFields(["newEmail", "password"
 	}
 });
 
-router.patch("/password", requireLogin(true), requireFields(["password", "newPassword"]), async (req, res) => {
+router.patch("/password", requireLogin(true), requireFields(["password", "newPassword"]), requireTOTP, async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,
@@ -164,7 +203,7 @@ router.patch("/password", requireLogin(true), requireFields(["password", "newPas
 		});
 	try {
 		const account = req.account;
-		
+
 		const { password, newPassword } = req.body;
 
 		const [updateResponse, updateError] = await updatePassword({
@@ -192,7 +231,7 @@ router.patch("/password", requireLogin(true), requireFields(["password", "newPas
 	}
 });
 
-router.patch("/username", requireLogin(true), requireFields(["newUsername", "password"]), async (req, res) => {
+router.patch("/username", requireLogin(true), requireFields(["newUsername", "password"]), requireTOTP, async (req, res) => {
 	if (process.env.DEMO === "true")
 		return res.status(406).json({
 			success: false,
@@ -235,6 +274,149 @@ router.post("/newSecret", requireLogin(true), async function (req, res) {
 		result: {
 			secret,
 		},
+	});
+});
+
+// Get new TOTP token, if it doesn't already exist.
+router.get("/totp", requireLogin(true), async function (req, res) {
+	if (req.account?.totp?.enabled === true)
+		return res.status(412).json({
+			success: false,
+			message: "2FA already enabled",
+		});
+
+	const [totpResult, totpCreationFailure] = totp.create(req.account.username);
+	if (totpCreationFailure)
+		return res.status(totpCreationFailure.code).json({
+			success: false,
+			message: totpCreationFailure.message,
+		});
+
+	req.account.totp = {
+		secret: totpResult.secret,
+		enabled: false,
+	};
+
+	await req.account.save();
+
+	res.status(200).json({
+		success: true,
+		message: "TOTP secret successfully generated",
+		result: totpResult,
+	});
+});
+
+router.post("/totp", requireLogin(true), requireFields(["token"]), async function (req, res) {
+	if (!req.account?.totp?.secret)
+		return res.status(412).json({
+			success: false,
+			message: "2FA process hasn't been started",
+		});
+
+	if (req.account?.totp?.enabled === true)
+		return res.status(412).json({
+			success: false,
+			message: "2FA already enabled, no need to verify",
+		});
+
+	if (typeof req.body.token !== "string" || req.body.token.length != 6)
+		return res.status(412).json({
+			success: false,
+			message: "Invalid token format",
+		});
+
+	const [totpVerificationSuccess, totpVerificationFailure] = totp.verify(req.account.username, req.account.totp.secret, req.body.token);
+
+	if (totpVerificationFailure)
+		return res.status(totpVerificationFailure.code).json({
+			success: false,
+			message: totpVerificationFailure.message,
+		});
+
+	const backupCodes = [...Array(6)].map(() => randomString(12));
+
+	req.account.totp = {
+		secret: req.account.totp.secret,
+		backupCodes,
+		enabled: true,
+	};
+
+	await req.account.save();
+
+	res.status(200).json({
+		success: true,
+		message: "2FA successfully enabled",
+		result: {
+			backupCodes,
+		},
+	});
+});
+
+
+router.post("/totp/recover", requireFields(["backupCode", "username", "password"]), async function (req, res) {
+	const { username, password, backupCode } = req.body;
+
+	const [data, error] = await login({
+		username,
+		password,
+	});
+
+	if (error)
+		return res.status(error.code).json({
+			success: false,
+			message: error.message,
+		});
+
+	const account = data.account;
+
+	if (!account.totp.enabled)
+		return res.status(412).json({
+			success: false,
+			message: "2FA is not enabled",
+		});
+
+	if (!account.totp.backupCodes.includes(backupCode))
+		return res.status(403).json({
+			success: false,
+			message: "Invalid backup code",
+		});
+
+	account.totp.enabled = false;
+	account.totp.backupCodes = [];
+	account.totp.secret = null;
+	account.save();
+
+	res.setHeader("Set-Cookie", data.serialized);
+
+	res.json({
+		success: true,
+		message: "2FA has been disabled and you have been logged in",
+	});
+});
+
+router.delete("/totp", requireLogin(true), requireFields(["token"]), async function (req, res) {
+	if (!req.account.totp.enabled)
+		return res.status(412).json({
+			success: false,
+			message: "2FA is not enabled",
+		});
+
+	const [totpVerificationSuccess, totpVerificationFailure] = totp.verify(req.account.username, req.account.totp.secret, req.body.token);
+
+	if (totpVerificationFailure)
+		return res.status(totpVerificationFailure.code).json({
+			success: false,
+			message: totpVerificationFailure.message,
+		});
+
+	req.account.totp.enabled = false;
+	req.account.totp.backupCodes = [];
+	req.account.totp.secret = null;
+	await req.account.save();
+
+	res.json({
+		success: true,
+		message: "2FA has been successfully disabled",
 	});
 });
 

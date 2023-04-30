@@ -12,9 +12,19 @@
 					<label>Username</label>
 					<div @click="changeSetting('Username')" :disabled="config.data.demo">{{ account.account.username }}</div>
 				</div>
+			</div>
+		</div>
+		<div class="security">
+			<h2>Security</h2>
+			<p>Here you can change security related settings such as changing your password or enabling 2FA.</p>
+			<div class="inputs">
 				<div class="input">
 					<label>Password</label>
 					<div @click="changeSetting('Password')" :disabled="config.data.demo">***********</div>
+				</div>
+				<div class="input totp">
+					<label>2FA settings</label>
+					<button @click="toggleTOTP">{{ account.account.totp ? "Disable" : "Enable" }} 2FA</button>
 				</div>
 			</div>
 		</div>
@@ -74,6 +84,16 @@ export default {
 		changeSetting(name) {
 			if (this.config.data.demo) return;
 			this.popups.addPopup("Change" + name, {});
+		},
+		async toggleTOTP () {
+			if (this.config.data.demo) return;
+			const totpEnabled = this.account.account.totp;
+			if (!totpEnabled) {
+				this.popups.addPopup("EnableTOTP", {});
+			} else {
+				this.popups.addPopup("DisableTOTP", {});
+			}
+
 		},
 		async getConfig() {
 			const data = await this.account.fetch("/sharex/config", {
@@ -147,6 +167,11 @@ export default {
 			gap: 2rem;
 			width: max-content;
 			.input {
+				&.totp {
+					p {
+						margin-bottom: 0.5rem;
+					}
+				}
 				&:not(.secret) {
 					width: 100%;
 					div {
