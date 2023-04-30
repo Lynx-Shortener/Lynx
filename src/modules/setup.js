@@ -12,7 +12,7 @@ module.exports = async () => {
 			const [account, error] = await Account.createAccount({
 				username: "demo",
 				password: "demo",
-				role: "user",
+				role: "standard",
 				email: "demo@example.com",
 			});
 			if (account) {

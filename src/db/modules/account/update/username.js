@@ -1,4 +1,5 @@
 const checkPassword = require("../../password/check");
+const returnAccount = require("../../../../modules/returnAccount");
 require("dotenv").config();
 
 module.exports = async ({ account, newUsername, password }) => {
@@ -15,24 +16,12 @@ module.exports = async ({ account, newUsername, password }) => {
 	account.username = newUsername;
 	await account.save();
 
-	const {
-		email,
-		id,
-		username,
-		totp: { enabled: totp },
-		secret,
-	} = account;
+	const accountDetails = returnAccount(account);
 
 	return [
 		{
 			message: "Username successfully updated",
-			account: {
-				email,
-				id,
-				username,
-				totp,
-				secret,
-			},
+			account: accountDetails,
 		},
 		null,
 	];

@@ -7,6 +7,7 @@ const countAccounts = require("../db/modules/account/count");
 const createSecret = require("../db/modules/secret/create");
 const cookie = require("cookie");
 const totp = require("../db/modules/totp");
+const returnAccount = require("../modules/returnAccount");
 
 const {
 	login,
@@ -130,25 +131,11 @@ router.post("/register", requireFields(["email", "username", "password"]), async
 
 router.get("/me", requireLogin(), async (req, res) => {
 	try {
-		const {
-			email,
-			id,
-			username,
-			role,
-			secret,
-			totp: { enabled: totpEnabled },
-		} = req.account;
+		const account = returnAccount(req.account);
 
 		return res.status(200).send({
 			success: true,
-			result: {
-				email,
-				id,
-				username,
-				role,
-				secret,
-				totp: totpEnabled === true,
-			},
+			result: account,
 		});
 	} catch (e) {
 		console.log(e);
