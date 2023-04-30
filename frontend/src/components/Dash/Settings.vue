@@ -24,7 +24,7 @@
 				</div>
 				<div class="input totp">
 					<label>2FA settings</label>
-					<button @click="toggleTOTP">{{ account.account.totp ? "Disable" : "Enable" }} 2FA</button>
+					<button @click="toggleTOTP" :disabled="config.data.demo">{{ account.account.totp ? "Disable" : "Enable" }} 2FA</button>
 				</div>
 			</div>
 		</div>
