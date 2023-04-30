@@ -3,7 +3,7 @@
 		<h2>Lost your Authenticator App?</h2>
 		<p class="subheader">Enter one of your backup codes below to disable 2FA and get back into your account</p>
 		<FormKit type="form" submit-label="Recover Account" :submit-attrs="{ 'button-type': 'primary' }" @submit="recover">
-			<FormKit type="text" label="Your Backup Code" v-model="backupCode" validation="alphanumeric:required|length:12,12"/>
+			<FormKit type="text" label="Your Backup Code" v-model="backupCode" validation="alphanumeric:required|length:12,12" autocomplete="off"/>
 			<p>{{ response }}</p>
 		</FormKit>
 	</div>

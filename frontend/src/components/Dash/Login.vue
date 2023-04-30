@@ -4,7 +4,7 @@
 		<FormKit type="form" submit-label="Login" :submit-attrs="{ 'data-type': 'primary' }" @submit="login" :actions="false">
 			<FormKit type="text" label="Your username" v-model="logindata.username" validation="required:trim" autocomplete="username" />
 			<FormKit type="password" label="Your password" v-model="logindata.password" validation="required:trim"  autocomplete="current-password" />
-			<FormKit type="text" label="Your 2FA token" v-model="logindata.token" validation="number:required|length:6,6" v-if="requires2FA"/>
+			<FormKit type="text" label="Your 2FA token" v-model="logindata.token" validation="number:required|length:6,6" v-if="requires2FA" autocomplete="one-time-code" />
 			<a @click="lostTOTP" v-if="requires2FA" class="lostTOTP">Lost your authenticator?</a>
 			<FormKit type="submit" label="Login" primary></FormKit>
 			<p>{{ response }}</p>

@@ -2,7 +2,7 @@
 	<div class="disableTOTP">
 		<h2>Disable 2FA</h2>
 		<FormKit type="form" submit-label="Disable 2FA" :submit-attrs="{ 'button-type': 'primary' }" @submit="disable">
-			<FormKit type="text" label="Your 2FA token" v-model="token" validation="number:required|length:6,6"/>
+			<FormKit type="text" label="Your 2FA token" v-model="token" validation="number:required|length:6,6"  autocomplete="one-time-code" />
 			<p>{{ response }}</p>
 		</FormKit>
 	</div>

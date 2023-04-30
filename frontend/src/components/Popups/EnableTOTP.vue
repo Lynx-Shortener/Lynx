@@ -6,7 +6,7 @@
 			{{ totpSecret }}
 		</p>
 		<FormKit type="form" submit-label="Verify Token" :submit-attrs="{ 'button-type': 'primary' }" @submit="verify">
-			<FormKit type="text" label="Your 2FA token" v-model="token" validation="number:required|length:6,6"/>
+			<FormKit type="text" label="Your 2FA token" v-model="token" validation="number:required|length:6,6" autocomplete="one-time-code" />
 			<p>{{ response }}</p>
 		</FormKit>
 	</div>
