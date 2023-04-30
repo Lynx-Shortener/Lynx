@@ -27,7 +27,7 @@ const regenSecrets = async () => {
 const oldLinkDeletionJob = new CronJob({
 	cronTime: "0 * * * * *",
 	onTick: () => {
-		if (process.env.DEMO === "true") removeDemoLinks();
+		removeDemoLinks();
 	},
 	runOnInit: true,
 	timeZone: "UTC",
@@ -36,7 +36,7 @@ const oldLinkDeletionJob = new CronJob({
 const secretRegenJob = new CronJob({
 	cronTime: "0 0 * * * *",
 	onTick: () => {
-		if (process.env.DEMO === "true") regenSecrets();
+		regenSecrets();
 	},
 	runOnInit: true,
 	timeZone: "UTC",
@@ -44,6 +44,8 @@ const secretRegenJob = new CronJob({
 
 module.exports.start = () => {
 	console.log("Backend started!");
-	oldLinkDeletionJob.start();
-	secretRegenJob.start();
+	if (process.env.DEMO == "true") {
+		oldLinkDeletionJob.start();
+		secretRegenJob.start();
+	}
 };
