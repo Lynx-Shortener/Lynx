@@ -522,6 +522,11 @@ postcss@^8.4.21:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+qrcode.vue@^3.0.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/qrcode.vue/-/qrcode.vue-3.4.0.tgz#4513ff1a4734cb7184086c2fd439f0d462c6d281"
+  integrity sha512-4XeImbv10Fin16Fl2DArCMhGyAdvIg2jb7vDT+hZiIAMg/6H6mz9nUZr/dR8jBcun5VzNzkiwKhiqOGbloinwA==
+
 readdirp@~3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-3.6.0.tgz#74a370bd857116e245b29cc97340cd431a02a6c7"

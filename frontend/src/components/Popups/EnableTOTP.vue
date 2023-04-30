@@ -1,9 +1,9 @@
 <template>
 	<div class="enableTOTP">
 		<h2>Enable 2FA</h2>
-        <div id="qrcode"></div>
+		<qrcode-vue :value="totp.uri" level="L"/>
 		<p class="totpSecret">
-			{{ totpSecret }}
+			{{ totp.secret }}
 		</p>
 		<FormKit type="form" submit-label="Verify Token" :submit-attrs="{ 'button-type': 'primary' }" @submit="verify">
 			<FormKit type="text" label="Your 2FA token" v-model="token" validation="number:required|length:6,6" autocomplete="one-time-code" />
@@ -15,14 +15,21 @@
 <script>
 import { useAccountStore } from '../../stores/account';
 import { usePopups } from "../../stores/popups";
+import QrcodeVue from 'qrcode.vue';
 
 export default {
 	props: [],
+	components: {
+		QrcodeVue
+	},
 	data() {
 		return {
 			popups: usePopups(),
             account: useAccountStore(),
-            totpSecret: "",
+            totp: {
+				secret: "",
+				uri: ""
+			},
 			token: "",
 			response: ""
 		};
@@ -46,8 +53,7 @@ export default {
 					],
 				});
             } else {
-                this.totpSecret = totpResponse.result.secret;
-				new QRCode(document.getElementById("qrcode"), totpResponse.result.uri);
+                this.totp = totpResponse.result;
             }
         },
 		async verify () {
@@ -67,9 +73,6 @@ export default {
         },
 	},
 	async mounted() {
-		let recaptchaScript = document.createElement('script');
-		recaptchaScript.setAttribute('src', '/qrcode.min.js');
-		document.head.appendChild(recaptchaScript);
 		this.getSecret();
 	},
 };

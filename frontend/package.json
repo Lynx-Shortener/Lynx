@@ -17,6 +17,7 @@
 		"@fortawesome/free-solid-svg-icons": "^6.2.1",
 		"@fortawesome/vue-fontawesome": "^3.0.2",
 		"pinia": "^2.0.28",
+		"qrcode.vue": "^3.0.0",
 		"sass": "^1.56.2",
 		"uuid": "^9.0.0",
 		"vue": "^3.2.45",
