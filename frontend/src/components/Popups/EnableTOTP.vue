@@ -36,16 +36,11 @@ export default {
             if (!totpResponse.success) {
                 this.popups.addPopup("Information", {
 					title: "Error setting up 2FA",
-					description: response.message,
+					description: totpResponse.message,
 					buttons: [
 						{
-							name: "Retry",
-							type: "primary",
-							action: "return",
-						},
-						{
 							name: "Cancel",
-							type: "secondary",
+							type: "primary",
 							action: "close-all",
 						},
 					],

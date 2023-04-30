@@ -279,6 +279,12 @@ router.post("/newSecret", requireLogin(true), async function (req, res) {
 
 // Get new TOTP token, if it doesn't already exist.
 router.get("/totp", requireLogin(true), async function (req, res) {
+	if (process.env.DEMO === "true")
+		return res.status(406).json({
+			success: false,
+			message: "Enabling 2FA is not supported in demo mode.",
+		});
+
 	if (req.account?.totp?.enabled === true)
 		return res.status(412).json({
 			success: false,
@@ -307,6 +313,12 @@ router.get("/totp", requireLogin(true), async function (req, res) {
 });
 
 router.post("/totp", requireLogin(true), requireFields(["token"]), async function (req, res) {
+	if (process.env.DEMO === "true")
+		return res.status(406).json({
+			success: false,
+			message: "Enabling 2FA is not supported in demo mode.",
+		});
+
 	if (!req.account?.totp?.secret)
 		return res.status(412).json({
 			success: false,
