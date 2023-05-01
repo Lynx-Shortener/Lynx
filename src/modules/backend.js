@@ -27,7 +27,6 @@ const regenSecrets = async () => {
 const oldLinkDeletionJob = new CronJob({
 	cronTime: "0 * * * * *",
 	onTick: () => {
-		console.log("ASH");
 		removeDemoLinks();
 	},
 	timeZone: "UTC",
@@ -36,7 +35,6 @@ const oldLinkDeletionJob = new CronJob({
 const secretRegenJob = new CronJob({
 	cronTime: "0 0 * * * *",
 	onTick: () => {
-		console.log("ASH");
 		regenSecrets();
 	},
 	timeZone: "UTC",
