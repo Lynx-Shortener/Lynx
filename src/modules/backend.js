@@ -27,18 +27,18 @@ const regenSecrets = async () => {
 const oldLinkDeletionJob = new CronJob({
 	cronTime: "0 * * * * *",
 	onTick: () => {
+		console.log("ASH");
 		removeDemoLinks();
 	},
-	runOnInit: true,
 	timeZone: "UTC",
 });
 
 const secretRegenJob = new CronJob({
 	cronTime: "0 0 * * * *",
 	onTick: () => {
+		console.log("ASH");
 		regenSecrets();
 	},
-	runOnInit: true,
 	timeZone: "UTC",
 });
 
