@@ -1,6 +1,7 @@
 <template>
 	<div class="users">
 		<h2>User Management</h2>
+		<p>Manage other users such as their usernames, emails and roles.</p>
 		<table>
 			<thead>
 				<th>Username</th>
