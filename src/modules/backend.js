@@ -29,7 +29,6 @@ const oldLinkDeletionJob = new CronJob({
 	onTick: () => {
 		removeDemoLinks();
 	},
-	runOnInit: true,
 	timeZone: "UTC",
 });
 
@@ -38,7 +37,6 @@ const secretRegenJob = new CronJob({
 	onTick: () => {
 		regenSecrets();
 	},
-	runOnInit: true,
 	timeZone: "UTC",
 });
 
