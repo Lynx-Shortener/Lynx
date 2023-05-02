@@ -1,7 +1,8 @@
-name: Docker Image CI
+name: Build Docker Image - Indev
 
 on:
     push:
+        branches-ignore: ["main"]
         paths-ignore: ["**.md"]
 
 jobs:
@@ -13,11 +14,7 @@ jobs:
             - name: Set docker tag dynamically
               run: |
                 BRANCH="${GITHUB_REF##*/}"
-                if [ "$BRANCH" == "main" ]; then
-                    echo "TAG=latest" >> $GITHUB_ENV
-                else
-                    echo "TAG=$BRANCH" >> $GITHUB_ENV
-                fi
+                echo "TAG=$BRANCH" >> $GITHUB_ENV
             - name: docker login
               env:
                   DOCKER_USER: jackbailey
