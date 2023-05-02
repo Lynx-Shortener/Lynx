@@ -20,6 +20,7 @@
 		"qrcode.vue": "^3.0.0",
 		"sass": "^1.56.2",
 		"uuid": "^9.0.0",
+		"vite-plugin-rewrite-all": "^1.0.1",
 		"vue": "^3.2.45",
 		"vue-router": "^4.1.6",
 		"vue3-observe-visibility": "^0.1.2"

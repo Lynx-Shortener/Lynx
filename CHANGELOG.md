@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.7] - 2023-05-02
+
+- Add vite-plugin-rewrite-all to frontend
+
 ## [1.3.6] - 2023-05-02
 
 - Remove vite-plugin-rewrite-all for API, not needed and meant for frontend.
