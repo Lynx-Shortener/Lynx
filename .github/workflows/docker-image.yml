@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
     push:
-        paths-ignore: ["**.md", ".github/**"]
+        paths-ignore: ["**.md"]
 
 jobs:
     build:
@@ -27,4 +27,4 @@ jobs:
             - name: Build the Docker image
               run: docker build . --file Dockerfile --tag jackbailey/lynx:$TAG
             - name: Docker Push
-              run: docker push jackbailey/lynx
+              run: docker push jackbailey/lynx:$TAG
