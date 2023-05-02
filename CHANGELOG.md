@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.6] - 2023-05-02
+
+- Remove vite-plugin-rewrite-all for API, not needed and meant for frontend.
+
 ## [1.3.5] - 2023-05-02
 
 - Update versioning to use SemVer
@@ -47,3 +51,4 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
+

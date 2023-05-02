@@ -20,8 +20,7 @@
 		"mongoose": "^7.0.0",
 		"multer": "^1.4.5-lts.1",
 		"otpauth": "^9.1.1",
-		"uuid": "^9.0.0",
-		"vite-plugin-rewrite-all": "^1.0.1"
+		"uuid": "^9.0.0"
 	},
 	"scripts": {
 		"dev": "nodemon . --ignore frontend",
