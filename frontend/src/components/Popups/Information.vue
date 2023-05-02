@@ -38,10 +38,6 @@ export default {
 				case "refresh":
 					window.location.reload();
 					break;
-
-				case "navigate-back":
-					window.history.back();
-					break;
 			}
 		},
 	},

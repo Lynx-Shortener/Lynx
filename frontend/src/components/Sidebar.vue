@@ -5,9 +5,6 @@
 				<router-link to="/dash/overview">
 					<font-awesome-icon icon="list" />
 				</router-link>
-				<router-link to="/dash/users">
-					<font-awesome-icon icon="users" />
-				</router-link>
 				<router-link to="/dash/settings">
 					<font-awesome-icon icon="gear" />
 				</router-link>
