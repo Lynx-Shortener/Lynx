@@ -14,7 +14,7 @@ jobs:
             - name: Set docker tag dynamically
               run: |
                 BRANCH="${GITHUB_REF##*/}"
-                echo "TAG=$BRANCH" >> $GITHUB_ENV
+                echo "TAG=${BRANCH}-beta" >> $GITHUB_ENV
             - name: docker login
               env:
                   DOCKER_USER: jackbailey
