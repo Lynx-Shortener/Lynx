@@ -10,7 +10,7 @@ services:
             - ./db:/data/db
 
     lynx:
-        image: jackbailey/lynx
+        image: jackbailey/lynx:1
         restart: always
         ports:
             - 3000:3000
