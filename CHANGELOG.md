@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.8] - 2023-05-04
+
+- Set image to lynx:1 in docker-compose example
+
 ## [1.3.7] - 2023-05-02
 
 - Add vite-plugin-rewrite-all to frontend
