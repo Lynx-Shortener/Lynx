@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.9] - 2023-05-08
+
+- Properly handle logouts
+  - Logout would not properly work in local environment
+- Add about section to settings page
+
 ## [1.3.8] - 2023-05-04
 
 - Set image to lynx:1 in docker-compose example
@@ -59,4 +65,5 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
+
 
