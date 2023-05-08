@@ -75,8 +75,8 @@ export const useAccountStore = defineStore("account", {
 				};
 			}
 		},
-		logout() {
-			this.fetch("/auth/me", {
+		async logout() {
+			await this.fetch("/auth/me", {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
