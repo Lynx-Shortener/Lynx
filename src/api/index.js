@@ -11,7 +11,7 @@ router.use("/export", require("./export.js"));
 
 router.use("/sharex", require("./sharex.js"));
 
-router.use("/config", require("./config.js"));
+router.use("/about", require("./about.js"));
 
 router.get("/", (req, res) => {
 	res.send("OK");

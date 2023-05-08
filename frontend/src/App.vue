@@ -1,6 +1,6 @@
 <template>
-	<div class="pageWrapper" :demo="config.data.demo">
-		<div class="demoBanner" v-if="config.data.demo">
+	<div class="pageWrapper" :demo="about.data.demo">
+		<div class="demoBanner" v-if="about.data.demo">
 			<p>This is a demo instance, features are limited and links will be deleted after 10 minutes.</p>
 		</div>
 		<router-view> </router-view>
@@ -9,28 +9,19 @@
 
 <script>
 import { useDarkMode } from "./stores/dark";
-import { useConfig } from "./stores/config";
+import { useAbout } from "./stores/about";
 export default {
 	data() {
 		return {
-			config: useConfig(),
+			about: useAbout(),
 		};
 	},
 	mounted() {
 		useDarkMode();
-		this.config.load();
+		this.about.load();
 	},
 };
 </script>
-
-<!-- <script setup>
-import { storeToRefs } from "pinia";
-import { useDarkMode } from "./stores/dark";
-import { useConfig } from "./stores/config";
-useDarkMode();
-const config = useConfig();
-const { data } = storeToRefs(config);
-</script> -->
 
 <style lang="scss">
 body {

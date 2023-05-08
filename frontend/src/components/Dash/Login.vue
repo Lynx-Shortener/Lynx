@@ -15,20 +15,20 @@
 
 <script>
 import { useAccountStore } from "../../stores/account";
-import { useConfig } from "../../stores/config";
-import { usePopups } from '../../stores/popups';
+import { useAbout } from "../../stores/about";
+import { usePopups } from "../../stores/popups";
 export default {
 	data() {
 		return {
-			config: useConfig(),
+			about: useAbout(),
 			popups: usePopups(),
 			logindata: {
 				username: "",
 				password: "",
-				token: ""
+				token: "",
 			},
 			response: null,
-			requires2FA: false
+			requires2FA: false,
 		};
 	},
 	methods: {
@@ -41,7 +41,7 @@ export default {
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
 				this.$router.push("/dash");
 			} else {
-				this.requires2FA = data.message === "2FA token required"
+				this.requires2FA = data.message === "2FA token required";
 				if (!this.requires2FA) {
 					this.response = data.message;
 				}
@@ -55,16 +55,16 @@ export default {
 		},
 		lostTOTP() {
 			this.popups.addPopup("LostTOTP", this.logindata);
-		}
+		},
 	},
 	mounted() {
-		if (this.config.data.demo) {
+		if (this.about.data.demo) {
 			this.logindata = {
 				username: "demo",
-				password: "demo"
-			}
+				password: "demo",
+			};
 		}
-	}
+	},
 };
 </script>
 
