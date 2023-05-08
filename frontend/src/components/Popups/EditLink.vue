@@ -1,7 +1,7 @@
 <template>
 	<div class="editLink">
 		<h2>Edit link</h2>
-		<FormKit type="form" @submit="update" :actions="false">
+		<FormKit type="form" @submit="update" submit-label="Update Link" :submit-attrs="{ 'button-type': 'primary' }">
 			<table>
 				<tr>
 					<td><strong>Destination URL</strong></td>
@@ -16,7 +16,6 @@
 					</td>
 				</tr>
 			</table>
-			<FormKit type="submit" label="Update Link" primary></FormKit>
 		</FormKit>
 	</div>
 </template>

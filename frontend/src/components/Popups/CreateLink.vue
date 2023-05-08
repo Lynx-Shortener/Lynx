@@ -1,7 +1,7 @@
 <template>
 	<div class="createLink">
 		<h2>Create link</h2>
-		<FormKit type="form" @submit="create" :actions="false">
+		<FormKit type="form" @submit="create" submit-label="Create Link" :submit-attrs="{ 'button-type': 'primary' }">
 			<table>
 				<tr>
 					<td><strong>Destination URL</strong></td>
@@ -16,7 +16,6 @@
 					</td>
 				</tr>
 			</table>
-			<FormKit type="submit" label="Create Link" primary></FormKit>
 		</FormKit>
 	</div>
 </template>

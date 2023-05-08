@@ -1,12 +1,11 @@
 <template>
 	<div class="changePassword">
 		<h2>Change Password</h2>
-		<FormKit type="form" :actions="false" @submit="changePassword">
+		<FormKit type="form" submit-label="Change Password" :submit-attrs="{ 'button-type': 'primary' }" @submit="changePassword">
 			<FormKit type="password" label="Current Password" v-model="newData.password" autocomplete="current-password" />
 			<FormKit type="password" label="New Password" v-model="newData.newPassword"  autocomplete="new-password"/>
 			<FormKit type="password" label="New Password Confirmation" v-model="newData.newPasswordConfirmation" autocomplete="new-password" />
 			<FormKit type="text" label="Your 2FA token" v-model="newData.token" validation="number:required|length:6,6" v-if="account.account.totp" autocomplete="one-time-code" />
-			<FormKit type="submit" label="Change Password" primary />
 			<p>{{ response }}</p>
 		</FormKit>
 	</div>

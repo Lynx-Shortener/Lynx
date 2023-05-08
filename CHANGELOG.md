@@ -5,6 +5,7 @@
 - Properly handle logouts
   - Logout would not properly work in local environment
 - Add about section to settings page
+- Properly use FormKit to disable form button while loading
 
 ## [1.3.8] - 2023-05-04
 
@@ -65,5 +66,3 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
-
-
