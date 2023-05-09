@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.10] - 2023-05-09
+
+- Add github action to automatically create release
+
 ## [1.3.9] - 2023-05-08
 
 - Properly handle logouts
@@ -66,3 +70,4 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
+
