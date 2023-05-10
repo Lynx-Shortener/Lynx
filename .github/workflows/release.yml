@@ -51,3 +51,4 @@ jobs:
                 tag: ${{ env.VERSION }}
                 name: Release ${{ env.VERSION }}
                 body: ${{ env.CHANGES }}
+                token: ${{ secrets.PAT_TOKEN }}
