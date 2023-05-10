@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.11] - 2023-05-10
+
+- Provide release workflow PAT token
+
 ## [1.3.10] - 2023-05-10
 
 - Use PAT instead of GITHUB_TOKEN when creating release
