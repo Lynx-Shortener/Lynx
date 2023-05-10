@@ -6,6 +6,9 @@
   - Logout would not properly work in local environment
 - Add about section to settings page
 - Properly use FormKit to disable form button while loading
+- Add github actions:
+  - Updating LICENSE year automatically
+  - Creating release on GitHub when PR merged
 
 ## [1.3.8] - 2023-05-04
 
