@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useAbout } from "./about";
 export const useAccountStore = defineStore("account", {
 	state: () => {
 		return {
@@ -20,6 +21,8 @@ export const useAccountStore = defineStore("account", {
 
 			if (data.success) {
 				await this.getAccount();
+				const about = useAbout();
+				await about.load();
 			}
 
 			return data;
@@ -75,8 +78,8 @@ export const useAccountStore = defineStore("account", {
 				};
 			}
 		},
-		logout() {
-			this.fetch("/auth/me", {
+		async logout() {
+			await this.fetch("/auth/me", {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",

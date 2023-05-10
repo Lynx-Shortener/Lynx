@@ -76,15 +76,7 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 
 // Logout
 router.delete("/me", requireLogin(true), async (req, res) => {
-	const serialized = cookie.serialize("token", null, {
-		httpOnly: true,
-		secure: process.env.USE_HTTPS === "true",
-		sameSite: "strict",
-		maxAge: -1,
-		path: "/",
-	});
-
-	res.setHeader("Set-Cookie", serialized);
+	res.clearCookie("token", { httpOnly: true });
 
 	res.status(200).json({
 		success: true,
@@ -350,7 +342,6 @@ router.post("/totp", requireLogin(true), requireFields(["token"]), async functio
 		},
 	});
 });
-
 
 router.post("/totp/recover", requireFields(["backupCode", "username", "password"]), async function (req, res) {
 	const { username, password, backupCode } = req.body;

@@ -1,12 +1,18 @@
 <template>
 	<div class="login">
 		<h2>Login</h2>
-		<FormKit type="form" submit-label="Login" :submit-attrs="{ 'data-type': 'primary' }" @submit="login" :actions="false">
+		<FormKit type="form" submit-label="Login" :submit-attrs="{ 'button-type': 'primary' }" @submit="login">
 			<FormKit type="text" label="Your username" v-model="logindata.username" validation="required:trim" autocomplete="username" />
-			<FormKit type="password" label="Your password" v-model="logindata.password" validation="required:trim"  autocomplete="current-password" />
-			<FormKit type="text" label="Your 2FA token" v-model="logindata.token" validation="number:required|length:6,6" v-if="requires2FA" autocomplete="one-time-code" />
+			<FormKit type="password" label="Your password" v-model="logindata.password" validation="required:trim" autocomplete="current-password" />
+			<FormKit
+				type="text"
+				label="Your 2FA token"
+				v-model="logindata.token"
+				validation="number:required|length:6,6"
+				v-if="requires2FA"
+				autocomplete="one-time-code"
+			/>
 			<a @click="lostTOTP" v-if="requires2FA" class="lostTOTP">Lost your authenticator?</a>
-			<FormKit type="submit" label="Login" primary></FormKit>
 			<p>{{ response }}</p>
 		</FormKit>
 		<a @click="gotoRegister"> Register </a>
@@ -15,20 +21,20 @@
 
 <script>
 import { useAccountStore } from "../../stores/account";
-import { useConfig } from "../../stores/config";
-import { usePopups } from '../../stores/popups';
+import { useAbout } from "../../stores/about";
+import { usePopups } from "../../stores/popups";
 export default {
 	data() {
 		return {
-			config: useConfig(),
+			about: useAbout(),
 			popups: usePopups(),
 			logindata: {
 				username: "",
 				password: "",
-				token: ""
+				token: "",
 			},
 			response: null,
-			requires2FA: false
+			requires2FA: false,
 		};
 	},
 	methods: {
@@ -41,7 +47,7 @@ export default {
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
 				this.$router.push("/dash");
 			} else {
-				this.requires2FA = data.message === "2FA token required"
+				this.requires2FA = data.message === "2FA token required";
 				if (!this.requires2FA) {
 					this.response = data.message;
 				}
@@ -55,16 +61,16 @@ export default {
 		},
 		lostTOTP() {
 			this.popups.addPopup("LostTOTP", this.logindata);
-		}
+		},
 	},
 	mounted() {
-		if (this.config.data.demo) {
+		if (this.about.data.demo) {
 			this.logindata = {
 				username: "demo",
-				password: "demo"
-			}
+				password: "demo",
+			};
 		}
-	}
+	},
 };
 </script>
 

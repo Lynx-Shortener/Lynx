@@ -6,11 +6,11 @@
 			<div class="inputs">
 				<div class="input">
 					<label>Email</label>
-					<div @click="changeSetting('Email')" :disabled="config.data.demo">{{ account.account.email }}</div>
+					<div @click="changeSetting('Email')" :disabled="about.data.demo">{{ account.account.email }}</div>
 				</div>
 				<div class="input">
 					<label>Username</label>
-					<div @click="changeSetting('Username')" :disabled="config.data.demo">{{ account.account.username }}</div>
+					<div @click="changeSetting('Username')" :disabled="about.data.demo">{{ account.account.username }}</div>
 				</div>
 			</div>
 		</div>
@@ -20,18 +20,18 @@
 			<div class="inputs">
 				<div class="input">
 					<label>Password</label>
-					<div @click="changeSetting('Password')" :disabled="config.data.demo">***********</div>
+					<div @click="changeSetting('Password')" :disabled="about.data.demo">***********</div>
 				</div>
 				<div class="input totp">
 					<label>2FA settings</label>
-					<button @click="toggleTOTP" :disabled="config.data.demo">{{ account.account.totp ? "Disable" : "Enable" }} 2FA</button>
+					<button @click="toggleTOTP" :disabled="about.data.demo">{{ account.account.totp ? "Disable" : "Enable" }} 2FA</button>
 				</div>
 			</div>
 		</div>
 		<div class="integration">
 			<h2>Integration</h2>
 			<p>Here you can access your ShareX configuration file and manage your secret.</p>
-			<p v-if="config.data.demo">This secret is automatically recreated on the hour.</p>
+			<p v-if="about.data.demo">This secret is automatically recreated on the hour.</p>
 
 			<div class="inputs">
 				<div class="input secret">
@@ -42,7 +42,7 @@
 							<div class="action view" @click="secretVisible = !secretVisible">
 								<font-awesome-icon :icon="secretVisible ? 'eye-slash' : 'eye'" />
 							</div>
-							<div class="action new" @click="newSecret" :disabled="config.data.demo">
+							<div class="action new" @click="newSecret" :disabled="about.data.demo">
 								<font-awesome-icon :icon="newSecretData.success ? 'check' : 'arrows-rotate'" :spinning="newSecretData.loading" />
 							</div>
 							<div class="action copy" @click="copySecret">
@@ -57,19 +57,41 @@
 				</div>
 			</div>
 		</div>
+		<div class="about">
+			<h2>About</h2>
+			<p>Here you can see information about your Lynx installation</p>
+			<table class="about-table">
+				<tr>
+					<td>Version</td>
+					<td>{{about.data.version}}</td>
+				</tr>
+				<tr>
+					<td>Account Role</td>
+					<td>{{account.account.role}}</td>
+				</tr>
+				<tr v-if="about.data.links">
+					<td>Links</td>
+					<td>{{ formatNumber(about.data.links) }}</td>
+				</tr>
+				<tr v-if="about.data.accounts">
+					<td>Accounts</td>
+					<td>{{ formatNumber(about.data.accounts) }}</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </template>
 
 <script>
 import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
-import { useConfig } from "../../stores/config";
+import { useAbout } from "../../stores/about";
 export default {
 	data() {
 		return {
 			account: useAccountStore(),
 			popups: usePopups(),
-			config: useConfig(),
+			about: useAbout(),
 			secretVisible: false,
 			newSecretData: {
 				loading: false,
@@ -82,11 +104,11 @@ export default {
 	},
 	methods: {
 		changeSetting(name) {
-			if (this.config.data.demo) return;
+			if (this.about.data.demo) return;
 			this.popups.addPopup("Change" + name, {});
 		},
 		async toggleTOTP () {
-			if (this.config.data.demo) return;
+			if (this.about.data.demo) return;
 			const totpEnabled = this.account.account.totp;
 			if (!totpEnabled) {
 				this.popups.addPopup("EnableTOTP", {});
@@ -118,7 +140,7 @@ export default {
 			document.body.removeChild(a);
 		},
 		async newSecret() {
-			if (this.config.data.demo) return;
+			if (this.about.data.demo) return;
 			this.newSecretData.success = false;
 			this.newSecretData.loading = true;
 			await this.account.newSecret();
@@ -135,6 +157,9 @@ export default {
 				this.clipboard.success = false;
 			}, 2000);
 		},
+		formatNumber(number) {
+			return number.toLocaleString();
+		}
 	},
 };
 </script>
@@ -277,6 +302,32 @@ export default {
 					font-size: 0.9rem;
 					margin-bottom: 1rem;
 					display: block;
+				}
+			}
+		}
+		&.about {
+			table.about-table {
+				border-collapse:separate;
+				width: 20rem;
+				border: 1px solid var(--bg-color-3);
+				border-radius: 10px;
+				tr, th {
+					
+					border-radius: 10px;
+				}
+				tr {					
+					&:nth-of-type(2n) {
+						background: var(--bg-color-2);
+					}
+					td {
+						padding: 0.6rem 0.8rem;
+						&:nth-of-type(1) {
+							font-weight: 500;
+						}
+						&:nth-of-type(2) {
+							font-weight: 300;
+						}
+					}
 				}
 			}
 		}
