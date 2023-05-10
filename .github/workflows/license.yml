@@ -16,5 +16,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commitAuthorEmail: ${{ secrets.COMMIT_EMAIL }}
-          gpgPrivateKey: ${{ secrets.gpgPassphrase }}
+          gpgPrivateKey: ${{ secrets.gpgPrivateKey }}
           gpgPassphrase: ${{ secrets.gpgPassphrase }}
