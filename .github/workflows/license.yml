@@ -14,7 +14,7 @@ jobs:
           fetch-depth: 0
       - uses: FantasticFiasco/action-update-license-year@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
           commitAuthorEmail: ${{ secrets.COMMIT_EMAIL }}
           gpgPrivateKey: ${{ secrets.gpgPrivateKey }}
           gpgPassphrase: ${{ secrets.gpgPassphrase }}
