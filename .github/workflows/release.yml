@@ -1,0 +1,53 @@
+name: "Release"
+on:
+    pull_request:
+        types:
+            - "closed"
+        branches:
+            - "main"
+
+jobs:
+    Tag:
+        name: Set tag to current version
+        runs-on: ubuntu-latest
+        if: github.event.pull_request.merged == true
+        steps:
+            - uses: actions/checkout@v3
+            - name: Get version
+              run: |
+                echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
+            - name: Bump version and push tag
+              id: tag_version
+              uses: mathieudutour/github-tag-action@v6.1
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                custom_tag: ${{ env.VERSION }}
+            - name: Get changelog
+              run: |
+                VERSION=$(cat VERSION)
+                CAPTURING_CHANGES=0
+                while IFS="" read line; do
+                    # Set capturing changes if line is a version header
+                    if [[ "$line" == "## ["* ]]; then
+                        if [[ "$line" == "## [$VERSION]"* ]]; then
+                            CHANGES="$line"
+                            CAPTURING_CHANGES=1
+                        else
+                            CAPTURING_CHANGES=0
+                        fi
+                    ## Otherwise, add lines to the changelog if it is within the current version
+                    elif [[ "$CAPTURING_CHANGES" == 1 ]]; then
+                        CHANGES="$CHANGES"$'\n'"$line"
+                    fi
+                done < CHANGELOG.md
+
+                EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+                echo "CHANGES<<$EOF" >> "$GITHUB_ENV"
+                echo "$CHANGES" >> "$GITHUB_ENV"
+                echo "$EOF" >> "$GITHUB_ENV"
+            - name: Create a GitHub release
+              uses: ncipollo/release-action@v1
+              with:
+                tag: ${{ env.VERSION }}
+                name: Release ${{ env.VERSION }}
+                body: ${{ env.CHANGES }}
