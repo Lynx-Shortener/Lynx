@@ -2,7 +2,6 @@
 
 VERSION=$(cat VERSION)
 DATE=$(date +"%Y-%m-%d")
-echo $VERSION $1 $DATE
 
 IFS='.' read -ra VERSION <<< "$VERSION"
 MAJOR=${VERSION[0]}
@@ -40,3 +39,5 @@ echo "$CHANGELOG" > CHANGELOG.md
 # Update VERSION file
 
 echo "$VERSION" > VERSION
+
+echo $VERSION $1 $DATE

@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.10] - 2023-05-10
+
+- Use PAT instead of GITHUB_TOKEN when creating release
+- Change Semver script to output new version
+
 ## [1.3.9] - 2023-05-08
 
 - Properly handle logouts
@@ -69,3 +74,4 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
+
