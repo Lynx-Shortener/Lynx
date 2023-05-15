@@ -7,7 +7,7 @@ module.exports = async ({ id, slug, destination, account }) => {
 			null,
 			{
 				message: "Invalid slug",
-				code: 409,
+				code: 422,
 			},
 		];
 	if (!destination) {
@@ -15,7 +15,7 @@ module.exports = async ({ id, slug, destination, account }) => {
 			null,
 			{
 				message: "Invalid destination",
-				code: 409,
+				code: 422,
 			},
 		];
 	}
@@ -33,7 +33,7 @@ module.exports = async ({ id, slug, destination, account }) => {
 		return [
 			null,
 			{
-				message: "You do not have the permissions to delete this link",
+				message: "You do not have the permissions to edit this link",
 				code: 403,
 			},
 		];

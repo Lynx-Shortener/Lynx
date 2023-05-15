@@ -54,7 +54,7 @@ router.get("/single", requireLogin(), requireFields(["id"], "query"), async (req
 		} else {
 			res.status(404).json({
 				success: false,
-				message: "invalid link",
+				message: "A link with that id does not exist",
 			});
 		}
 	} catch (e) {

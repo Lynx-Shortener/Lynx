@@ -30,7 +30,7 @@ module.exports = async ({ author, slug, destination }) => {
 			null,
 			{
 				message: "Invalid destination url format",
-				code: 409,
+				code: 422,
 			},
 		];
 	}
