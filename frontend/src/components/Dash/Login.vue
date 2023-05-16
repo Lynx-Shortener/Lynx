@@ -47,6 +47,7 @@ export default {
 					window.umami.track(`Logged In`);
 				}
 				this.response = "Logged in!";
+				await this.about.load();
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
 				this.$router.push("/dash");
 			} else {
