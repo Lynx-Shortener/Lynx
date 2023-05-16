@@ -24,4 +24,4 @@ jobs:
             - name: Build the Docker image
               run: docker build . --file Dockerfile --tag jackbailey/lynx:$TAG --tag jackbailey/lynx:beta
             - name: Docker Push
-              run: docker push jackbailey/lynx:$TAG --all-tags
+              run: docker push jackbailey/lynx --all-tags
