@@ -3,6 +3,7 @@
 ## [1.4.1] - 2023-05-16
 
 - Re-fetch about on login
+- Severely reduce docker image size 954MB => 203MB
 
 ## [1.4.0] - 2023-05-16
 
