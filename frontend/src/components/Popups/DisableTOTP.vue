@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { useAbout } from '../../stores/about';
 import { useAccountStore } from '../../stores/account';
 import { usePopups } from "../../stores/popups";
 
@@ -18,6 +19,7 @@ export default {
 		return {
 			popups: usePopups(),
             account: useAccountStore(),
+			about: useAbout(),
             totpSecret: "",
 			token: "",
 			response: ""
@@ -35,6 +37,9 @@ export default {
             if (!totpResponse.success) {
 				this.response = totpResponse.message;
             } else {
+				if (this.about.data.umami) {
+					window.umami.track(`Disabled 2FA`);
+				}
 				this.account.getAccount();
 				this.popups.addPopup("Information", {
 					title: "Successfully disabled 2FA",

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.0] - 2023-05-16
+
+- Added [umami](https://umami.is/) support
+
 ## [1.3.12] - 2023-05-15
 
 - Improve link status codes and messages

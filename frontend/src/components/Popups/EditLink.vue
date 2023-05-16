@@ -23,12 +23,14 @@
 <script>
 import { usePopups } from "../../stores/popups";
 import { useLinks } from "../../stores/links";
+import { useAbout } from '../../stores/about';
 export default {
 	props: ["data"],
 	data() {
 		return {
 			links: useLinks(),
 			popups: usePopups(),
+			about: useAbout(),
 			link: {
 				destination: "",
 				slug: "",
@@ -56,6 +58,9 @@ export default {
 					],
 				});
 			} else {
+				if (this.about.data.umami) {
+					window.umami.track(`Link Edited`);
+				}
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {
 					title: "Successfully updated your link",

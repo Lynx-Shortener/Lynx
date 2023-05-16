@@ -26,12 +26,14 @@
 <script>
 import { usePopups } from "../../stores/popups";
 import { useLinks } from "../../stores/links";
+import { useAbout } from '../../stores/about';
 export default {
 	props: ["data"],
 	data() {
 		return {
 			popups: usePopups(),
 			links: useLinks(),
+			about: useAbout(),
 			filetypes: {
 				Shlink: [".csv"],
 				YOURLS: [".csv"],
@@ -98,6 +100,9 @@ export default {
 					],
 				});
 			} else {
+				if (this.about.data.umami) {
+					window.umami.track(`Imported links from ${this.data.service}`);
+				}
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {
 					title: "Successfully completed import",

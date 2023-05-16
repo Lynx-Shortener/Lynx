@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { useAbout } from '../../stores/about';
 import { useAccountStore } from '../../stores/account';
 import { usePopups } from "../../stores/popups";
 
@@ -19,6 +20,7 @@ export default {
 		return {
 			popups: usePopups(),
             account: useAccountStore(),
+			about: useAbout(),
             backupCode: "",
 			response: ""
 		};
@@ -38,6 +40,9 @@ export default {
             if (!totpResponse.success) {
 				this.response = totpResponse.message;
             } else {
+				if (this.about.data.umami) {
+					window.umami.track(`Account Recovered`);
+				}
 				this.popups.closeSelf(this);
 				this.account.getAccount();
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));

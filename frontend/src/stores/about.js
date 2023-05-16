@@ -13,7 +13,10 @@ export const useAbout = defineStore("about", {
 
 			if (data.success) {
 				this.data = data.result;
+				return this.data;
 			}
+
+			return false;
 		},
 	},
 });

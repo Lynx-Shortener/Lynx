@@ -16,6 +16,7 @@
 import { useAccountStore } from '../../stores/account';
 import { usePopups } from "../../stores/popups";
 import QrcodeVue from 'qrcode.vue';
+import { useAbout } from '../../stores/about';
 
 export default {
 	props: [],
@@ -26,6 +27,7 @@ export default {
 		return {
 			popups: usePopups(),
             account: useAccountStore(),
+			about: useAbout(),
             totp: {
 				secret: "",
 				uri: ""
@@ -54,6 +56,9 @@ export default {
 				});
             } else {
                 this.totp = totpResponse.result;
+				if (this.about.data.umami) {
+					window.umami.track(`Enabled 2FA`);
+				}
             }
         },
 		async verify () {

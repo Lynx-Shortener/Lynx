@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { useAbout } from '../../stores/about';
 import { useLinks } from "../../stores/links";
 import { usePopups } from "../../stores/popups";
 export default {
@@ -16,6 +17,7 @@ export default {
 		return {
 			links: useLinks(),
 			popups: usePopups(),
+			about: useAbout(),
 		};
 	},
 	methods: {
@@ -36,6 +38,9 @@ export default {
 				anchor.click();
 				window.URL.revokeObjectURL(url);
 				anchor.remove();
+				if (this.about.data.umami) {
+					window.umami.track(`Exported Links to ${format.toUpperCase()}`);
+				}
 				this.popups.closeSelf(this);
 			}
 

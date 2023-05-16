@@ -16,9 +16,17 @@ export default {
 			about: useAbout(),
 		};
 	},
-	mounted() {
+	async mounted() {
 		useDarkMode();
-		this.about.load();
+		const about = await this.about.load();
+		if (about.umami !== false) {
+			const script = document.createElement("script");
+			script.setAttribute("async", "");
+			script.src = about.umami.url;
+			script.setAttribute("data-website-id", about.umami.site);
+
+			document.head.appendChild(script);
+		}
 	},
 };
 </script>

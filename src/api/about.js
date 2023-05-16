@@ -27,6 +27,13 @@ router.get("/", requireLogin(false, true), async (req, res) => {
 		}
 	}
 
+	if (process.env.UMAMI_SITEID && process.env.UMAMI_URL) {
+		result.umami = {
+			site: process.env.UMAMI_SITEID,
+			url: process.env.UMAMI_URL,
+		};
+	}
+
 	res.status(200).json({
 		success: true,
 		result: result,
