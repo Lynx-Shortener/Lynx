@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.1] - 2023-05-16
+
+- Re-fetch about on login
+
 ## [1.4.0] - 2023-05-16
 
 - Added [umami](https://umami.is/) support
