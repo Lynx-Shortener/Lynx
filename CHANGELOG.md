@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.3] - 2023-05-18
+
+- Use LF line endings
+
 ## [1.4.2] - 2023-05-18
 
 - Update dockerfile to use distroless image
