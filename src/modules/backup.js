@@ -34,5 +34,5 @@ module.exports = async ({ count: backupCount }) => {
 		});
 	}
 
-	console.log(`${filename} created. Links backed up: ${links.length.toLocaleString()}`);
+	console.log(`${filename}.json created. Links backed up: ${links.length.toLocaleString()}`);
 };
