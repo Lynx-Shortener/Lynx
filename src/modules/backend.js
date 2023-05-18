@@ -2,6 +2,7 @@ var CronJob = require("cron").CronJob;
 const Link = require("../db/models/link");
 const Account = require("../db/models/account");
 const createSecret = require("../db/modules/secret/create");
+const backup = require("./backup");
 
 const removeDemoLinks = async () => {
 	const oldLinkCount = await Link.count({
@@ -45,5 +46,18 @@ module.exports.start = () => {
 	if (process.env.DEMO == "true") {
 		oldLinkDeletionJob.start();
 		secretRegenJob.start();
+	}
+
+	if (process.env.BACKUP == "true" && process.env.BACKUP_SCHEDULE) {
+		const backupJob = new CronJob({
+			cronTime: process.env.BACKUP_SCHEDULE,
+			onTick: () => {
+				backup({ count: process.env.BACKUP_COUNT });
+			},
+			runOnInit: true,
+			timeZone: "UTC",
+		});
+
+		backupJob.start();
 	}
 };

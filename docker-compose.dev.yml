@@ -21,6 +21,8 @@ services:
             - 3000:3000
         depends_on:
             - lynx-db
+        volumes:
+            - ./backups:/app/backups
         environment:
             - NODE_ENV=production
             - DB_USER=user
@@ -35,6 +37,9 @@ services:
             - DOMAIN=http://example.com
             - DEMO=false
             - USE_HTTPS=false
+            - BACKUP=true
+            - BACKUP_SCHEDULE=* * * * * # Use crontab.guru to create
+            - BACKUP_COUNT=5 # A count of 1 will make a backup file called backup.json
 
             ## DO NOT CHANGE THESE:
             - DB_HOST=lynx-db
