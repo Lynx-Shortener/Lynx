@@ -3,6 +3,7 @@
 ## [1.4.2] - 2023-05-18
 
 - Update dockerfile to use distroless image
+- Update website on new release
 
 ## [1.4.1] - 2023-05-16
 
