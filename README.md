@@ -65,6 +65,10 @@ For the docker installation: Fill in the variables in `docker-compose.yml`
 |  |  |  |
 | UMAMI_SITEID | Your umami site ID |  |
 | UMAMI_URL | The URL to your umami instance |  |
+|  |  |  |
+| BACKUP | Wether to create backups or not. They will be in ./backups or /app/backups for Docker | true |
+| BACKUP_SCHEDULE | When to create backups. Use [crontab.guru](https://crontab.guru) to create | 0 * * * * |
+| BACKUP_COUNT | How many backups to keep. 1 will make a backup file called backup.json, -1 will keep every backup. | 5 |
 
 ## Installation
 

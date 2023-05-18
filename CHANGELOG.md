@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.5.0] - 2023-05-18
+
+- Add backup functionality
+
 ## [1.4.4] - 2023-05-18
 
 - Lynx Website Version Updater: Add apostrophe onto end of curl request
