@@ -64,6 +64,4 @@ jobs:
                 echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
             - name: Update html file version
               run: |
-                curl https://api.github.com/repos/Lynx-Shortener/Website/actions/workflows/update-version.yml/dispatches \
-                 -X POST -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" \
-                 -d '{"ref":"main","inputs":{"lynx_version":"${{ env.VERSION }}"}}
+                curl https://api.github.com/repos/Lynx-Shortener/Website/actions/workflows/update-version.yml/dispatches -X POST -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" -d '{"ref":"main","inputs":{"lynx_version":"${{ env.VERSION }}"}}
