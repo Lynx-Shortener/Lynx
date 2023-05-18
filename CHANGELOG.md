@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.4] - 2023-05-18
+
+- Lynx Website Version Updater: Add apostrophe onto end of curl request
+
 ## [1.4.3] - 2023-05-18
 
 - Use LF line endings
