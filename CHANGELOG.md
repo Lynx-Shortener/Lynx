@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.2] - 2023-05-18
+
+- Update dockerfile to use distroless image
+
 ## [1.4.1] - 2023-05-16
 
 - Re-fetch about on login
@@ -91,4 +95,3 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
-
