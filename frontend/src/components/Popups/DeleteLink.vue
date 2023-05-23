@@ -46,6 +46,7 @@ export default {
 				if (this.about.data.umami) {
 					window.umami.track("Link Deleted")
 				}
+				this.about.removeLink();
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {
 					title: `Successfully deleted your link${ids.length > 1 ? "s" : ""}`,
