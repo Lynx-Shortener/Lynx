@@ -86,12 +86,7 @@ export const useLinks = defineStore("links", {
 
 			link.link = `${window.location.origin}/${response.result.slug}`;
 
-			if (this.sort == "desc") {
-				this.links.unshift(link);
-				this.current++;
-			} else {
-				this.links.push(link);
-			}
+			this.links.unshift(link);
 
 			return {
 				success: true,

@@ -69,11 +69,11 @@
 					<td>Account Role</td>
 					<td>{{account.account.role}}</td>
 				</tr>
-				<tr v-if="about.data.links">
+				<tr v-if="about.data.hasOwnProperty('links')">
 					<td>Links</td>
 					<td>{{ formatNumber(about.data.links) }}</td>
 				</tr>
-				<tr v-if="about.data.accounts">
+				<tr v-if="about.data.hasOwnProperty('accounts')">
 					<td>Accounts</td>
 					<td>{{ formatNumber(about.data.accounts) }}</td>
 				</tr>

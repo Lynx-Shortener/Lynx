@@ -18,7 +18,10 @@ router.get("/", requireLogin(false, true), async (req, res) => {
 			result.version = version;
 		}
 
-		if (req.account.role === "admin") {
+		if (req.account.role !== "admin") {
+			const linkCount = await countLinks({ author: req.account.id });
+			result.links = linkCount;
+		} else if (req.account.role === "admin") {
 			const accountCount = await countAccounts();
 			result.accounts = accountCount;
 

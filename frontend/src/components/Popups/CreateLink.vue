@@ -60,6 +60,7 @@ export default {
 				if (this.about.data.umami) {
 					window.umami.track("Link Created")
 				}
+				this.about.addLink();
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {
 					title: "Successfully created your link",

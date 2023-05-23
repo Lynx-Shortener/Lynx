@@ -18,5 +18,11 @@ export const useAbout = defineStore("about", {
 
 			return false;
 		},
+		addLink() {
+			this.data.links++;
+		},
+		removeLink() {
+			this.data.links--;
+		},
 	},
 });
