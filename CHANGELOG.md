@@ -4,6 +4,7 @@
 
 - Show link count on non-admin accounts
 - Add new link to top of list
+- Make checkbox more visible in dark mode
 
 ## [1.5.0] - 2023-05-18
 

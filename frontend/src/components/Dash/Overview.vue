@@ -487,7 +487,7 @@ export default {
 							width: 1rem;
 							height: 1rem;
 							border-radius: 5px;
-							border: 1px solid var(--bg-color-2);
+							border: 1px solid var(--color-3);
 							display: grid;
 							place-items: center;
 							cursor: pointer;
