@@ -3,6 +3,7 @@
 ## [1.5.1] - 2023-05-23
 
 - Show link count on non-admin accounts
+- Add new link to top of list
 
 ## [1.5.0] - 2023-05-18
 
