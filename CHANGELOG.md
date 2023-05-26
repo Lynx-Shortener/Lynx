@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.5.2] - 2023-05-26
+
+- Update README to include documentation link
+
 ## [1.5.1] - 2023-05-23
 
 - Show link count on non-admin accounts
@@ -115,4 +119,3 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
-
