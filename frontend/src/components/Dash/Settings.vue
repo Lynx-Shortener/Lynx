@@ -36,20 +36,7 @@
 			<div class="inputs">
 				<div class="input secret">
 					<label>Your Secret</label>
-					<div>
-						<p>{{ secretVisible ? account.account.secret || "No secret set." : Array(32).fill("&#8226;").join("") }}</p>
-						<div class="actions">
-							<div class="action view" @click="secretVisible = !secretVisible">
-								<font-awesome-icon :icon="secretVisible ? 'eye-slash' : 'eye'" />
-							</div>
-							<div class="action new" @click="newSecret" :disabled="about.data.demo">
-								<font-awesome-icon :icon="newSecretData.success ? 'check' : 'arrows-rotate'" :spinning="newSecretData.loading" />
-							</div>
-							<div class="action copy" @click="copySecret">
-								<font-awesome-icon :icon="clipboard.success ? 'check' : 'clipboard'" />
-							</div>
-						</div>
-					</div>
+					<SecretBox :secret="account.account.secret"/>
 				</div>
 				<div class="input">
 					<label>Download your ShareX Config (requires a secret to be set)</label>
@@ -86,20 +73,16 @@
 import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
 import { useAbout } from "../../stores/about";
+import SecretBox from './SecretBox.vue';
 export default {
+	components: {
+		SecretBox
+	},
 	data() {
 		return {
 			account: useAccountStore(),
 			popups: usePopups(),
 			about: useAbout(),
-			secretVisible: false,
-			newSecretData: {
-				loading: false,
-				success: false,
-			},
-			clipboard: {
-				success: false,
-			},
 		};
 	},
 	methods: {
@@ -138,24 +121,6 @@ export default {
 			a.click();
 
 			document.body.removeChild(a);
-		},
-		async newSecret() {
-			if (this.about.data.demo) return;
-			this.newSecretData.success = false;
-			this.newSecretData.loading = true;
-			await this.account.newSecret();
-			this.newSecretData.loading = false;
-			this.newSecretData.success = true;
-			setTimeout(() => {
-				this.newSecretData.success = false;
-			}, 2000);
-		},
-		async copySecret() {
-			this.clipboard.success = true;
-			navigator.clipboard.writeText(this.account.account.secret);
-			setTimeout(() => {
-				this.clipboard.success = false;
-			}, 2000);
 		},
 		formatNumber(number) {
 			return number.toLocaleString();

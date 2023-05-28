@@ -84,9 +84,10 @@ export const useAccountStore = defineStore("account", {
 			});
 			document.location.reload();
 		},
-		async newSecret() {
+		async newSecret({ id: userID }) {
 			const data = await this.fetch("/auth/newSecret", {
 				method: "POST",
+				body: JSON.stringify({ userID }),
 			});
 
 			if (!data.success) {
@@ -94,8 +95,11 @@ export const useAccountStore = defineStore("account", {
 				return;
 			}
 
-			this.account.secret = data.result.secret;
-			return;
+			if (this.account.id === userID || !userID) {
+				this.account.secret = data.result.secret;
+			}
+
+			return data.result.secret;
 		},
 	},
 });

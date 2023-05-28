@@ -19,7 +19,7 @@ export default {
 	async mounted() {
 		useDarkMode();
 		const about = await this.about.load();
-		if (about.umami !== false) {
+		if (about.umami) {
 			const script = document.createElement("script");
 			script.setAttribute("async", "");
 			script.src = about.umami.url;

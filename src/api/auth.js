@@ -8,6 +8,7 @@ const createSecret = require("../db/modules/secret/create");
 const cookie = require("cookie");
 const totp = require("../db/modules/totp");
 const returnAccount = require("../modules/returnAccount");
+const getAccountById = require("../db/modules/account/get/byID");
 
 const {
 	login,
@@ -247,7 +248,41 @@ router.patch("/username", requireLogin(true), requireFields(["newUsername", "pas
 });
 
 router.post("/newSecret", requireLogin(true), async function (req, res) {
-	const secret = await createSecret(req.account);
+	const { userID } = req.body;
+
+	const permissions = {
+		owner: ["admin", "standard"],
+		admin: ["standard"],
+	};
+
+	let accountToUpdate;
+
+	if (userID && userID !== req.account.id) {
+		if (!["owner", "admin"].includes(req.account.role))
+			return res.status(403).json({
+				success: false,
+				message: "You do not have permission to update users.",
+			});
+
+		const [specifiedAccount, error] = await getAccountById({ id: userID });
+		if (error)
+			return res.status(error.code).json({
+				success: false,
+				message: error.message,
+			});
+
+		if (!permissions[req.account.role].includes(specifiedAccount.role))
+			return res.status(403).json({
+				success: false,
+				message: "You do not have a high enough role to update this user.",
+			});
+
+		accountToUpdate = specifiedAccount;
+	} else {
+		accountToUpdate = req.account;
+	}
+
+	const secret = await createSecret(accountToUpdate);
 	return res.status(200).json({
 		success: true,
 		result: {

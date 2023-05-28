@@ -15,7 +15,7 @@
 					<td>{{ user.username }}</td>
 					<td>{{ user.email }}</td>
 					<td>{{ user.role }}</td>
-					<tr>{{ user.secret }}</tr>
+					<td class="user-secret" :secret-set="!!user.secret"><SecretBox :secret="user.secret" :userID="user.id" @update-user="updateUser"/></td>
 					<td class="actions"><font-awesome-icon icon="check"/></td>
 				</tr>
 			</tbody>
@@ -26,7 +26,11 @@
 <script>
 import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
+import SecretBox from './SecretBox.vue';
 export default {
+	components: {
+		SecretBox
+	},
 	data() {
 		return {
 			users: [],
@@ -58,6 +62,11 @@ export default {
 				this.users = userResponse.result;
 			}
 		},
+		updateUser(userID, updatedValues) {
+			let userIndex = this.users.findIndex((user) => user.id === userID);
+
+			this.users[userIndex] = {...this.users[userIndex], ...updatedValues};
+		}
 	},
 	mounted() {
 		this.getUsers();
