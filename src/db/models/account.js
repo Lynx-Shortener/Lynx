@@ -5,7 +5,7 @@ const schema = new mongoose.Schema({
 	username: String,
 	password: String,
 	email: String,
-	role: String, // admin || standard
+	role: String, // owner || admin || standard
 	secret: String,
 	totp: {
 		enabled: Boolean,

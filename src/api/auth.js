@@ -98,7 +98,7 @@ router.post("/register", requireFields(["email", "username", "password"]), async
 			email,
 			username,
 			password,
-			role: accountsCount === 0 ? "admin" : "standard",
+			role: accountsCount === 0 ? "owner" : "standard",
 		});
 
 		if (error)

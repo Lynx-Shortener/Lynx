@@ -18,7 +18,7 @@ router.post("/", requireLogin(), requireFields(["format"]), async (req, res) => 
 		let links = await Link.find();
 		links = links.map((link) => returnLink(link));
 
-		if (req.account.role !== "admin") links = links.filter((link) => link.author === req.account.id);
+		if (!["owner", "admin"].includes(req.account.role)) links = links.filter((link) => link.author === req.account.id);
 
 		let exported;
 

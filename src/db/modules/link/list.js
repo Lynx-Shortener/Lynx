@@ -4,7 +4,7 @@ const Account = require("../../models/account");
 module.exports = async ({ pagesize, page, sortType, sortField, account, search }) => {
 	const total = await Link.count();
 	const query = {};
-	if (account.role !== "admin") {
+	if (!["owner", "admin"].includes(account.role)) {
 		query.author = account.id;
 	}
 	if (search) {

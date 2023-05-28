@@ -1,12 +1,19 @@
-module.exports = (object) => {
+module.exports = (requirements) => {
 	return async (req, res, next) => {
 		const account = req.account;
 
 		const humanFields = [];
 
-		const invalidFields = Object.keys(object).filter((key) => {
-			if (account[key] !== object[key]) {
-				humanFields.push(`${key}: ${object[key]}`);
+		const invalidFields = Object.keys(requirements).filter((requirement) => {
+			if (Array.isArray(requirements[requirement])) {
+				let matchedRequirements = requirements[requirement].map((value) => value === account[requirement]);
+
+				if (matchedRequirements.length === 0) {
+					humanFields.push(`${requirement}: ${requirements[requirement].join(" or ")}`);
+					return true;
+				}
+			} else if (account[requirement] !== requirements[requirement]) {
+				humanFields.push(`${requirement}: ${requirements[requirement]}`);
 
 				return true;
 			}

@@ -6,7 +6,7 @@ module.exports = async ({ ids, account }) => {
 			$in: ids,
 		},
 	});
-	if (account.role !== "admin") {
+	if (!["owner", "admin"].includes(account.role)) {
 		const ownedLinks = links.filter((link) => link.author === account.id);
 		if (ownedLinks.length !== links.length)
 			return [

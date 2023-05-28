@@ -29,7 +29,7 @@ module.exports = async ({ id, slug, destination, account }) => {
 			},
 		];
 
-	if (link && account.role !== "admin" && account.id !== link.author)
+	if (link && !["owner", "admin"].includes(account.role) && account.id !== link.author)
 		return [
 			null,
 			{
