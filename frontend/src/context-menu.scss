@@ -79,6 +79,13 @@
 	text-overflow: ellipsis;
 	cursor: pointer;
 }
+
+.mx-item-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .mx-context-menu-item:hover {
 	background-color: var(--bg-color-2);
 }
