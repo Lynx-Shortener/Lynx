@@ -23,7 +23,7 @@
 		"uuid": "^9.0.0"
 	},
 	"scripts": {
-		"dev": "nodemon . --ignore frontend",
+		"dev": "nodemon . --ignore frontend --ignore backups",
 		"serve": "npm run dev --prefix frontend"
 	}
 }
