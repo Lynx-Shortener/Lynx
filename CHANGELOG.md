@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.5.3] - 2023-05-28
+
+- Fix context menu item flow
+
 ## [1.5.2] - 2023-05-26
 
 - Update README to include documentation link
@@ -119,3 +123,4 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
+
