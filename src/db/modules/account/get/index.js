@@ -1,4 +1,5 @@
 module.exports = {
 	current: require("./current"),
-	bySecret: require("./bySecret")
+	bySecret: require("./bySecret"),
+	all: require("./all"),
 };
