@@ -6,7 +6,7 @@ module.exports = (requirements) => {
 
 		const invalidFields = Object.keys(requirements).filter((requirement) => {
 			if (Array.isArray(requirements[requirement])) {
-				let matchedRequirements = requirements[requirement].map((value) => value === account[requirement]);
+				let matchedRequirements = requirements[requirement].filter((value) => value === account[requirement]);
 
 				if (matchedRequirements.length === 0) {
 					humanFields.push(`${requirement}: ${requirements[requirement].join(" or ")}`);

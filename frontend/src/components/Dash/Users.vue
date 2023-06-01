@@ -14,9 +14,16 @@
 				<tr v-for="user in users" :key="user.id">
 					<td>{{ user.username }}</td>
 					<td>{{ user.email }}</td>
-					<td>{{ user.role }}</td>
+					<td>
+						<select name="" id="" v-model="user.role" v-if="account.account.role === 'owner'" :disabled="account.account.id === user.id" @change="changeUserRole(user.id, user.role)">
+							<option value="owner">Owner</option>
+							<option value="admin">Admin</option>
+							<option value="standard">Standard</option>
+						</select>
+						<span v-else>{{  user.role }}</span>
+					</td>
 					<td class="user-secret" :secret-set="!!user.secret"><SecretBox :secret="user.secret" :userID="user.id" @update-user="updateUser"/></td>
-					<td class="actions"><font-awesome-icon icon="check"/></td>
+					<td class="actions"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -66,6 +73,34 @@ export default {
 			let userIndex = this.users.findIndex((user) => user.id === userID);
 
 			this.users[userIndex] = {...this.users[userIndex], ...updatedValues};
+		},
+		async changeUserRole(userID, role) {
+			// TOOD: Add prompt for updating to owner, will set own account to admin.
+			const response = await this.account.fetch("/user/role", {
+				method: "POST",
+				body: JSON.stringify({
+					role,
+					userID
+				})
+			});
+
+			if (!response.success) {
+				this.getUsers();
+				this.popups.addPopup("Information", {
+					title: "Error updating the user",
+					description: response.message,
+					buttons: [
+						{
+							name: "Okay",
+							type: "primary",
+							action: "close-all",
+						},
+					],
+				});
+				return
+			}
+
+			this.updateUser(userID, response.result.user);
 		}
 	},
 	mounted() {
