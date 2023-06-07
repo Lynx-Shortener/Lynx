@@ -516,7 +516,7 @@ pinia@^2.0.28:
 
 postcss@^8.1.10, postcss@^8.4.23:
   version "8.4.24"
-  resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.24.tgz"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.24.tgz#f714dba9b2284be3cc07dbd2fc57ee4dc972d2df"
   integrity sha512-M0RzbcI0sO/XJNucsGjvWU9ERWxb/ytp1w6dKtxTKgixdtQDq4rmx/g8W1hnaheq9jgwL/oyEdH5Bc4WwJKMqg==
   dependencies:
     nanoid "^3.3.6"
@@ -537,7 +537,7 @@ readdirp@~3.6.0:
 
 rollup@^3.21.0:
   version "3.24.0"
-  resolved "https://registry.npmjs.org/rollup/-/rollup-3.24.0.tgz"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.24.0.tgz#865dee1fe0bb528747b59914dfab25e6f480e370"
   integrity sha512-OgraHOIg2YpHQTjl0/ymWfFNBEyPucB7lmhXrQUh38qNOegxLapSPFs9sNr0qKR75awW41D93XafoR2QfhBdUQ==
   optionalDependencies:
     fsevents "~2.3.2"
@@ -587,7 +587,7 @@ vite-plugin-rewrite-all@^1.0.1:
 
 vite@^4.3.9:
   version "4.3.9"
-  resolved "https://registry.npmjs.org/vite/-/vite-4.3.9.tgz"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.3.9.tgz#db896200c0b1aa13b37cdc35c9e99ee2fdd5f96d"
   integrity sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==
   dependencies:
     esbuild "^0.17.5"
