@@ -9,17 +9,20 @@
 </template>
 
 <script>
+import { useAbout } from "../stores/about";
 export default {
 	data() {
 		return {
 			loading: true,
+			about: useAbout(),
 		};
 	},
 	async mounted() {
+		let slug = this.$route.params.pathMatch.join("/")
 		const response = await fetch(
 			"/api/link?" +
 				new URLSearchParams({
-					slug: this.$route.params.pathMatch.join("/"),
+					slug,
 				}),
 			{
 				method: "GET",
@@ -32,6 +35,7 @@ export default {
 		const data = await response.json();
 
 		if (data.success) {
+			if (this.about.data.umami) window.umami.track(`Used link /${slug}`);
 			window.location.href = data.result.destination;
 		} else {
 			this.loading = false;
