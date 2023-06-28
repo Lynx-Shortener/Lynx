@@ -2,7 +2,6 @@
 
 ## [1.5.4] - 2023-06-27
 
-- Create event in Umami for redirects with FORCE_FRONTEND_REDIRECT=true 
 - More uniform Umami tracking with better error handling
 
 ## [1.5.3] - 2023-05-28
