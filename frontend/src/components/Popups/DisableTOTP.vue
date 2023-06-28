@@ -37,9 +37,7 @@ export default {
             if (!totpResponse.success) {
 				this.response = totpResponse.message;
             } else {
-				if (this.about.data.umami) {
-					window.umami.track(`Disabled 2FA`);
-				}
+				this.about.track(`Disabled 2FA`);
 				this.account.getAccount();
 				this.popups.addPopup("Information", {
 					title: "Successfully disabled 2FA",

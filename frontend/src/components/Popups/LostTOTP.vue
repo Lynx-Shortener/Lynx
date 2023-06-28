@@ -40,9 +40,7 @@ export default {
             if (!totpResponse.success) {
 				this.response = totpResponse.message;
             } else {
-				if (this.about.data.umami) {
-					window.umami.track(`Account Recovered`);
-				}
+				this.about.track(`Account Recovered`);
 				this.popups.closeSelf(this);
 				this.account.getAccount();
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));

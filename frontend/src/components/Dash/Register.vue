@@ -64,9 +64,7 @@ export default {
 			const account = useAccountStore();
 			const data = await account.register(request);
 			if (data.success) {
-				if (this.about.data.umami) {
-					window.umami.track(`Account Registered`);
-				}
+				this.about.track(`Account Registered`);
 				this.response = "Registered!";
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
 				this.$router.push({

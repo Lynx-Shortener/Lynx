@@ -56,9 +56,7 @@ export default {
 				});
             } else {
                 this.totp = totpResponse.result;
-				if (this.about.data.umami) {
-					window.umami.track(`Enabled 2FA`);
-				}
+				this.about.track(`Enabled 2FA`);
             }
         },
 		async verify () {

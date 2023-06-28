@@ -43,9 +43,7 @@ export default {
 			const account = useAccountStore();
 			const data = await account.login(this.logindata);
 			if (data.success) {
-				if (this.about.data.umami) {
-					window.umami.track(`Logged In`);
-				}
+				this.about.track(`Logged In`);
 				this.response = "Logged in!";
 				await this.about.load();
 				if (this.$route.query.next) return this.$router.push(decodeURIComponent(this.$route.query.next));
