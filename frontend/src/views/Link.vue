@@ -35,7 +35,6 @@ export default {
 		const data = await response.json();
 
 		if (data.success) {
-			if (this.about.data.umami) window.umami.track(`Used link /${slug}`);
 			window.location.href = data.result.destination;
 		} else {
 			this.loading = false;
