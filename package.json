@@ -25,5 +25,8 @@
 	"scripts": {
 		"dev": "nodemon . --ignore frontend",
 		"serve": "npm run dev --prefix frontend"
+	},
+	"resolutions": {
+		"semver": "~7.5.2"
 	}
 }
