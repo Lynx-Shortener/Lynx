@@ -100,9 +100,7 @@ export default {
 					],
 				});
 			} else {
-				if (this.about.data.umami) {
-					window.umami.track(`Imported links from ${this.data.service}`);
-				}
+				this.about.track(`Imported links from ${this.data.service}`);
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {
 					title: "Successfully completed import",

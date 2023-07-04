@@ -58,9 +58,7 @@ export default {
 					],
 				});
 			} else {
-				if (this.about.data.umami) {
-					window.umami.track(`Link Edited`);
-				}
+				this.about.track(`Link Edited`);
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {
 					title: "Successfully updated your link",
