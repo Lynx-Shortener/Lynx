@@ -9,20 +9,17 @@
 </template>
 
 <script>
-import { useAbout } from "../stores/about";
 export default {
 	data() {
 		return {
 			loading: true,
-			about: useAbout(),
 		};
 	},
 	async mounted() {
-		let slug = this.$route.params.pathMatch.join("/")
 		const response = await fetch(
 			"/api/link?" +
 				new URLSearchParams({
-					slug,
+					slug: this.$route.params.pathMatch.join("/"),
 				}),
 			{
 				method: "GET",
