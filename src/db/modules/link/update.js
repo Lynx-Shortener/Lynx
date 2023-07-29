@@ -1,7 +1,18 @@
 const getLink = require("./get");
 const Account = require("../../models/account");
+const { url: validUrl } = require("../valid");
 
 module.exports = async ({ id, slug, destination, account }) => {
+	if (!validUrl(destination)) {
+		return [
+			null,
+			{
+				message: "Invalid destination url format",
+				code: 422,
+			},
+		];
+	}
+
 	if (!slug)
 		return [
 			null,

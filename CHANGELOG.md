@@ -3,6 +3,7 @@
 ## [1.6.0] - 2023-07-29
 
 - Add environment variable URL_REGEX to allow for custom URL regexes
+- Verify URL on link update
 
 ## [1.5.4] - 2023-06-27
 
