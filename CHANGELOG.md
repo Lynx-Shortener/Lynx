@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.0] - 2023-07-29
+
+- Add environment variable URL_REGEX to allow for custom URL regexes
+
 ## [1.5.4] - 2023-06-27
 
 - More uniform Umami tracking with better error handling
