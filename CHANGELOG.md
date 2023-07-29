@@ -4,6 +4,7 @@
 
 - Add environment variable URL_REGEX to allow for custom URL regexes
 - Verify URL on link update
+- Edit release script to not include version header in releases
 
 ## [1.5.4] - 2023-06-27
 
@@ -133,4 +134,3 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
-
