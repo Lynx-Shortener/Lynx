@@ -83,8 +83,6 @@ router.post('/role', requireAccountValue({ role: ['owner'] }), async (req, res) 
       }
     }
 
-    console.log(updatedUser);
-
     res.status(200).json({
       success: true,
       result: {
