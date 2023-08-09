@@ -7,7 +7,6 @@
 	"license": "MIT",
 	"private": false,
 	"dependencies": {
-		"@imengyu/vue3-context-menu": "^1.1.5",
 		"bcrypt": "^5.1.0",
 		"cookie": "^0.5.0",
 		"cron": "^2.2.0",
@@ -25,5 +24,11 @@
 	"scripts": {
 		"dev": "nodemon . --ignore frontend --ignore backups",
 		"serve": "npm run dev --prefix frontend"
+	},
+	"devDependencies": {
+		"eslint": "^7.32.0 || ^8.2.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-plugin-import": "^2.25.2",
+		"eslint-plugin-vue": "^9.17.0"
 	}
 }
