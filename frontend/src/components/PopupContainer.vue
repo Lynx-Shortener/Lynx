@@ -1,12 +1,13 @@
 <template>
     <div v-show="popups.popups.length" class="popupContainer" @click.self="popups.closeTopmost">
-        <div v-for="popup in popups.popups" :key="popup.id" :class="['popup', popup.loaded ? 'loaded' : 'loading', !popup.loaded || popup.data.hideCross ? 'hide-cross' : '']">
-            <div v-if="popup.loaded && !popup.data.hideCross" class="exitIcon" @click="popups.closePopup(popup.id)">
+        <div v-for="popup in popups.popups" :key="popup.id" :class="['popup', popup.loaded ? 'loaded' : 'loading', !popup.loaded || popup.data.hideCross || !popup.component ? 'hide-cross' : '']">
+            <div v-if="(popup.loaded && !popup.data.hideCross) || !popup.component" class="exitIcon" @click="popups.closePopup(popup.id)">
                 <font-awesome-icon icon="x" />
             </div>
             <component
                 :is="popup.component"
                 v-show="popup.loaded"
+                v-if="popup.component"
                 :id="popup.id"
                 :data="popup.data"
                 class="popupComponent"

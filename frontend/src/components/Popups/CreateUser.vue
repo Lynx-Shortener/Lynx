@@ -93,7 +93,7 @@ export default {
             };
 
             const verificationData = await this.popups.addPopup("Verify", { async: true });
-            const loadingPopup = await this.popups.addPopup("Loading", { hideCross: true });
+            const loadingPopup = await this.popups.addPopup("Loader");
 
             const response = await this.account.fetch("/user", {
                 method: "POST",

@@ -122,7 +122,7 @@ export default {
             if (!buttonClicked || (buttonClicked && !buttonClicked.confirm)) return;
 
             const verificationData = await this.popups.addPopup("Verify", { async: true });
-            const loadingPopup = await this.popups.addPopup("Loading", { hideCross: true });
+            const loadingPopup = await this.popups.addPopup("Loader");
 
             const response = await this.account.fetch("/user", {
                 method: "DELETE",
@@ -195,7 +195,7 @@ export default {
             }
 
             const verificationData = await this.popups.addPopup("Verify", { async: true });
-            const loadingPopup = await this.popups.addPopup("Loading", { hideCross: true });
+            const loadingPopup = await this.popups.addPopup("Loader");
 
             const response = await this.account.fetch("/user/role", {
                 method: "POST",

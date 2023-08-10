@@ -17,13 +17,17 @@ export const usePopups = defineStore("popup", {
                 });
             }
 
-            const component = shallowRef(defineAsyncComponent(() => import(`../components/Popups/${popup}.vue`)));
+            let component;
+
+            if (popup !== "Loader") component = shallowRef(defineAsyncComponent(() => import(`../components/Popups/${popup}.vue`)));
+
             const popupData = {
                 id: v4(),
                 component,
                 loaded: false,
                 data: data || {},
                 resolve: resolvePromise,
+                name: popup,
             };
             this.popups.push(popupData);
 
