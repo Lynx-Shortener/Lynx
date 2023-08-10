@@ -29,7 +29,6 @@
                         :secret-set="!!user.secret"
                     >
                         <SecretBox
-                            v-if="user.id === account.account.id || account.account.role === 'owner'"
                             :secret="user.secret"
                             :user-i-d="user.id"
                             @update-user="updateUser"
