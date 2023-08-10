@@ -22,7 +22,7 @@ export const usePopups = defineStore("popup", {
                 id: v4(),
                 component,
                 loaded: false,
-                data,
+                data: data || {},
                 resolve: resolvePromise,
             };
             this.popups.push(popupData);

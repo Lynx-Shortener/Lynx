@@ -41,6 +41,58 @@ router.get("/list", async (req, res) => {
     }
 });
 
+// Create a user
+router.post("/", requireVerification, async (req, res) => {
+    try {
+        if (!req.body.user) {
+            return res.status(400).json({
+                success: false,
+                message: "A user object is required",
+            });
+        }
+        const {
+            username, email, password, role,
+        } = req.body.user;
+
+        let allowedRoles = ["admin", "standard"];
+
+        if (req.account.role === "admin") allowedRoles = ["standard"];
+
+        if (!allowedRoles.includes(role)) {
+            return res.status(400).json({
+                success: false,
+                message: `Invalid role or permissions, accepted roles: ${allowedRoles.join(", ")}`,
+            });
+        }
+
+        const [data, error] = await account.register({
+            email,
+            username,
+            password,
+            role,
+        });
+
+        if (error) {
+            return res.status(error.code).json({
+                success: false,
+                message: error.message,
+                details: error.details,
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: data,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error when listing users",
+        });
+    }
+});
+
 router.post("/role", requireAccountValue({ role: ["owner"] }), requireVerification, async (req, res) => {
     try {
         if (!req.body.user) {

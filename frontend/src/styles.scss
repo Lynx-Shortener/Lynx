@@ -309,6 +309,20 @@ a {
 						margin: 0;
 					}
 				}
+				.formkit-option-help {
+					text-align: left;
+					margin-top: 0.4rem;
+					font-weight: 300;
+					font-size: 0.8rem;
+					line-height: 1.5;
+				}
+
+				&[data-disabled="true"] {
+					.formkit-label {
+						opacity: 0.5;
+					}
+
+				}
 			}
 		}
 	}

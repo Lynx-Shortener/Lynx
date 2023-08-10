@@ -8,6 +8,9 @@
                 <th>Email</th>
                 <th>Role</th>
                 <th>Secret</th>
+                <th class="add-user" align="right">
+                    <font-awesome-icon :icon="['fas', 'fa-circle-plus']" @click="createUser" />
+                </th>
             </thead>
             <tbody>
                 <tr v-for="user in users" :key="user.id">
@@ -87,6 +90,13 @@ export default {
             const userIndex = this.users.findIndex((user) => user.id === userID);
 
             this.users[userIndex] = { ...this.users[userIndex], ...updatedValues };
+        },
+        async createUser() {
+            const userCreation = await this.popups.addPopup("CreateUser", { async: true });
+
+            if (userCreation.success) {
+                await this.getUsers();
+            }
         },
         updateRoleMenu(e, user) {
             if (user.id === this.account.account.id || this.account.account.role !== "owner") return;
@@ -199,6 +209,11 @@ export default {
                 &:last-of-type {
                     border-top-right-radius: 10px;
                     border-bottom-right-radius: 10px;
+                }
+                &.add-user {
+                    text-align: right;
+                    font-size: 1.4rem;
+                    cursor: pointer;
                 }
             }
         }
