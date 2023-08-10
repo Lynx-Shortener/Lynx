@@ -1,39 +1,40 @@
 <template>
-	<div class="sidebar">
-		<div class="sidebarContent">
-			<div class="upperIcons">
-				<router-link to="/dash/overview">
-					<font-awesome-icon icon="list" />
-				</router-link>
-				<router-link to="/dash/users">
-					<font-awesome-icon icon="users" />
-				</router-link>
-				<router-link to="/dash/settings">
-					<font-awesome-icon icon="gear" />
-				</router-link>
-			</div>
-			<div class="lowerIcons">
-				<a @click="darkMode.toggle()" class="darkmode">
-					<font-awesome-icon :icon="darkMode.dark ? 'sun' : 'moon'" />
-				</a>
-				<a class="logout" @click="account.logout">
-					<font-awesome-icon icon="right-from-bracket" />
-				</a>
-			</div>
-		</div>
-	</div>
+    <div class="sidebar">
+        <div class="sidebarContent">
+            <div class="upperIcons">
+                <router-link to="/dash/overview">
+                    <font-awesome-icon icon="list" />
+                </router-link>
+                <router-link v-if="['owner','admin'].includes(account.account.role)" to="/dash/users">
+                    <font-awesome-icon icon="users" />
+                </router-link>
+                <router-link to="/dash/settings">
+                    <font-awesome-icon icon="gear" />
+                </router-link>
+            </div>
+            <div class="lowerIcons">
+                <a class="darkmode" @click="darkMode.toggle()">
+                    <font-awesome-icon :icon="darkMode.dark ? 'sun' : 'moon'" />
+                </a>
+                <a class="logout" @click="account.logout">
+                    <font-awesome-icon icon="right-from-bracket" />
+                </a>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import { useDarkMode } from "../stores/dark";
 import { useAccountStore } from "../stores/account";
+
 export default {
-	data() {
-		return {
-			darkMode: useDarkMode(),
-			account: useAccountStore(),
-		};
-	},
+    data() {
+        return {
+            darkMode: useDarkMode(),
+            account: useAccountStore(),
+        };
+    },
 };
 </script>
 
