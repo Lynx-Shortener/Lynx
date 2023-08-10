@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.7.0] - 2023-08-10
+
+- Add user-management page
+
 ## [1.6.0] - 2023-07-29
 
 - Add environment variable URL_REGEX to allow for custom URL regexes
