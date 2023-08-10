@@ -4,6 +4,8 @@ const router = express.Router();
 const requireAccountValue = require("./middleware/requireAccountValue");
 const account = require("../db/modules/account");
 
+const requireVerification = require("./middleware/requireVerification");
+
 // const requireFields = require("./middleware/requireFields");
 // const requireTOTP = require("./middleware/requireTOTP");
 
@@ -39,9 +41,16 @@ router.get("/list", async (req, res) => {
     }
 });
 
-router.post("/role", requireAccountValue({ role: ["owner"] }), async (req, res) => {
+router.post("/role", requireAccountValue({ role: ["owner"] }), requireVerification, async (req, res) => {
     try {
-        const { role, userID } = req.body;
+        if (!req.body.user) {
+            return res.status(400).json({
+                success: false,
+                message: "A user object is required",
+            });
+        }
+
+        const { role, userID } = req.body.user;
 
         if (!["admin", "owner", "standard"].includes(role)) {
             return res.status(417).json({

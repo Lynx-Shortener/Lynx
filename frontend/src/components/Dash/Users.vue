@@ -128,13 +128,21 @@ export default {
                 if (!buttonClicked || (buttonClicked && !buttonClicked.confirm)) return;
             }
 
+            const verificationData = await this.popups.addPopup("Verify", { async: true });
+            const loadingPopup = await this.popups.addPopup("Loading", { hideCross: true });
+
             const response = await this.account.fetch("/user/role", {
                 method: "POST",
                 body: JSON.stringify({
-                    role,
-                    userID,
+                    user: {
+                        role,
+                        userID,
+                    },
+                    verification: verificationData,
                 }),
             });
+
+            this.popups.closePopup(loadingPopup.id);
 
             if (!response.success) {
                 this.getUsers();

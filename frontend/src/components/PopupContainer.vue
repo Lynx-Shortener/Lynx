@@ -1,7 +1,7 @@
 <template>
     <div v-show="popups.popups.length" class="popupContainer" @click.self="popups.closeTopmost">
-        <div v-for="popup in popups.popups" :key="popup.id" :class="['popup', popup.loaded ? 'loaded' : 'loading']">
-            <div v-if="popup.loaded" class="exitIcon" @click="popups.closePopup(popup.id)">
+        <div v-for="popup in popups.popups" :key="popup.id" :class="['popup', popup.loaded ? 'loaded' : 'loading', !popup.loaded || popup.data.hideCross ? 'hide-cross' : '']">
+            <div v-if="popup.loaded && !popup.data.hideCross" class="exitIcon" @click="popups.closePopup(popup.id)">
                 <font-awesome-icon icon="x" />
             </div>
             <component
@@ -13,7 +13,7 @@
                 @vue:mounted="popups.setLoaded(popup.id)"
             />
             <div v-if="!popup.loaded" class="loader">
-                <img src="/loader.svg" alt="">
+                <img :src="`/loader${!dark.dark ? '-dark' : ''}.svg`" alt="">
             </div>
         </div>
     </div>
@@ -21,11 +21,13 @@
 
 <script>
 import { usePopups } from "../stores/popups";
+import { useDarkMode } from "../stores/dark";
 
 export default {
     data() {
         return {
             popups: usePopups(),
+            dark: useDarkMode(),
         };
     },
 };
@@ -50,7 +52,8 @@ export default {
         width: 40rem;
         max-width: 80vw;
         box-sizing: border-box;
-        &.loaded {
+
+        &:not(.hide-cross) {
             padding: 2rem 1rem 1rem;
         }
         .exitIcon {

@@ -11,7 +11,7 @@ export const usePopups = defineStore("popup", {
             let resolvePromise;
             let promise;
 
-            if (data.async) {
+            if (data?.async) {
                 promise = new Promise((resolve) => {
                     resolvePromise = resolve;
                 });
@@ -27,20 +27,20 @@ export const usePopups = defineStore("popup", {
             };
             this.popups.push(popupData);
 
-            return data.async ? promise : popupData;
+            return data?.async ? promise : popupData;
         },
         setLoaded(id) {
             const popup = this.popups.findIndex((popup) => popup.id === id);
 
             this.popups[popup].loaded = true;
         },
-        closePopup(id, button) {
+        closePopup(id, data) {
             const popupIndex = this.popups.findIndex((popup) => popup.id === id);
 
             if (popupIndex !== -1) {
                 const popup = this.popups[popupIndex];
 
-                if (popup.resolve) popup.resolve(button);
+                if (popup.resolve) popup.resolve(data);
 
                 this.popups.splice(popupIndex, 1);
             } else {
@@ -58,8 +58,8 @@ export const usePopups = defineStore("popup", {
                 this.closePopup(popup.id);
             });
         },
-        closeSelf(a, button) {
-            this.closePopup(a.$el.attributes.id.value, button);
+        closeSelf(a, data) {
+            this.closePopup(a.$el.attributes.id.value, data);
         },
     },
 });
