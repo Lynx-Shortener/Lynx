@@ -35,6 +35,9 @@
                             @update-user="updateUser"
                         />
                     </td>
+                    <td class="delete-user">
+                        <font-awesome-icon v-if="user.id !== account.account.id" icon="trash-can" @click="deleteUser(user)" />
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -97,6 +100,61 @@ export default {
             if (userCreation.success) {
                 await this.getUsers();
             }
+        },
+        async deleteUser(user) {
+            const buttonClicked = await this.popups.addPopup("Information", {
+                title: `Are you sure you want to delete ${user.username}?`,
+                buttons: [
+                    {
+                        name: "Yes",
+                        type: "primary",
+                        action: "return",
+                        confirm: true,
+                    },
+                    {
+                        name: "No",
+                        type: "secondary",
+                        action: "return",
+                        confirm: false,
+                    },
+                ],
+                async: true,
+            });
+
+            if (!buttonClicked || (buttonClicked && !buttonClicked.confirm)) return;
+
+            const verificationData = await this.popups.addPopup("Verify", { async: true });
+            const loadingPopup = await this.popups.addPopup("Loading", { hideCross: true });
+
+            const response = await this.account.fetch("/user", {
+                method: "DELETE",
+                body: JSON.stringify({
+                    user: {
+                        id: user.id,
+                    },
+                    verification: verificationData,
+                }),
+            });
+
+            this.popups.closePopup(loadingPopup.id);
+
+            if (!response.success) {
+                this.getUsers();
+                this.popups.addPopup("Information", {
+                    title: "Error deleting the user",
+                    description: response.message,
+                    buttons: [
+                        {
+                            name: "Okay",
+                            type: "primary",
+                            action: "close-all",
+                        },
+                    ],
+                });
+                return;
+            }
+
+            await this.getUsers();
         },
         updateRoleMenu(e, user) {
             if (user.id === this.account.account.id || this.account.account.role !== "owner") return;
@@ -226,6 +284,16 @@ export default {
                     gap: 1rem;
                     svg {
                         cursor: pointer;
+                    }
+                }
+
+                &.delete-user {
+                    text-align: right;
+                    svg {
+                        cursor: pointer;
+                        &:hover {
+                            color: var(--color-error);
+                        }
                     }
                 }
             }

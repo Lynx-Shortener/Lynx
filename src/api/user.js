@@ -13,7 +13,9 @@ router.get("/list", async (req, res) => {
     try {
         let accounts = await account.get.all();
         const roles = ["owner", "admin", "standard"];
-        accounts = accounts.filter((returnedAccount) => !(req.account.role !== "owner" && returnedAccount.role === "owner")).sort((a, b) => {
+        accounts = accounts.filter((returnedAccount) => req.account.role === "owner"
+            || returnedAccount.id === req.account.id
+            || (returnedAccount.role !== "admin" && returnedAccount.role !== "owner")).sort((a, b) => {
             if (a.id === req.account.id) {
                 return -1; // move own account to top
             }
@@ -37,6 +39,57 @@ router.get("/list", async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Internal Server Error when listing users",
+        });
+    }
+});
+
+// delete a user
+
+router.delete("/", requireVerification, async (req, res) => {
+    try {
+        if (!req.body.user) {
+            return res.status(400).json({
+                success: false,
+                message: "A user object is required",
+            });
+        }
+        const {
+            id,
+        } = req.body.user;
+
+        const [Account, AccountError] = await account.get.byID({ id });
+        if (AccountError) {
+            return res.status(AccountError.code).json({
+                success: false,
+                message: AccountError.message,
+            });
+        }
+
+        if (Account.role === "owner" || (Account.role === "admin" && req.account.role === "admin")) {
+            return res.status(401).json({
+                success: false,
+                message: "You do not have permission to delete that user",
+            });
+        }
+
+        const [deletionSuccess, deletionError] = await account.delete({ id });
+
+        if (deletionError) {
+            return res.status(deletionError.code).json({
+                success: false,
+                message: deletionError.message,
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: deletionSuccess,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error when deleting user",
         });
     }
 });
@@ -88,7 +141,7 @@ router.post("/", requireVerification, async (req, res) => {
         console.log(e);
         return res.status(500).json({
             success: false,
-            message: "Internal Server Error when listing users",
+            message: "Internal Server Error when creating user",
         });
     }
 });
@@ -150,7 +203,7 @@ router.post("/role", requireAccountValue({ role: ["owner"] }), requireVerificati
         console.log(e);
         return res.status(500).json({
             success: false,
-            message: "Internal Server Error when listing users",
+            message: "Internal Server Error when updating user",
         });
     }
 });

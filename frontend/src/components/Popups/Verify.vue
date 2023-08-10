@@ -1,6 +1,6 @@
 <template>
     <div class="verify">
-        <h2>Verification Enabled</h2>
+        <h2>Verification Required</h2>
         <FormKit
             type="form"
             submit-label="Verify"
