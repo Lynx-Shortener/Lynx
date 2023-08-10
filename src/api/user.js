@@ -46,6 +46,12 @@ router.get("/list", async (req, res) => {
 // delete a user
 
 router.delete("/", requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of credentials is not enabled in demo mode.",
+        });
+    }
     try {
         if (!req.body.user) {
             return res.status(400).json({
@@ -96,6 +102,12 @@ router.delete("/", requireVerification, async (req, res) => {
 
 // Create a user
 router.post("/", requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Creation of users is not enabled in demo mode.",
+        });
+    }
     try {
         if (!req.body.user) {
             return res.status(400).json({
@@ -147,6 +159,12 @@ router.post("/", requireVerification, async (req, res) => {
 });
 
 router.post("/role", requireAccountValue({ role: ["owner"] }), requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of user roles is not enabled in demo mode.",
+        });
+    }
     try {
         if (!req.body.user) {
             return res.status(400).json({
