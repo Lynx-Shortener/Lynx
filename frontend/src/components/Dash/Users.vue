@@ -1,6 +1,6 @@
 <template>
     <div class="users">
-        <h2>User Management</h2>
+        <h2>User Management - {{ roles.find(([hRole, role]) => role === account.account.role)[0] }}</h2>
         <p>Manage other users such as their usernames, emails and roles.</p>
         <table>
             <thead>
@@ -53,6 +53,7 @@ export default {
             users: [],
             account: useAccountStore(),
             popups: usePopups(),
+            roles: [["Owner", "owner"], ["Admin", "admin"], ["Standard", "standard"]],
         };
     },
     mounted() {
@@ -90,7 +91,7 @@ export default {
         updateRoleMenu(e, user) {
             if (user.id === this.account.account.id || this.account.account.role !== "owner") return;
             e.preventDefault();
-            const items = [["Owner", "owner"], ["Admin", "admin"], ["Standard", "standard"]].map(([roleName, roleID]) => ({
+            const items = this.roles.map(([roleName, roleID]) => ({
                 label: roleName,
                 disabled: roleID === user.role,
                 onClick: () => {
@@ -152,10 +153,11 @@ export default {
             }
 
             this.updateUser(userID, response.result.user);
-
             if (role === "owner") {
                 this.updateUser(this.account.account.id, { role: "admin" });
                 await this.account.getAccount();
+                // Hide the new owner when the current user is no longer the owner
+                this.users = this.users.filter((user) => user.role !== "owner");
             }
         },
     },
