@@ -2,38 +2,64 @@ import { defineStore } from "pinia";
 import { v4 } from "uuid";
 import { shallowRef, defineAsyncComponent } from "vue";
 
-export const usePopups = defineStore("popup]", {
-	state: () => {
-		return {
-			popups: [],
-		};
-	},
-	actions: {
-		addPopup(popup, data) {
-			const component = shallowRef(defineAsyncComponent(() => import(`../components/Popups/${popup}.vue`)));
-			this.popups.push({
-				id: v4(),
-				component,
-				loaded: false,
-				data,
-			});
-		},
-		setLoaded(id) {
-			const popup = this.popups.findIndex((popup) => popup.id === id);
+export const usePopups = defineStore("popup", {
+    state: () => ({
+        popups: [],
+    }),
+    actions: {
+        addPopup(popup, data) {
+            let resolvePromise;
+            let promise;
 
-			this.popups[popup].loaded = true;
-		},
-		closePopup(id) {
-			this.popups = this.popups.filter((popup) => popup.id !== id);
-		},
-		closeTopmost() {
-			this.popups.pop();
-		},
-		closeAll() {
-			this.popups = [];
-		},
-		closeSelf(a) {
-			this.closePopup(a.$el.attributes.id.value);
-		},
-	},
+            if (data.async) {
+                promise = new Promise((resolve) => {
+                    resolvePromise = resolve;
+                });
+            }
+
+            const component = shallowRef(defineAsyncComponent(() => import(`../components/Popups/${popup}.vue`)));
+            const popupData = {
+                id: v4(),
+                component,
+                loaded: false,
+                data,
+                resolve: resolvePromise,
+            };
+            this.popups.push(popupData);
+
+            return data.async ? promise : popupData;
+        },
+        setLoaded(id) {
+            const popup = this.popups.findIndex((popup) => popup.id === id);
+
+            this.popups[popup].loaded = true;
+        },
+        closePopup(id, button) {
+            const popupIndex = this.popups.findIndex((popup) => popup.id === id);
+
+            if (popupIndex !== -1) {
+                const popup = this.popups[popupIndex];
+
+                if (popup.resolve) popup.resolve(button);
+
+                this.popups.splice(popupIndex, 1);
+            } else {
+                console.error(`Popup with ID ${id} not found.`);
+            }
+        },
+        closeTopmost() {
+            if (this.popups.length > 0) {
+                const lastPopup = this.popups[this.popups.length - 1];
+                this.closePopup(lastPopup.id);
+            }
+        },
+        closeAll() {
+            this.popups.forEach((popup) => {
+                this.closePopup(popup.id);
+            });
+        },
+        closeSelf(a, button) {
+            this.closePopup(a.$el.attributes.id.value, button);
+        },
+    },
 });
