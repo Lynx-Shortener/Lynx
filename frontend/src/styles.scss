@@ -151,10 +151,15 @@ a {
 	}
 	font-size: 16px; // 1200px - 1920px
 	@media screen and (min-width: 1920px) {
-		font-size: 18px;
+		font-size: 14px;
 	}
-	@media screen and (min-width: 2500px) {
-		font-size: 30px;
+
+	@media screen and (min-width: 2560px) {
+		font-size: 16px;
+	}
+
+	@media screen and (min-width: 3840px) {
+		font-size: 18px;
 	}
 
 	--bg-color-1: #ffffff;
