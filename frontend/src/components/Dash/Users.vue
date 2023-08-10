@@ -80,7 +80,7 @@ export default {
                         {
                             name: "Cancel",
                             type: "secondary",
-                            action: "navigate-back",
+                            actions: ["navigate-home", "return"],
                         },
                     ],
                 });

@@ -27,26 +27,35 @@ export default {
     },
     methods: {
         action(button) {
-            switch (button.action) {
-            case "return":
-                this.popups.closeSelf(this, button);
-                break;
+            const runAction = (action) => {
+                switch (action) {
+                case "return":
+                    this.popups.closeSelf(this, button);
+                    break;
 
-            case "close-all":
-                this.popups.closeAll();
-                break;
+                case "close-all":
+                    this.popups.closeAll();
+                    break;
 
-            case "refresh":
-                window.location.reload();
-                break;
+                case "refresh":
+                    window.location.reload();
+                    break;
 
-            case "navigate-back":
-                window.history.back();
-                break;
+                case "navigate-back":
+                    window.history.back();
+                    break;
 
-            default:
-                break;
-            }
+                case "navigate-home":
+                    this.$router.push("/dash");
+                    break;
+
+                default:
+                    break;
+                }
+            };
+
+            if (button.action) runAction(button.action);
+            if (button.actions) button.actions.forEach((action) => runAction(action));
         },
     },
 };
