@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.6.0] - 2023-07-29
+
+- Add environment variable URL_REGEX to allow for custom URL regexes
+- Verify URL on link update
+- Edit release script to not include version header in releases
+
+## [1.5.4] - 2023-06-27
+
+- More uniform Umami tracking with better error handling
+- Force update semver to ^7.5.2 until bcrypt and jwt update it themselves. Resolves [CVE-2022-25883](https://github.com/advisories/GHSA-c2qf-rxjj-qqgw)
+
 ## [1.5.3] - 2023-05-28
 
 - Fix context menu item flow

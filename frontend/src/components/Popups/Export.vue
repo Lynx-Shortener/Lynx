@@ -38,9 +38,7 @@ export default {
 				anchor.click();
 				window.URL.revokeObjectURL(url);
 				anchor.remove();
-				if (this.about.data.umami) {
-					window.umami.track(`Exported Links to ${format.toUpperCase()}`);
-				}
+				this.about.track(`Exported Links to ${format.toUpperCase()}`);
 				this.popups.closeSelf(this);
 			}
 

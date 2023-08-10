@@ -43,9 +43,7 @@ export default {
 					],
 				});
 			} else {
-				if (this.about.data.umami) {
-					window.umami.track("Link Deleted")
-				}
+				this.about.track("Link Deleted")
 				this.about.removeLink();
 				this.popups.closeSelf(this);
 				this.popups.addPopup("Information", {

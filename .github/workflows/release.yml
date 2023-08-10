@@ -44,13 +44,12 @@ jobs:
                     # Set capturing changes if line is a version header
                     if [[ "$line" == "## ["* ]]; then
                         if [[ "$line" == "## [$VERSION]"* ]]; then
-                            CHANGES="$line"
                             CAPTURING_CHANGES=1
                         else
                             CAPTURING_CHANGES=0
                         fi
-                    ## Otherwise, add lines to the changelog if it is within the current version
-                    elif [[ "$CAPTURING_CHANGES" == 1 ]]; then
+                    ## Otherwise, add lines to the changelog if it is within the current version and not just spaces
+                    elif [[ "$CAPTURING_CHANGES" == 1 ]] && [[ $line = *[!\ ]* ]]; then
                         CHANGES="$CHANGES"$'\n'"$line"
                     fi
                 done < CHANGELOG.md
