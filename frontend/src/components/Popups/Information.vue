@@ -1,6 +1,15 @@
 <template>
     <div class="information">
         <h2>{{ data.title }}</h2>
+        <qrcode-vue
+            v-if="data.qrcode"
+            :value="data.qrcode"
+            :size="200"
+            level="H"
+            class="qr-code"
+            :background="'transparent'"
+            :foreground="dark.dark ? '#3c73e9' : '#3539a0'"
+        />
         <p v-html="data.description" />
         <div class="buttons">
             <FormKit
@@ -16,13 +25,19 @@
 </template>
 
 <script>
+import QrcodeVue from "qrcode.vue";
 import { usePopups } from "../../stores/popups";
+import { useDarkMode } from "../../stores/dark";
 
 export default {
+    components: {
+        QrcodeVue,
+    },
     props: ["data"],
     data() {
         return {
             popups: usePopups(),
+            dark: useDarkMode(),
         };
     },
     methods: {

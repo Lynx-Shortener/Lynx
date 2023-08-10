@@ -88,14 +88,17 @@
 						<font-awesome-icon icon="ellipsis-vertical" />
 					</td>
 					<td class="buttons">
-						<button @click="handleEdit(link)">
-							<font-awesome-icon icon="pencil" />
-							<span>Edit</span>
-						</button>
-						<button @click="handleDelete([link.id])">
-							<font-awesome-icon icon="trash-can" />
-							<span>Delete</span>
-						</button>
+                        <button class="button-edit" @click="handleEdit(link)">
+                            <font-awesome-icon icon="pencil" />
+                            <span>Edit</span>
+                        </button>
+                        <button class="button-delete" @click="handleDelete([link.id])">
+                            <font-awesome-icon icon="trash-can" />
+                            <span>Delete</span>
+                        </button>
+                        <button class="button-qrcode" @click="openQRCode(link)">
+                            <font-awesome-icon icon="qrcode" />
+                        </button>
 					</td>
 				</tr>
 				<div class="bulkManagement" v-if="links.selectedLinks.length > 0">
@@ -131,6 +134,15 @@
 				/>
 			</symbol>
 		</svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+            <symbol id="icon-qr-code" viewBox="0 0 512 512">
+                <path
+                    fill="currentColor"
+                    d="M0 80C0 53.5 21.5 32 48 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80zM64 96v64h64V96H64zM0 336c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336zm64 16v64h64V352H64zM304 32h96c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H304c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48zm80 64H320v64h64V96zM256 304c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16v96c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16v64c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V304zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z"
+                />
+            </symbol>
+        </svg>
 	</div>
 </template>
 
@@ -208,6 +220,19 @@ export default {
 				this.links.selectedLinks.push(link.id);
 			}
 		},
+        openQRCode(link) {
+            this.popups.addPopup("Information", {
+                title: `QRCode for ${link.slug}`,
+                qrcode: `${window.location.origin}/${link.slug}`,
+                buttons: [
+                    {
+                        name: "Okay",
+                        type: "primary",
+                        action: "return",
+                    },
+                ],
+            });
+        },
 		showContextMenu(e, link) {
 			e.preventDefault();
 			ContextMenu.showContextMenu({
@@ -221,6 +246,13 @@ export default {
 							this.handleEdit(link);
 						},
 					},
+                    {
+                        label: "Get QRCode",
+                        svgIcon: "#icon-qr-code",
+                        onClick: () => {
+                            this.openQRCode(link);
+                        },
+                    },
 					{
 						label: "Delete",
 						svgIcon: "#icon-trash-can",
@@ -665,29 +697,33 @@ export default {
 							display: none;
 						}
 						&.buttons {
-							display: grid;
-							grid-template-columns: 1fr 1fr;
-							gap: 1rem;
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 3rem;
+                            gap: 0.5rem;
 
-							button {
-								border: none;
-								padding: 0.8em 1em;
-								display: flex;
-								gap: 1rem;
-								justify-content: center;
-								font-size: 1rem;
-								border-radius: 5px;
-								font: inherit;
-								&:first-of-type {
-									background-color: var(--accent);
-									color: var(--accent-color);
-								}
-								&:last-of-type {
-									background-color: var(--color-error);
-									color: var(--accent-color);
-								}
-							}
-						}
+                            button {
+                                border: none;
+                                padding: 0.8em 1em;
+                                display: flex;
+                                gap: 1rem;
+                                justify-content: center;
+                                font-size: 1rem;
+                                border-radius: 5px;
+                                font: inherit;
+                                &.button-edit {
+                                    background-color: var(--accent);
+                                    color: var(--accent-color);
+                                }
+                                &.button-qrcode {
+                                    background-color: var(--bg-color-3);
+                                    color: var(--color-1);
+                                }
+                                &.button-delete {
+                                    background-color: var(--color-error);
+                                    color: var(--accent-color);
+                                }
+                            }
+                        }
 					}
 				}
 			}

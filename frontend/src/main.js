@@ -26,6 +26,7 @@ import {
     faSortDown,
     faUsers,
     faCirclePlus,
+    faQrcode,
 } from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
 import ContextMenu from "@imengyu/vue3-context-menu";
@@ -59,6 +60,7 @@ library.add(
     faSortDown,
     faUsers,
     faCirclePlus,
+    faQrcode,
 );
 
 const app = createApp(App);
