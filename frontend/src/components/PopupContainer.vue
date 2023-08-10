@@ -12,9 +12,7 @@
                 class="popupComponent"
                 @vue:mounted="popups.setLoaded(popup.id)"
             />
-            <div v-if="!popup.loaded" class="loader">
-                <img :src="`/loader${!dark.dark ? '-dark' : ''}.svg`" alt="">
-            </div>
+            <Loader v-if="!popup.loaded" />
         </div>
     </div>
 </template>

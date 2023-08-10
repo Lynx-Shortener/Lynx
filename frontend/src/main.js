@@ -29,6 +29,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
 import ContextMenu from "@imengyu/vue3-context-menu";
+import Loader from "./components/Loader.vue";
 
 import router from "./router";
 import App from "./App.vue";
@@ -64,6 +65,7 @@ const app = createApp(App);
 app.use(router);
 app.use(pinia);
 app.component("FontAwesomeIcon", FontAwesomeIcon);
+app.component("Loader", Loader);
 app.use(plugin, defaultConfig);
 app.use(VueObserveVisibility);
 app.use(ContextMenu);
