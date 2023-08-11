@@ -118,7 +118,18 @@ export default {
             });
 
             if (!data.success) {
-                alert("Error retrieving ShareX config.");
+                this.popups.addPopup("Information", {
+                    title: "Error getting sharex config",
+                    description: data.message,
+                    buttons: [
+                        {
+                            name: "Okay",
+                            type: "primary",
+                            action: "return",
+                        },
+                    ],
+                });
+                return;
             }
 
             const config = JSON.stringify(data.result.config, null, 4);

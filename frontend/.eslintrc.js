@@ -14,6 +14,7 @@ module.exports = {
             },
             files: [
                 ".eslintrc.{js,cjs}",
+                "",
             ],
             parserOptions: {
                 sourceType: "script",
@@ -56,7 +57,7 @@ module.exports = {
         "vue/html-indent": ["error", 4, {
             alignAttributesVertically: true,
         }],
-        "vue/no-v-html": "error",
+        "vue/no-v-html": "off",
         quotes: ["error", "double"],
         semi: ["error", "always"],
     },

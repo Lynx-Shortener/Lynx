@@ -5,6 +5,10 @@
 		"./frontend"		
 	],
 	"eslint.options": {
-		"resolvePluginsRelativeTo": "."
-	}
+		"resolvePluginsRelativeTo": ".",
+	},
+	"eslint.validate": [
+		"javascript",
+		"vue",
+	]	  
 }

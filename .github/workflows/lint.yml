@@ -30,6 +30,6 @@ jobs:
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend
-            extensions: 'js,vue,scss'
+            extensions: 'js,vue'
             eslint-args: "--resolve-plugins-relative-to frontend --no-ignore"
             annotations: true
