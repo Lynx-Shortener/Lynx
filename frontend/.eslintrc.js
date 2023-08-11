@@ -32,7 +32,7 @@ module.exports = {
         "func-names": "off",
         "no-prototype-buildins": "off",
         "no-console": "off",
-        "import/no-extraneous-dependencies": ["error"],
+        "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
         indent: ["error", 4],
         "no-shadow": ["error", { ignoreOnInitialization: true }],
         "max-len": ["error", {
