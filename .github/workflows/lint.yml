@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci # or yarn install
+      - run: yarn install
       - name: Lint Backend
         uses: sibiraj-s/action-eslint@v3
         with:
@@ -22,9 +22,10 @@ jobs:
           ignore-path: .eslintignore
           eslint-args: "--resolve-plugins-relative-to ."
           annotations: true
-
+      - run: yarn install
+       working-directory: frontend
       - name: Lint Frontend
-        uses: sibiraj-s/action-eslint@v3
+        uses: sibiraj-s/action-eslint@v3\
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend
