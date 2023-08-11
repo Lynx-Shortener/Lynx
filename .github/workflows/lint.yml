@@ -16,12 +16,13 @@ jobs:
           node-version: 18
       - run: npm install -g yarn
       - run: yarn install
+        working-directory: src
       - name: Lint Backend
         uses: sibiraj-s/action-eslint@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # optional
-          ignore-path: .eslintignore
-          eslint-args: "--resolve-plugins-relative-to ."
+          working-directory: src
+          extensions: 'js'
           annotations: true
       - run: yarn install
         working-directory: frontend
@@ -31,5 +32,4 @@ jobs:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend
             extensions: 'js,vue'
-            eslint-args: "--resolve-plugins-relative-to frontend --no-ignore"
             annotations: true

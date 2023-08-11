@@ -1,4 +1,4 @@
-require("dotenv").config("../../../.env");
+require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const mongoSanitize = require("express-mongo-sanitize");

@@ -1,7 +1,7 @@
 {
 	"name": "jackbailey-lynx",
 	"version": "1.0.0",
-	"main": "src/index.js",
+	"main": "index.js",
 	"repository": "https://github.com/Lynx-Shortener/Lynx.git",
 	"author": "Jack Bailey <jack@jackbailey.dev>",
 	"license": "MIT",
@@ -23,8 +23,8 @@
 		"uuid": "^9.0.0"
 	},
 	"scripts": {
-		"dev": "nodemon . --ignore frontend --ignore backups",
-		"serve": "npm run dev --prefix frontend"
+		"dev": "nodemon .",
+		"lint": "eslint . --ext js"
 	},
 	"devDependencies": {
 		"eslint": "^7.32.0 || ^8.2.0",

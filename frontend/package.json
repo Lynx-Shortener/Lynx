@@ -6,7 +6,7 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
-		"server": "nodemon server -w server"
+		"lint": "eslint . --ext js,vue"
 	},
 	"dependencies": {
 		"@formkit/vue": "^1.0.0-beta.12",
