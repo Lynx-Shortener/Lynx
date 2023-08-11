@@ -27,6 +27,6 @@ jobs:
         uses: sibiraj-s/action-eslint@v3
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
-            working-dir: .eslintignore
+            working-directory: .eslintignore
             eslint-args: "--resolve-plugins-relative-to ."
             annotations: true
