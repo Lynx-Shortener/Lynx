@@ -29,5 +29,5 @@ jobs:
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend
-            eslint-args: "--resolve-plugins-relative-to ."
+            eslint-args: "--resolve-plugins-relative-to frontend"
             annotations: true
