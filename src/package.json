@@ -1,14 +1,14 @@
 {
 	"name": "jackbailey-lynx",
 	"version": "1.0.0",
-	"main": "src/index.js",
+	"main": "index.js",
 	"repository": "https://github.com/Lynx-Shortener/Lynx.git",
 	"author": "Jack Bailey <jack@jackbailey.dev>",
 	"license": "MIT",
 	"private": false,
 	"dependencies": {
-		"@imengyu/vue3-context-menu": "^1.1.5",
 		"bcrypt": "^5.1.0",
+		"body-parser": "^1.20.2",
 		"cookie": "^0.5.0",
 		"cron": "^2.2.0",
 		"csv-parse": "^5.3.3",
@@ -23,8 +23,13 @@
 		"uuid": "^9.0.0"
 	},
 	"scripts": {
-		"dev": "nodemon . --ignore frontend --ignore backups",
-		"serve": "npm run dev --prefix frontend"
+		"dev": "nodemon .",
+		"lint": "eslint . --ext js"
+	},
+	"devDependencies": {
+		"eslint": "^7.32.0 || ^8.2.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-plugin-import": "^2.25.2"
 	},
 	"resolutions": {
 		"semver": "~7.5.2"

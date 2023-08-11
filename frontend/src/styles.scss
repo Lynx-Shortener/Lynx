@@ -151,10 +151,15 @@ a {
 	}
 	font-size: 16px; // 1200px - 1920px
 	@media screen and (min-width: 1920px) {
-		font-size: 18px;
+		font-size: 14px;
 	}
-	@media screen and (min-width: 2500px) {
-		font-size: 30px;
+
+	@media screen and (min-width: 2560px) {
+		font-size: 16px;
+	}
+
+	@media screen and (min-width: 3840px) {
+		font-size: 18px;
 	}
 
 	--bg-color-1: #ffffff;
@@ -308,6 +313,20 @@ a {
 					.formkit-label {
 						margin: 0;
 					}
+				}
+				.formkit-option-help {
+					text-align: left;
+					margin-top: 0.4rem;
+					font-weight: 300;
+					font-size: 0.8rem;
+					line-height: 1.5;
+				}
+
+				&[data-disabled="true"] {
+					.formkit-label {
+						opacity: 0.5;
+					}
+
 				}
 			}
 		}

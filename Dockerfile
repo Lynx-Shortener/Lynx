@@ -4,20 +4,25 @@ WORKDIR /app
 
 # Copy required files for packages 
 
-COPY ["./frontend/package.json","./frontend/yarn.lock","frontend/"]
+COPY ["./frontend/package.json","./frontend/yarn.lock","/app/frontend/"]
 
-COPY ["./package.json","./yarn.lock", "VERSION", "./"]
+COPY ["./src/package.json","./src/yarn.lock", "/app/src/"]
+
+COPY ["VERSION", "./"]
 
 # Install dependencies for backend
 
+WORKDIR /app/src
+
 RUN yarn
-COPY ./src ./src
+
+COPY src .
 
 # Install dependencies for frontend and build it
 
 WORKDIR /app/frontend
 RUN NODE_ENV=production
-COPY ./frontend /app/frontend 
+COPY frontend .
 RUN yarn
 RUN yarn build
 
@@ -30,7 +35,6 @@ WORKDIR /app
 COPY --from=BUILD_IMAGE /app/dist ./dist
 COPY --from=BUILD_IMAGE /app/src ./src
 COPY --from=BUILD_IMAGE /app/VERSION ./VERSION
-COPY --from=BUILD_IMAGE /app/node_modules ./node_modules
 
 EXPOSE 3000
 
