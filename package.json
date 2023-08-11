@@ -8,6 +8,7 @@
 	"private": false,
 	"dependencies": {
 		"bcrypt": "^5.1.0",
+		"body-parser": "^1.20.2",
 		"cookie": "^0.5.0",
 		"cron": "^2.2.0",
 		"csv-parse": "^5.3.3",
@@ -28,9 +29,8 @@
 	"devDependencies": {
 		"eslint": "^7.32.0 || ^8.2.0",
 		"eslint-config-airbnb-base": "^15.0.0",
-		"eslint-plugin-import": "^2.25.2",
-		"eslint-plugin-vue": "^9.17.0"
-  },
+		"eslint-plugin-import": "^2.25.2"
+	},
 	"resolutions": {
 		"semver": "~7.5.2"
 	}

@@ -1,5 +1,3 @@
 const Link = require("../../models/link");
 
-module.exports = async (query) => {
-	return await Link.count(query);
-};
+module.exports = async (query) => Link.count(query);

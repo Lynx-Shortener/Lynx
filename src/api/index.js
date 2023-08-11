@@ -1,24 +1,25 @@
 const express = require("express");
+
 const router = express.Router();
 const requireLogin = require("./middleware/requireLogin");
 const requireAccountValue = require("./middleware/requireAccountValue");
 
-router.use("/auth", require("./auth.js"));
+router.use("/auth", require("./auth"));
 
-router.use("/link", require("./link.js"));
+router.use("/link", require("./link"));
 
-router.use("/import", require("./import.js"));
+router.use("/import", require("./import"));
 
-router.use("/export", require("./export.js"));
+router.use("/export", require("./export"));
 
-router.use("/sharex", require("./sharex.js"));
+router.use("/sharex", require("./sharex"));
 
-router.use("/about", require("./about.js"));
+router.use("/about", require("./about"));
 
-router.use("/user", requireLogin(true), requireAccountValue({ role: ["admin", "owner"] }), require("./user.js"));
+router.use("/user", requireLogin(true), requireAccountValue({ role: ["admin", "owner"] }), require("./user"));
 
 router.get("/", (req, res) => {
-	res.send("OK");
+    res.send("OK");
 });
 
 module.exports = router;

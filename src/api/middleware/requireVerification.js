@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
             });
         }
 
-        const [totpVerificationSuccess, totpVerificationFailure] = totp.verify(req.account.username, req.account.totp.secret, token);
+        const totpVerificationFailure = totp.verify(req.account.username, req.account.totp.secret, req.body.token)[1];
 
         if (totpVerificationFailure) {
             return res.status(totpVerificationFailure.code).json({

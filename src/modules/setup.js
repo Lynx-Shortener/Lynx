@@ -15,6 +15,9 @@ module.exports = async () => {
                 role: "owner",
                 email: "demo@example.com",
             });
+            if (error) {
+                console.log("Couldn't create demo account:", error);
+            }
             if (account) {
                 CreateSecret(account);
                 console.log("Created demo account!");
@@ -27,11 +30,11 @@ module.exports = async () => {
     fs.readdir(path.join("tmp", "uploads"), (err, files) => {
         if (err) throw err;
 
-        for (const file of files) {
-            fs.unlink(path.join(path.join("tmp", "uploads"), file), (err) => {
-                if (err) throw err;
+        files.forEach((file) => {
+            fs.unlink(path.join(path.join("tmp", "uploads"), file), (unlinkErr) => {
+                if (unlinkErr) throw unlinkErr;
             });
-        }
+        });
     });
 
     return { setupCompleted: true };

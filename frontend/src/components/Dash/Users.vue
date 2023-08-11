@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import ContextMenu from "@imengyu/vue3-context-menu";
 import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
 import SecretBox from "./SecretBox.vue";
