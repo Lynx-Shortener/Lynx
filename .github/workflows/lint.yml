@@ -23,9 +23,9 @@ jobs:
           eslint-args: "--resolve-plugins-relative-to ."
           annotations: true
       - run: yarn install
-       working-directory: frontend
+        working-directory: frontend
       - name: Lint Frontend
-        uses: sibiraj-s/action-eslint@v3\
+        uses: sibiraj-s/action-eslint@v3
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend
