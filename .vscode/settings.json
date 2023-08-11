@@ -10,5 +10,7 @@
 	"eslint.validate": [
 		"javascript",
 		"vue",
-	]	  
+	],
+	"editor.tabSize": 4,
+	"editor.insertSpaces": true,
 }
