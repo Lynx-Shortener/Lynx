@@ -1,0 +1,35 @@
+name: Lint
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install -g yarn
+      - run: yarn install
+      - name: Lint Backend
+        uses: sibiraj-s/action-eslint@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # optional
+          ignore-path: .eslintignore
+          eslint-args: "--resolve-plugins-relative-to ."
+          annotations: true
+      - run: yarn install
+        working-directory: frontend
+      - name: Lint Frontend
+        uses: sibiraj-s/action-eslint@v3
+        with:
+            token: ${{ secrets.GITHUB_TOKEN }} # optional
+            working-directory: frontend
+            extensions: 'js,vue'
+            eslint-args: "--resolve-plugins-relative-to frontend --no-ignore"
+            annotations: true

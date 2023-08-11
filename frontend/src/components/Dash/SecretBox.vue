@@ -11,28 +11,29 @@
             <div class="action copy" @click="copySecret">
                 <font-awesome-icon :icon="clipboard.success ? 'check' : 'clipboard'" />
             </div>
-        </div>                   
-    </div>                                                                    
+        </div>
+    </div>
 </template>
 
 <script>
 import { useAccountStore } from "../../stores/account";
 import { useAbout } from "../../stores/about";
+
 export default {
     props: ["secret", "userID"],
-    data () {
+    data() {
         return {
             secretVisible: false,
             account: useAccountStore(),
-			about: useAbout(),
+            about: useAbout(),
             newSecretData: {
-				loading: false,
-				success: false,
-			},
+                loading: false,
+                success: false,
+            },
             clipboard: {
-				success: false,
-			},
-        }
+                success: false,
+            },
+        };
     },
     methods: {
         toggleSecret() {
@@ -40,30 +41,30 @@ export default {
             this.secretVisible = !this.secretVisible;
         },
         async newSecret(id) {
-			if (this.about.data.demo) return;
-			this.newSecretData.success = false;
-			this.newSecretData.loading = true;
-			let newSecret = await this.account.newSecret({ id });
+            if (this.about.data.demo) return;
+            this.newSecretData.success = false;
+            this.newSecretData.loading = true;
+            const newSecret = await this.account.newSecret({ id });
             if (newSecret) {
                 if (this.$route.path === "/dash/users") {
-                    this.$emit("update-user", id, { secret: newSecret } )
+                    this.$emit("update-user", id, { secret: newSecret });
                 }
                 this.newSecretData.success = true;
                 setTimeout(() => {
                     this.newSecretData.success = false;
                 }, 2000);
             }
-			this.newSecretData.loading = false;
-		},
-		async copySecret() {
-			this.clipboard.success = true;
-			navigator.clipboard.writeText(this.account.account.secret);
-			setTimeout(() => {
-				this.clipboard.success = false;
-			}, 2000);
-		},
-    }
-}
+            this.newSecretData.loading = false;
+        },
+        async copySecret() {
+            this.clipboard.success = true;
+            navigator.clipboard.writeText(this.account.account.secret);
+            setTimeout(() => {
+                this.clipboard.success = false;
+            }, 2000);
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>

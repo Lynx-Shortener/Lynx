@@ -4,28 +4,29 @@ const returnAccount = require("../../../../modules/returnAccount");
 require("dotenv").config();
 
 module.exports = async ({ account, password, newPassword }) => {
-	const passwordMatches = await checkPassword(password, account.password);
-	if (!passwordMatches)
-		return [
-			null,
-			{
-				code: 400,
-				message: "Invalid password",
-			},
-		];
+    const passwordMatches = await checkPassword(password, account.password);
+    if (!passwordMatches) {
+        return [
+            null,
+            {
+                code: 400,
+                message: "Invalid password",
+            },
+        ];
+    }
 
-	const hashedPassword = hashPassword(newPassword);
-	account.password = hashedPassword;
+    const hashedPassword = hashPassword(newPassword);
+    account.password = hashedPassword;
 
-	await account.save();
+    await account.save();
 
-	const accountDetails = returnAccount(account);
+    const accountDetails = returnAccount(account);
 
-	return [
-		{
-			message: "Password successfully updated",
-			account: accountDetails,
-		},
-		null,
-	];
+    return [
+        {
+            message: "Password successfully updated",
+            account: accountDetails,
+        },
+        null,
+    ];
 };

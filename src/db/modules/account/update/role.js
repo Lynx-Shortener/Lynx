@@ -1,14 +1,14 @@
-const returnAccount = require('../../../../modules/returnAccount');
-require('dotenv').config();
+const returnAccount = require("../../../../modules/returnAccount");
+require("dotenv").config();
 
 module.exports = async ({ account, role }) => {
-  account.role = role;
-  await account.save();
+    account.role = role;
+    await account.save();
 
-  const accountDetails = returnAccount(account);
+    const accountDetails = returnAccount(account);
 
-  return [
-    accountDetails,
-    null,
-  ];
+    return [
+        accountDetails,
+        null,
+    ];
 };
