@@ -1,6 +1,6 @@
 {
 	"name": "lynx-frontend",
-	"private": true,
+	"private": false,
 	"version": "0.0.0",
 	"scripts": {
 		"dev": "vite",
@@ -27,7 +27,7 @@
 	},
 	"devDependencies": {
 		"@vitejs/plugin-vue": "^4.0.0",
-		"eslint": "^8.46.0",
+		"eslint": "^7.32.0 || ^8.2.0",
 		"eslint-config-airbnb-base": "^15.0.0",
 		"eslint-plugin-import": "^2.25.2",
 		"eslint-plugin-vue": "^9.17.0",

@@ -1,6 +1,10 @@
 {
 	"files.eol": "\n",
 	"eslint.workingDirectories": [
-		
-	]
+		"./",
+		"./frontend"		
+	],
+	"eslint.options": {
+		"resolvePluginsRelativeTo": "."
+	}
 }

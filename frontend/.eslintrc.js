@@ -28,9 +28,10 @@ module.exports = {
         "vue",
     ],
     rules: {
+        "func-names": "off",
         "no-prototype-buildins": "off",
         "no-console": "off",
-        "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
+        "import/no-extraneous-dependencies": ["error", { packageDir: "." }],
         indent: ["error", 4],
         "no-shadow": ["error", { ignoreOnInitialization: true }],
         "max-len": ["error", {
