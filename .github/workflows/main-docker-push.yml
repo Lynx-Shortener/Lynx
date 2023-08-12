@@ -14,7 +14,7 @@ jobs:
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v2
               with:
-                platforms: 'arm64,arm'
+                platforms: 'linux/amd64,linux/arm64'
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v2
             - name: Get version
@@ -29,14 +29,14 @@ jobs:
                 DOCKER_TAGS="$IMAGE:$MAJOR,$IMAGE:$MINOR,$IMAGE:$PATCH,$IMAGE:latest,$IMAGE:beta"
 
                 echo "DOCKER_TAGS=$DOCKER_TAGS" >> $GITHUB_ENV
-            - name: docker login
-              env:
-                  DOCKER_USER: jackbailey
-                  DOCKER_PASS: ${{secrets.DOCKERHUB_ACCESS_TOKEN}}
-              run: |
-                  docker login -u $DOCKER_USER -p $DOCKER_PASS
+            - name: Login to Docker Hub
+              uses: docker/login-action@v2
+              with:
+                username: jackbailey
+                password: ${{secrets.DOCKERHUB_ACCESS_TOKEN}}
             - name: Build and push
               uses: docker/build-push-action@v3
               with:
                 push: true
-                tags: "$DOCKER_TAGS"
+                platforms: linux/amd64,linux/arm64
+                tags: ${{ env.DOCKER_TAGS }}
