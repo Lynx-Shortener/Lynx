@@ -32,7 +32,6 @@ jobs:
           extensions: 'js'
           annotations: true
           use-npx: true
-        working-directory: frontend
       - name: Lint Frontend
         uses: jackbailey/action-eslint@148d23abd0f6e5139bc0a35422e31f740d6bb816
         with:
