@@ -2,6 +2,7 @@
 
 ## [1.7.1] - 2023-08-12
 
+- Switch to pnpm
 - Bug fixes:
   - Fix backup solution to they're saved to /app/backups not /app/src/backups (Introduced in 1.7.0)
 

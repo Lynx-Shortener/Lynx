@@ -14,8 +14,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install -g yarn
-      - run: yarn install
+          cache: 'pnpm'
+      - run: npm install -g pnpm
+      - run: pnpm install --frozen-lockfile
         working-directory: src
       - name: Lint Backend
         uses: sibiraj-s/action-eslint@v3
@@ -24,7 +25,7 @@ jobs:
           working-directory: src
           extensions: 'js'
           annotations: true
-      - run: yarn install
+      - run: pnpm install --frozen-lockfile
         working-directory: frontend
       - name: Lint Frontend
         uses: sibiraj-s/action-eslint@v3

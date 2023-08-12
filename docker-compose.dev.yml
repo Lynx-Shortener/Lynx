@@ -10,7 +10,7 @@ services:
         volumes:
             - ./db:/data/db
         ports:
-            - 27017:27017
+            - 27018:27017
 
     lynx:
         image: jackbailey/lynx

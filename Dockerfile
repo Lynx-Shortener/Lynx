@@ -1,12 +1,16 @@
 FROM node:18 AS BUILD_IMAGE
 
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
 WORKDIR /app
 
 # Copy required files for packages 
 
-COPY ["./frontend/package.json","./frontend/yarn.lock","/app/frontend/"]
+COPY ["./frontend/package.json","./frontend/pnpm-lock.yaml","/app/frontend/"]
 
-COPY ["./src/package.json","./src/yarn.lock", "/app/src/"]
+COPY ["./src/package.json","./src/pnpm-lock.yaml", "/app/src/"]
 
 COPY ["VERSION", "./"]
 
@@ -14,7 +18,7 @@ COPY ["VERSION", "./"]
 
 WORKDIR /app/src
 
-RUN yarn
+RUN pnpm install --frozen-lockfile
 
 COPY src .
 
@@ -23,8 +27,8 @@ COPY src .
 WORKDIR /app/frontend
 RUN NODE_ENV=production
 COPY frontend .
-RUN yarn
-RUN yarn build
+RUN pnpm install --frozen-lockfile
+RUN pnpm build
 
 FROM gcr.io/distroless/nodejs18-debian11
 
