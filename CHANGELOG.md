@@ -5,6 +5,7 @@
 - Switch to pnpm
 - Bug fixes:
   - Fix backup solution to they're saved to /app/backups not /app/src/backups (Introduced in 1.7.0)
+  - Importing internal error when importing CSVs from refactor implementing ESLint.
 
 ## [1.7.0] - 2023-08-10
 

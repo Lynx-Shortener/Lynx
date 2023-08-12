@@ -22,12 +22,18 @@ const fields = {
 };
 
 const processFile = async (filePath) => {
-    const records = [];
-    const parser = fs.createReadStream(filePath).pipe(parse({ columns: true, trim: true }));
-    parser.forEach((record) => {
-        records.push(record);
+    const results = [];
+    return new Promise((resolve) => {
+        fs.createReadStream(filePath)
+            .pipe(parse({ columns: true, trim: true }))
+            .on("data", (data) => results.push(data))
+            .on("end", () => {
+                resolve([results, null]);
+            })
+            .on("error", (e) => {
+                resolve([null, e]);
+            });
     });
-    return records;
 };
 
 router.post("/", requireLogin(), upload.single("file"), requireFields(["service"]), async (req, res) => {
@@ -50,7 +56,15 @@ router.post("/", requireLogin(), upload.single("file"), requireFields(["service"
         let links;
         const filepath = path.join("tmp", "uploads", req.file.filename);
         if (filetype === "csv") {
-            const rows = await processFile(filepath);
+            const [rows, parseError] = await processFile(filepath);
+            if (parseError) {
+                console.log(`Error importing from ${service}: ${parseError}`);
+                return res.status(500).json({
+                    success: false,
+                    message: "Internal server parsing csv",
+                });
+            }
+
             // fs.unlinkSync(filepath);
             if (fields[service].filter((requirement) => !Object.keys(rows[0]).includes(requirement)).length !== 0) {
                 return res.status(400).json({
