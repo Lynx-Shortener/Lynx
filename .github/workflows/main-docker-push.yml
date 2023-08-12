@@ -26,7 +26,7 @@ jobs:
                 PATCH="${VERSION[0]}.${VERSION[1]}.${VERSION[2]}"
 
                 IMAGE=jackbailey/lynx
-                DOCKER_TAGS="-t $IMAGE:$MAJOR -t $IMAGE:$MINOR -t $IMAGE:$PATCH -t $IMAGE:latest -t $IMAGE:beta"
+                DOCKER_TAGS="$IMAGE:$MAJOR,$IMAGE:$MINOR,$IMAGE:$PATCH,$IMAGE:latest,$IMAGE:beta"
 
                 echo "DOCKER_TAGS=$DOCKER_TAGS" >> $GITHUB_ENV
             - name: docker login
@@ -35,7 +35,8 @@ jobs:
                   DOCKER_PASS: ${{secrets.DOCKERHUB_ACCESS_TOKEN}}
               run: |
                   docker login -u $DOCKER_USER -p $DOCKER_PASS
-            - name: Build the Docker image
-              run: docker build . --file Dockerfile $DOCKER_TAGS
-            - name: Docker Push
-              run: docker push jackbailey/lynx --all-tags
+            - name: Build and push
+              uses: docker/build-push-action@v3
+              with:
+                push: true
+                tags: $DOCKER_TAGS
