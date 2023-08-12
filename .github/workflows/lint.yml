@@ -25,20 +25,20 @@ jobs:
       - run: pnpm install --frozen-lockfile
         working-directory: src
       - name: Lint Backend
-        uses: jackbailey/action-eslint@e7c855ddc7eba7d84f6349b3f3dbfcbbed00750f
+        uses: jackbailey/action-eslint@91aa640c96b039be68009102d0f32f457620f70f
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # optional
           working-directory: src
           extensions: 'js'
           annotations: true
-          eslint-command: eslint
+          use-npx: true
       - run: pnpm install --frozen-lockfile
         working-directory: frontend
       - name: Lint Frontend
-        uses: jackbailey/action-eslint@e7c855ddc7eba7d84f6349b3f3dbfcbbed00750f
+        uses: jackbailey/action-eslint@91aa640c96b039be68009102d0f32f457620f70f
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend
             extensions: 'js,vue'
             annotations: true
-            eslint-command: eslint
+            use-npx: true
