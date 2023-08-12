@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 18
       - name: Lint Backend
-        uses: jackbailey/action-eslint@148d23abd0f6e5139bc0a35422e31f740d6bb816
+        uses: jackbailey/action-eslint@6494c60dd93dbb092144ca58dbf0ca14e85e4574
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # optional
           working-directory: src
@@ -29,7 +29,7 @@ jobs:
           annotations: true
           use-npx: true
       - name: Lint Frontend
-        uses: jackbailey/action-eslint@148d23abd0f6e5139bc0a35422e31f740d6bb816
+        uses: jackbailey/action-eslint@6494c60dd93dbb092144ca58dbf0ca14e85e4574
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend
