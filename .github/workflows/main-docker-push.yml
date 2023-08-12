@@ -39,4 +39,4 @@ jobs:
               uses: docker/build-push-action@v3
               with:
                 push: true
-                tags: $DOCKER_TAGS
+                tags: "$DOCKER_TAGS"

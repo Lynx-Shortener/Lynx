@@ -31,4 +31,4 @@ jobs:
               uses: docker/build-push-action@v3
               with:
                 push: true
-                tags: jackbailey/lynx:$TAG,jackbailey/lynx:beta
+                tags: "jackbailey/lynx:$TAG,jackbailey/lynx:beta"
