@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: 18
           cache: 'pnpm'
+          cache-dependency-path: |
+            src/pnpm-lock.yaml
+            frontend/pnpm-lock.yaml
       - run: npm install -g pnpm
       - run: pnpm install --frozen-lockfile
         working-directory: src
