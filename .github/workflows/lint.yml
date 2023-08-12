@@ -24,7 +24,6 @@ jobs:
           run_install: |
             - recursive: true
               args: [--frozen-lockfile]
-        working-directory: src
       - name: Lint Backend
         uses: jackbailey/action-eslint@148d23abd0f6e5139bc0a35422e31f740d6bb816
         with:
