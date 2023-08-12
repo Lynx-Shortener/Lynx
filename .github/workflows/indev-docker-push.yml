@@ -32,5 +32,5 @@ jobs:
               with:
                 push: true
                 tags: |
-                  jackbailey/lynx:{{env.TAG}}
+                  jackbailey/lynx:${{ env.TAG }}
                   jackbailey/lynx:beta
