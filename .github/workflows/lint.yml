@@ -31,6 +31,7 @@ jobs:
           working-directory: src
           extensions: 'js'
           annotations: true
+          eslint-command: eslint
       - run: pnpm install --frozen-lockfile
         working-directory: frontend
       - name: Lint Frontend
@@ -40,3 +41,4 @@ jobs:
             working-directory: frontend
             extensions: 'js,vue'
             annotations: true
+            eslint-command: eslint
