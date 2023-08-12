@@ -14,6 +14,9 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile]
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -21,9 +24,6 @@ jobs:
           cache-dependency-path: |
             src/pnpm-lock.yaml
             frontend/pnpm-lock.yaml
-          run_install: |
-            - recursive: true
-              args: [--frozen-lockfile]
       - name: Lint Backend
         uses: jackbailey/action-eslint@148d23abd0f6e5139bc0a35422e31f740d6bb816
         with:
