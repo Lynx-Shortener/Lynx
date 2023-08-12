@@ -20,10 +20,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
-          cache-dependency-path: |
-            src/pnpm-lock.yaml
-            frontend/pnpm-lock.yaml
       - name: Lint Backend
         uses: jackbailey/action-eslint@148d23abd0f6e5139bc0a35422e31f740d6bb816
         with:

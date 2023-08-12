@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Copy required files for packages 
 
-COPY ["./frontend/package.json","./frontend/pnpm-lock.yaml","/app/frontend/"]
+COPY ["./frontend/","/app/frontend/"]
 
 COPY ["./src/package.json","./src/pnpm-lock.yaml", "/app/src/"]
 
@@ -16,18 +16,14 @@ COPY ["VERSION", "./"]
 
 # Install dependencies for backend
 
-WORKDIR /app/src
+RUN pnpm install --frozen-lockfile --recursive
 
-RUN pnpm install --frozen-lockfile
-
-COPY src .
+COPY src src
 
 # Install dependencies for frontend and build it
 
 WORKDIR /app/frontend
 RUN NODE_ENV=production
-COPY frontend .
-RUN pnpm install --frozen-lockfile
 RUN pnpm build
 
 FROM gcr.io/distroless/nodejs18-debian11
