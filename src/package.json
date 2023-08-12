@@ -24,7 +24,7 @@
 	},
 	"scripts": {
 		"dev": "nodemon .",
-		"lint": "eslint . --ext js"
+		"lint": "eslint **/*.ks"
 	},
 	"devDependencies": {
 		"eslint": "^7.32.0 || ^8.2.0",
