@@ -7,8 +7,7 @@ module.exports = async ({ count: backupCount }) => {
         fs.mkdirSync("../backups");
     }
 
-    let filename = "bac
-    kup";
+    let filename = "backup";
 
     if (backupCount !== 1) {
         filename += `-${new Date().toISOString().replace(/:/g, "-")}`;
