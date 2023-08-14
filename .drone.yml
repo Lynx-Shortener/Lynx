@@ -1,3 +1,4 @@
+---
 kind: pipeline
 type: docker
 name: Build and Publish Image (Production)
@@ -67,3 +68,8 @@ steps:
       platforms: 
       - linux/arm64
       - linux/amd64
+---
+kind: signature
+hmac: 55acdcacbba78df4de0704a149392bbdf121e567ff0ba663104640e4341c79b4
+
+...
