@@ -1,0 +1,61 @@
+kind: pipeline
+type: docker
+name: Build and Publish Image (Production)
+trigger:
+  event:
+  - push
+  branch:
+    include:
+    - main
+
+steps:
+  - name: Get version
+    image: alpine
+    commands:
+    - SEMVER_MAJOR="$$(cat VERSION | cut -d. -f1)"
+    - SEMVER_MINOR="$$(cat VERSION | cut -d. -f2)"
+    - SEMVER_PATCH="$$(cat VERSION | cut -d. -f3)"
+
+    - echo -n "beta,latest,$SEMVER_MAJOR.$SEMVER_MINOR.$SEMVER_PATCH,$SEMVER_MAJOR.$SEMVER_MINOR,$SEMVER_MAJOR" > .tags
+      
+  - name: docker
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: DOCKERHUB_USERNAME
+      password:
+          from_secret: DOCKERHUB_PASSWORD
+      repo: jackbailey/lynx
+      dockerfile: Dockerfile
+
+---
+
+kind: pipeline
+type: docker
+name: Build and Publish Image (Beta)
+trigger:
+  event:
+  - push
+  branch:
+    exclude:
+    - main
+
+steps:
+  - name: Get version
+    image: alpine
+    commands:
+    - SEMVER_MAJOR="$$(cat VERSION | cut -d. -f1)"
+    - SEMVER_MINOR="$$(cat VERSION | cut -d. -f2)"
+    - SEMVER_PATCH="$$(cat VERSION | cut -d. -f3)"
+
+    - echo -n "beta,$DRONE_BRANCH-beta" > .tags
+      
+  - name: docker
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: DOCKERHUB_USERNAME
+      password:
+          from_secret: DOCKERHUB_PASSWORD
+      repo: jackbailey/lynx
+      dockerfile: Dockerfile
