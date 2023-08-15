@@ -32,6 +32,7 @@ steps:
       platforms: 
       - linux/arm64
       - linux/amd64
+      cache_from: "jackbailey/lynx:beta"
 
 ---
 
@@ -68,6 +69,7 @@ steps:
       platforms: 
       - linux/arm64
       - linux/amd64
+      cache_from: "jackbailey/lynx:beta"
 ---
 kind: signature
 hmac: 55acdcacbba78df4de0704a149392bbdf121e567ff0ba663104640e4341c79b4
