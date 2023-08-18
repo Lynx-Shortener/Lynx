@@ -62,7 +62,7 @@ body {
             }
         }
         main {
-            overflow-y: scroll;
+            overflow-y: auto;
         }
         &[demo="true"] {
             margin-top: 5rem;

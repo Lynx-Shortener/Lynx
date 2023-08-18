@@ -711,7 +711,7 @@ export default {
                             display: none;
                         }
                         &.destination {
-                            overflow: scroll;
+                            overflow-x: auto;
                             span {
                                 position: static;
                                 padding: 0;
