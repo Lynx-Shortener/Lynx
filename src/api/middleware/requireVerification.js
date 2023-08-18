@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
             });
         }
 
-        const totpVerificationFailure = totp.verify(req.account.username, req.account.totp.secret, req.body.token)[1];
+        const totpVerificationFailure = totp.verify(req.account.username, req.account.totp.secret, token)[1];
 
         if (totpVerificationFailure) {
             return res.status(totpVerificationFailure.code).json({
