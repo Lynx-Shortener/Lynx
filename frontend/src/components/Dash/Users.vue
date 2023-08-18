@@ -1,6 +1,10 @@
 <template>
     <div class="users">
         <h2>User Management - {{ roles.find(([hRole, role]) => role === account.account.role)[0] }}</h2>
+        <button class="create-user" @click="createUser">
+            <font-awesome-icon :icon="['fas', 'fa-circle-plus']" />
+            <span>Create User</span>
+        </button>
         <table>
             <thead>
                 <th>Username</th>
@@ -267,6 +271,19 @@ export default {
         font-weight: 500;
     }
 
+    button.create-user {
+        padding: 1rem;
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        border: 0;
+        border-radius: 5px;
+        background-color: var(--accent);
+        color: white;
+    }
+
     table {
         width: 100%;
         thead {
@@ -313,13 +330,13 @@ export default {
                         }
                     }
                 }
-
-                &.user-secret {
-                    button {
-                        display: none;
-                    }
-                }
             }
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        button.create-user {
+            display: none;
         }
     }
 
