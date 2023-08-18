@@ -309,9 +309,6 @@ export default {
         tbody {
             td {
                 padding: 0.8rem;
-                svg:not(.update-role-icon) {
-                    display: none;
-                }
                 &.role {
                     display: flex;
                     justify-content: space-between;
@@ -337,6 +334,20 @@ export default {
     @media screen and (min-width: 768px) {
         button.create-user {
             display: none;
+        }
+        table {
+            tr {
+                td {
+                    svg:not(.update-role-icon) {
+                        display: none;
+                    }
+                    &.user-secret {
+                        button {
+                            display: none;
+                        }
+                    }
+                }
+            }
         }
     }
 
