@@ -11,25 +11,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile]
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install -g yarn
-      - run: yarn install
-        working-directory: src
       - name: Lint Backend
-        uses: sibiraj-s/action-eslint@v3
+        uses: jackbailey/action-eslint@6494c60dd93dbb092144ca58dbf0ca14e85e4574
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # optional
           working-directory: src
           extensions: 'js'
           annotations: true
-      - run: yarn install
-        working-directory: frontend
+          use-npx: true
       - name: Lint Frontend
-        uses: sibiraj-s/action-eslint@v3
+        uses: jackbailey/action-eslint@6494c60dd93dbb092144ca58dbf0ca14e85e4574
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend
             extensions: 'js,vue'
             annotations: true
+            use-npx: true

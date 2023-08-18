@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.7.1] - 2023-08-12
+
+- Switch to pnpm
+- Bug fixes:
+  - Fix backup solution to they're saved to /app/backups not /app/src/backups (Introduced in 1.7.0)
+  - Importing internal error when importing CSVs from refactor implementing ESLint.
+  - Fix 2fa verification middleware
+  - Remove unnecessary scrollbars
+- Make users page responsive
+
 ## [1.7.0] - 2023-08-10
 
 - Add user-management page

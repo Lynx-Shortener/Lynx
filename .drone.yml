@@ -1,3 +1,4 @@
+---
 kind: pipeline
 type: docker
 name: Build and Publish Image (Production)
@@ -19,7 +20,8 @@ steps:
     - echo -n "beta,latest,$SEMVER_MAJOR.$SEMVER_MINOR.$SEMVER_PATCH,$SEMVER_MAJOR.$SEMVER_MINOR,$SEMVER_MAJOR" > .tags
       
   - name: docker
-    image: plugins/docker
+    image: thegeeklab/drone-docker-buildx
+    privileged: true
     settings:
       username:
         from_secret: DOCKERHUB_USERNAME
@@ -27,6 +29,10 @@ steps:
           from_secret: DOCKERHUB_PASSWORD
       repo: jackbailey/lynx
       dockerfile: Dockerfile
+      platforms: 
+      - linux/arm64
+      - linux/amd64
+      cache_from: "jackbailey/lynx:beta"
 
 ---
 
@@ -51,7 +57,8 @@ steps:
     - echo -n "beta,$DRONE_BRANCH-beta" > .tags
       
   - name: docker
-    image: plugins/docker
+    image: thegeeklab/drone-docker-buildx
+    privileged: true
     settings:
       username:
         from_secret: DOCKERHUB_USERNAME
@@ -59,3 +66,12 @@ steps:
           from_secret: DOCKERHUB_PASSWORD
       repo: jackbailey/lynx
       dockerfile: Dockerfile
+      platforms: 
+      - linux/arm64
+      - linux/amd64
+      cache_from: "jackbailey/lynx:beta"
+---
+kind: signature
+hmac: 9e22479e26d7f7d8a042ee89e1d3a6d41d7082492b562b9f5d0c9162cc4fe688
+
+...
