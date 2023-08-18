@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.7.2] - 2023-08-18
+
+- Add user creation button on user management page
+- Bug fixes:
+  - Fixed hidden icons on mobile
+
 ## [1.7.1] - 2023-08-12
 
 - Switch to pnpm
