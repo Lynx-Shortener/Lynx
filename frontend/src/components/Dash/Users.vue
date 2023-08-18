@@ -13,14 +13,22 @@
             </thead>
             <tbody>
                 <tr v-for="user in users" :key="user.id">
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
+                    <td>
+                        <font-awesome-icon :icon="['fas', 'user']"/>
+                        <span>{{ user.username }}</span>
+                    </td>
+                    <td>
+                        <font-awesome-icon :icon="['fas', 'envelope']"/>
+                        <span>{{ user.email }}</span>
+                    </td>
                     <td class="role">
+                        <font-awesome-icon :icon="['fas', 'users']"/>
                         <span>{{ user.role }}</span>
                         <font-awesome-icon
                             v-if="user.id !== account.account.id && account.account.role === 'owner'"
                             icon="ellipsis-vertical"
                             @click="updateRoleMenu($event, user)"
+                            class="update-role-icon"
                         />
                     </td>
                     <td
@@ -32,6 +40,14 @@
                             :user-i-d="user.id"
                             @update-user="updateUser"
                         />
+                        <button @click="updateRoleMenu($event, user)" v-if="user.id !== account.account.id && account.account.role === 'owner'" class="update-role">
+                            <font-awesome-icon icon="users"/>
+                            Update Role
+                        </button>
+                        <button @click="deleteUser(user)" v-if="user.id !== account.account.id" class="delete-user">
+                            <font-awesome-icon  icon="trash-can"/>
+                            Delete
+                        </button>
                     </td>
                     <td class="delete-user">
                         <font-awesome-icon v-if="user.id !== account.account.id" icon="trash-can" @click="deleteUser(user)" />
@@ -276,11 +292,14 @@ export default {
         tbody {
             td {
                 padding: 0.8rem;
+                svg:not(.update-role-icon) {
+                    display: none;
+                }
                 &.role {
                     display: flex;
                     justify-content: space-between;
                     gap: 1rem;
-                    svg {
+                    svg.update-role-icon {
                         cursor: pointer;
                     }
                 }
@@ -294,12 +313,85 @@ export default {
                         }
                     }
                 }
+
+                &.user-secret {
+                    button {
+                        display: none;
+                    }
+                }
             }
         }
     }
 
     @media screen and (max-width: 768px) {
         padding-inline: 2rem;
+        table {
+            thead {
+                display: none;
+            }
+            tbody {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                tr {
+                    display: block;
+                    td {
+                        display: block;
+                        padding: 0.5rem;
+                        display: flex;
+                        gap: 1rem;
+                        svg {
+                            width: 1rem;
+                        }
+                        &.role {
+                            justify-content: flex-start;
+                            svg.update-role-icon {
+                                display: none;
+                            }
+                        }
+                        &.delete-user {
+                            display: none;
+                        }
+                        &.user-secret {
+                            display: grid;
+                            grid-template-columns: 2fr 1fr;
+                            gap: 0.5rem;
+                            &:deep(.secret-box) {
+                                margin-top: 0;
+                                grid-column: 1/3;
+                            }
+                            button {
+                                display: block;
+                                height: calc(2rem + 2px);
+                                padding: 0.5rem;
+                                border: none;
+                                border-radius: 5px;
+                                flex-grow: 1;
+                                display: flex;
+                                gap: 0.5rem;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                svg {
+                                    width: 1rem;
+                                }
+                                &.update-role {
+                                    background-color: var(--accent);
+                                    color: white;
+                                }
+                                &.delete-user {
+                                    background-color: var(--color-error);
+                                    color: white;
+                                }
+                            }
+                            button:first-of-type.delete-user {
+                                grid-column: 1/3;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 </style>

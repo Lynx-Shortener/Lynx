@@ -1,4 +1,8 @@
 {
+	"scripts": {
+		"dev": "nodemon src -i src/backups",
+		"serve": "pnpm -C ./frontend run dev"
+	},
 	"pnpm": {
 		"overrides": {
 			"semver": "~7.5.2"

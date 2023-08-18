@@ -136,5 +136,18 @@ export default {
             }
         }
     }
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+        .actions {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            > div {
+                width: 100%;
+            }
+        }
+    }
 }
 </style>
