@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.7.3] - 2023-08-21
+
+- Bug fixes:
+  - Fix user deletion button visibility on desktop
+
 ## [1.7.2] - 2023-08-18
 
 - Add user creation button on user management page
