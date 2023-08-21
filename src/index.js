@@ -9,7 +9,7 @@ const backend = require("./modules/backend");
 
 const setup = require("./modules/setup");
 
-const undefinedEnv = ["DB_USER", "DB_PASSWORD", "DB_HOST", "JWT_KEY", "URL_SET", "URL_ONLY_UNIQUE", "URL_LENGTH"].filter(
+const undefinedEnv = ["DB_HOST", "JWT_KEY", "URL_SET", "URL_ONLY_UNIQUE", "URL_LENGTH"].filter(
     (envFile) => !Object.prototype.hasOwnProperty.call(process.env, envFile),
 );
 
