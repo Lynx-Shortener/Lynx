@@ -18,15 +18,15 @@
             <tbody>
                 <tr v-for="user in users" :key="user.id">
                     <td>
-                        <font-awesome-icon :icon="['fas', 'user']"/>
+                        <font-awesome-icon :icon="['fas', 'user']" class="mobile-icon"/>
                         <span>{{ user.username }}</span>
                     </td>
                     <td>
-                        <font-awesome-icon :icon="['fas', 'envelope']"/>
+                        <font-awesome-icon :icon="['fas', 'envelope']" class="mobile-icon"/>
                         <span>{{ user.email }}</span>
                     </td>
                     <td class="role">
-                        <font-awesome-icon :icon="['fas', 'users']"/>
+                        <font-awesome-icon :icon="['fas', 'users']" class="mobile-icon"/>
                         <span>{{ user.role }}</span>
                         <font-awesome-icon
                             v-if="user.id !== account.account.id && account.account.role === 'owner'"
@@ -338,7 +338,7 @@ export default {
         table {
             tr {
                 td {
-                    svg:not(.update-role-icon) {
+                    .mobile-icon {
                         display: none;
                     }
                     &.user-secret {

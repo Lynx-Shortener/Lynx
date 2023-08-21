@@ -1,15 +1,16 @@
 const fs = require("fs");
 const path = require("path");
-const Account = require("../db/modules/account");
+const account = require("../db/modules/account");
+const Account = require("../db/models/account");
 const CreateSecret = require("../db/modules/secret/create");
 
 module.exports = async () => {
-    const accounts = await Account.countAccounts();
+    const accounts = await account.countAccounts();
 
     // Create demo account
     if (accounts === 0) {
         if (process.env.DEMO === "true") {
-            const [account, error] = await Account.createAccount({
+            const [demoAccount, error] = await account.createAccount({
                 username: "demo",
                 password: "demo",
                 role: "owner",
@@ -18,10 +19,16 @@ module.exports = async () => {
             if (error) {
                 console.log("Couldn't create demo account:", error);
             }
-            if (account) {
-                CreateSecret(account);
+            if (demoAccount) {
+                CreateSecret(demoAccount);
                 console.log("Created demo account!");
             }
+        }
+    } else {
+        const owner = await Account.findOne({ role: "owner" });
+        if (!owner) {
+            const newOwner = await Account.findOneAndUpdate({}, { $set: { role: "owner" } });
+            console.log(`Automatically promoted ${newOwner.username} to owner, as no owner previously existed.`);
         }
     }
 
