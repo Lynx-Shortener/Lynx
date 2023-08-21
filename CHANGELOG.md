@@ -4,6 +4,7 @@
 
 - Bug fixes:
   - Fix user deletion button visibility on desktop
+- Promote the oldest user to owner if no owner exists - used for upgrades from old versions
 
 ## [1.7.2] - 2023-08-18
 
