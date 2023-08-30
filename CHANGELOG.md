@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.8.0] - 2023-08-22
+
+- Add updating of other user's details as an admin, including:
+  - username
+
 ## [1.7.3] - 2023-08-21
 
 - Bug fixes:

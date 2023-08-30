@@ -17,9 +17,10 @@
             </thead>
             <tbody>
                 <tr v-for="user in users" :key="user.id">
-                    <td>
+                    <td :class="canUpdate(user) ? 'editable' : ''" @click="updateUsername(user)">
                         <font-awesome-icon :icon="['fas', 'user']" class="mobile-icon"/>
                         <span>{{ user.username }}</span>
+                        <font-awesome-icon :icon="['fas', 'pencil']" class="edit-pencil" />
                     </td>
                     <td>
                         <font-awesome-icon :icon="['fas', 'envelope']" class="mobile-icon"/>
@@ -111,6 +112,10 @@ export default {
             const userIndex = this.users.findIndex((user) => user.id === userID);
 
             this.users[userIndex] = { ...this.users[userIndex], ...updatedValues };
+        },
+        async updateUsername(user) {
+            const data = await this.popups.addPopup("ChangeUsername", { account: user.id, async: true });
+            this.updateUser(user.id, data.account);
         },
         async createUser() {
             const userCreation = await this.popups.addPopup("CreateUser", { async: true });
@@ -254,6 +259,12 @@ export default {
                 this.users = this.users.filter((user) => user.role !== "owner");
             }
         },
+        canUpdate(user) {
+            // if user is yourself, or you have a higher role
+            return this.account.account.id === user.id
+                || (this.account.account.role === "owner" && user.role !== "owner")
+                || (this.account.account.role === "admin" && user.role === "standard");
+        },
     },
 };
 </script>
@@ -315,6 +326,20 @@ export default {
                     gap: 1rem;
                     svg.update-role-icon {
                         cursor: pointer;
+                    }
+                }
+
+                &.editable {
+                    gap: 1rem;
+                    font-weight: bold;
+                    color: var(--color-4);
+                    transition: 250ms ease-in-out;
+                    cursor: pointer;
+                    svg.edit-pencil {
+                        margin-left: 0.5rem;
+                    }
+                    &:hover {
+                        color: var(--color-2);
                     }
                 }
 

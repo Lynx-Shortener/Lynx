@@ -3,6 +3,9 @@ const express = require("express");
 const router = express.Router();
 const requireAccountValue = require("./middleware/requireAccountValue");
 const account = require("../db/modules/account");
+const requireFields = require("./middleware/requireFields");
+const updateAccount = require("../db/modules/account/update");
+const valid = require("../db/modules/valid");
 
 const requireVerification = require("./middleware/requireVerification");
 
@@ -154,6 +157,53 @@ router.post("/", requireVerification, async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Internal Server Error when creating user",
+        });
+    }
+});
+
+router.patch("/username", requireFields(["user"]), requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of user roles is not enabled in demo mode.",
+        });
+    }
+    try {
+        const { username, account: accountID } = req.body.user;
+        const validUsername = valid.username(username);
+        if (!validUsername) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid username format",
+            });
+        }
+
+        const user = await account.get.byID(accountID);
+
+        const canUpdate = req.account.id === user.id
+            || (req.account.role === "owner" && user.role !== "owner")
+            || (req.account.role === "admin" && user.role === "standard");
+
+        if (!canUpdate) {
+            return res.status(403).json({
+                success: false,
+                message: "You do not have the required role to update that user.",
+            });
+        }
+
+        const [usernameUpdate, usernameUpdateError] = await updateAccount.username({ account: accountID, username });
+
+        if (usernameUpdateError) return res.status(usernameUpdateError.code).json({ success: false, message: usernameUpdateError.message });
+
+        return res.status(200).json({
+            success: true,
+            result: usernameUpdate,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error when updating user",
         });
     }
 });

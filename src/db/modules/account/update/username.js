@@ -1,21 +1,15 @@
-const checkPassword = require("../../password/check");
 const returnAccount = require("../../../../modules/returnAccount");
+const Account = require("../../../models/account");
 require("dotenv").config();
 
-module.exports = async ({ account, newUsername, password }) => {
-    const passwordMatches = await checkPassword(password, account.password);
-    if (!passwordMatches) {
-        return [
-            null,
-            {
-                code: 400,
-                message: "Invalid password",
-            },
-        ];
-    }
+module.exports = async ({ account: accountID, username }) => {
+    const existingAccount = await Account.findOne({ username });
+    if (existingAccount) return [null, { code: 400, message: "You cannot have the same username as another user" }];
 
-    account.username = newUsername;
-    await account.save();
+    const account = await Account.findOneAndUpdate({ id: accountID }, { $set: { username } }, {
+        new: true,
+    });
+    if (!account) return [null, { code: 400, message: "Invalid account ID" }];
 
     const accountDetails = returnAccount(account);
 

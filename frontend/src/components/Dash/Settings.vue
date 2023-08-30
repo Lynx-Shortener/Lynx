@@ -101,7 +101,7 @@ export default {
     methods: {
         changeSetting(name) {
             if (this.about.data.demo) return;
-            this.popups.addPopup(`Change${name}`, {});
+            this.popups.addPopup(`Change${name}`, { account: this.account.account.id });
         },
         async toggleTOTP() {
             if (this.about.data.demo) return;
