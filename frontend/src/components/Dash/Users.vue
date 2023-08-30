@@ -9,6 +9,7 @@
             <thead>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Password</th>
                 <th>Role</th>
                 <th>Secret</th>
                 <th class="add-user" align="right">
@@ -333,6 +334,7 @@ export default {
         tbody {
             td {
                 padding: 0.8rem;
+                white-space: nowrap;
                 &.role {
                     display: flex;
                     justify-content: space-between;
@@ -349,7 +351,7 @@ export default {
                     transition: 250ms ease-in-out;
                     cursor: pointer;
                     svg.edit-pencil {
-                        margin-left: 0.5rem;
+                        margin-left: 1rem;
                     }
                     &:hover {
                         color: var(--color-2);
@@ -363,6 +365,24 @@ export default {
                         &:hover {
                             color: var(--color-error);
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        table {
+            tr {
+                thead {
+                    th {
+                        padding: 0.3rem;
+                    }
+                }
+                td {
+                    padding: 0.6rem 0.3rem;
+                    .edit-pencil {
+                        display: none;
                     }
                 }
             }

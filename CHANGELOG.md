@@ -2,11 +2,11 @@
 
 ## [1.8.0] - 2023-08-22
 
-- Add updating of other user's details as an admin, including:
+- [#86](https://github.com/Lynx-Shortener/Lynx/issues/86) Add updating of other user's details as an admin, including:
   - username
   - email
   - password
-
+- Improve responsiveness for narrow (but non-mobile) screens
 ## [1.7.3] - 2023-08-21
 
 - Bug fixes:
