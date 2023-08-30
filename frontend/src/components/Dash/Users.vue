@@ -27,6 +27,11 @@
                         <span>{{ user.email }}</span>
                         <font-awesome-icon :icon="['fas', 'pencil']" class="edit-pencil" />
                     </td>
+                    <td :class="canUpdate(user) ? 'editable' : ''" @click="updatePassword(user)">
+                        <font-awesome-icon :icon="['fas', 'key']" class="mobile-icon" />
+                        <span>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span>
+                        <font-awesome-icon :icon="['fas', 'pencil']" class="edit-pencil" />
+                    </td>
                     <td class="role">
                         <font-awesome-icon :icon="['fas', 'users']" class="mobile-icon"/>
                         <span>{{ user.role }}</span>
@@ -120,7 +125,10 @@ export default {
         },
         async updateEmail(user) {
             const data = await this.popups.addPopup("ChangeEmail", { account: user.id, async: true });
-            console.log(data);
+            this.updateUser(user.id, data.account);
+        },
+        async updatePassword(user) {
+            const data = await this.popups.addPopup("ChangePassword", { account: user.id, async: true });
             this.updateUser(user.id, data.account);
         },
         async createUser() {

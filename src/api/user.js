@@ -255,6 +255,53 @@ router.patch("/email", requireFields(["user"]), requireVerification, async (req,
     }
 });
 
+router.patch("/password", requireFields(["user"]), requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of user passwords is not enabled in demo mode.",
+        });
+    }
+    try {
+        const { password, account: accountID } = req.body.user;
+        const validPassword = valid.password(password);
+        if (!validPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid password format",
+            });
+        }
+
+        const user = await account.get.byID(accountID);
+
+        const canUpdate = req.account.id === user.id
+            || (req.account.role === "owner" && user.role !== "owner")
+            || (req.account.role === "admin" && user.role === "standard");
+
+        if (!canUpdate) {
+            return res.status(403).json({
+                success: false,
+                message: "You do not have the required role to update that user.",
+            });
+        }
+
+        const [passwordUpdate, passwordUpdateError] = await updateAccount.password({ account: accountID, password });
+
+        if (passwordUpdateError) return res.status(passwordUpdateError.code).json({ success: false, message: passwordUpdateError.message });
+
+        return res.status(200).json({
+            success: true,
+            result: passwordUpdate,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error when updating user",
+        });
+    }
+});
+
 router.post("/role", requireAccountValue({ role: ["owner"] }), requireVerification, async (req, res) => {
     if (process.env.DEMO === "true") {
         return res.status(406).json({

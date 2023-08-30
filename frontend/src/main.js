@@ -29,6 +29,7 @@ import {
     faQrcode,
     faUser,
     faEnvelope,
+    faKey,
 } from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
 import ContextMenu from "@imengyu/vue3-context-menu";
@@ -65,6 +66,7 @@ library.add(
     faQrcode,
     faUser,
     faEnvelope,
+    faKey,
 );
 
 const app = createApp(App);
