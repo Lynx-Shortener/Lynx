@@ -165,7 +165,7 @@ router.patch("/username", requireFields(["user"]), requireVerification, async (r
     if (process.env.DEMO === "true") {
         return res.status(406).json({
             success: false,
-            message: "Updating of user roles is not enabled in demo mode.",
+            message: "Updating of usernames is not enabled in demo mode.",
         });
     }
     try {
@@ -198,6 +198,53 @@ router.patch("/username", requireFields(["user"]), requireVerification, async (r
         return res.status(200).json({
             success: true,
             result: usernameUpdate,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error when updating user",
+        });
+    }
+});
+
+router.patch("/email", requireFields(["user"]), requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of user emails is not enabled in demo mode.",
+        });
+    }
+    try {
+        const { email, account: accountID } = req.body.user;
+        const validEmail = valid.email(email);
+        if (!validEmail) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid email format",
+            });
+        }
+
+        const user = await account.get.byID(accountID);
+
+        const canUpdate = req.account.id === user.id
+            || (req.account.role === "owner" && user.role !== "owner")
+            || (req.account.role === "admin" && user.role === "standard");
+
+        if (!canUpdate) {
+            return res.status(403).json({
+                success: false,
+                message: "You do not have the required role to update that user.",
+            });
+        }
+
+        const [emailUpdate, emailUpdateError] = await updateAccount.email({ account: accountID, email });
+
+        if (emailUpdateError) return res.status(emailUpdateError.code).json({ success: false, message: emailUpdateError.message });
+
+        return res.status(200).json({
+            success: true,
+            result: emailUpdate,
         });
     } catch (e) {
         console.log(e);

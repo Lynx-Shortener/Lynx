@@ -8,17 +8,7 @@
             <FormKit type="email"
                      label="New Email"
                      v-model="newData.newEmail"
-                     autocomplete="email" />
-            <FormKit type="password"
-                     label="Password"
-                     v-model="newData.password"
-                     autocomplete="current-password" />
-            <FormKit type="text"
-                     label="Your 2FA token"
-                     v-model="newData.token"
-                     validation="number:required|length:6,6"
-                     v-if="account.account.totp"
-                     autocomplete="one-time-code" />
+                     :autocomplete="data.account === account.account.id ? 'email' : 'off'" />
             <p>{{ response }}</p>
         </FormKit>
     </div>
@@ -29,28 +19,39 @@ import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
 
 export default {
+    props: ["data"],
     data() {
         return {
             account: useAccountStore(),
             popups: usePopups(),
             newData: {
                 newEmail: "",
-                password: "",
-                token: "",
             },
             response: "",
         };
     },
     methods: {
         async changeEmail() {
-            const response = await this.account.fetch("/auth/email", {
+            const verificationData = await this.popups.addPopup("Verify", { async: true });
+            const loadingPopup = await this.popups.addPopup("Loader");
+
+            const updatingSelf = this.data.account === this.account.account.id;
+
+            const response = await this.account.fetch("/user/email", {
                 method: "PATCH",
-                body: JSON.stringify(this.newData),
+                body: JSON.stringify({
+                    user: {
+                        email: this.newData.newEmail,
+                        account: this.data.account,
+                    },
+                    verification: verificationData,
+                }),
             });
+            this.popups.closePopup(loadingPopup.id);
 
             if (!response.success) {
                 this.popups.addPopup("Information", {
-                    title: "Error updating your email",
+                    title: `Error updating ${updatingSelf ? "your" : "their"} email`,
                     description: response.message,
                     buttons: [
                         {
@@ -66,10 +67,11 @@ export default {
                     ],
                 });
             } else {
-                this.account.account = response.result.account;
-                this.popups.closeSelf(this);
+                if (updatingSelf) this.account.account = response.result.account;
+
+                this.popups.closeSelf(this, { account: response.result.account });
                 this.popups.addPopup("Information", {
-                    title: "Successfully updated your email",
+                    title: `Successfully updated ${updatingSelf ? "your" : "their"} email`,
                     buttons: [
                         {
                             name: "Okay",

@@ -4,6 +4,7 @@
 
 - Add updating of other user's details as an admin, including:
   - username
+  - email
 
 ## [1.7.3] - 2023-08-21
 
