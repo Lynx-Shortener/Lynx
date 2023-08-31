@@ -7,6 +7,9 @@
   - email
   - password
 - Improve responsiveness for narrow (but non-mobile) screens
+- Bug fixes:
+  - Admins were not able to update standard user's roles, this has been resolved.
+  - Admins are no longer able to see other admin's links.
 ## [1.7.3] - 2023-08-21
 
 - Bug fixes:
