@@ -178,7 +178,8 @@ router.patch("/username", requireFields(["user"]), requireVerification, async (r
             });
         }
 
-        const user = await account.get.byID(accountID);
+        const [user, userError] = await account.get.byID({ id: accountID });
+        if (!user) return res.status(userError.code).json({ success: false, message: userError.message });
 
         const canUpdate = req.account.id === user.id
             || (req.account.role === "owner" && user.role !== "owner")
@@ -225,7 +226,8 @@ router.patch("/email", requireFields(["user"]), requireVerification, async (req,
             });
         }
 
-        const user = await account.get.byID(accountID);
+        const [user, userError] = await account.get.byID({ id: accountID });
+        if (!user) return res.status(userError.code).json({ success: false, message: userError.message });
 
         const canUpdate = req.account.id === user.id
             || (req.account.role === "owner" && user.role !== "owner")
@@ -272,7 +274,8 @@ router.patch("/password", requireFields(["user"]), requireVerification, async (r
             });
         }
 
-        const user = await account.get.byID(accountID);
+        const [user, userError] = await account.get.byID({ id: accountID });
+        if (!user) return res.status(userError.code).json({ success: false, message: userError.message });
 
         const canUpdate = req.account.id === user.id
             || (req.account.role === "owner" && user.role !== "owner")
