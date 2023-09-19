@@ -7,7 +7,7 @@
     {
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
-      "automerge": truem
+      "automerge": true,
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch"
     }
