@@ -5,12 +5,12 @@
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": ["patch"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true,
       "automergeType": "branch",
-      "groupName": "all non-major dependencies",
-      "groupSlug": "all-minor-patch",
+      "groupName": "all patch dependencies",
+      "groupSlug": "all-patch",
     }
   ],
   "platformAutomerge": true
