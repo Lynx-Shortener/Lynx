@@ -7,8 +7,6 @@
     {
       "matchUpdateTypes": ["patch"],
       "matchCurrentVersion": "!/^0/",
-      "automerge": true,
-      "automergeType": "branch",
       "groupName": "all patch dependencies",
       "groupSlug": "all-patch",
     }
