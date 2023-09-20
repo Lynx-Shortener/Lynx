@@ -11,5 +11,9 @@
       "groupSlug": "all-patch",
     }
   ],
-  "platformAutomerge": true
+  "platformAutomerge": true,
+  "timezone": "Europe/London",
+  "schedule": [
+    "before 4am"
+  ]
 }
