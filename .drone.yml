@@ -45,6 +45,7 @@ trigger:
   branch:
     exclude:
     - main
+    - dependabot/*
 
 steps:
   - name: Get version
