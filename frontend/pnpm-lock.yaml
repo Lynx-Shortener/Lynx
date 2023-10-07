@@ -538,7 +538,7 @@ packages:
       '@vue/shared': 3.2.47
       estree-walker: 2.0.2
       magic-string: 0.25.9
-      postcss: 8.4.24
+      postcss: 8.4.31
       source-map: 0.6.1
 
   /@vue/compiler-ssr@3.2.47:
@@ -972,7 +972,7 @@ packages:
       eslint-plugin-import: 2.28.0(eslint@8.46.0)
       object.assign: 4.1.4
       object.entries: 1.1.6
-      semver: 7.5.4
+      semver: 6.3.1
     dev: true
 
   /eslint-import-resolver-node@0.3.9:
@@ -1040,7 +1040,7 @@ packages:
       object.groupby: 1.0.0
       object.values: 1.1.6
       resolve: 1.22.4
-      semver: 7.5.4
+      semver: 6.3.1
       tsconfig-paths: 3.14.2
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
@@ -1757,8 +1757,8 @@ packages:
       util-deprecate: 1.0.2
     dev: true
 
-  /postcss@8.4.24:
-    resolution: {integrity: sha512-M0RzbcI0sO/XJNucsGjvWU9ERWxb/ytp1w6dKtxTKgixdtQDq4rmx/g8W1hnaheq9jgwL/oyEdH5Bc4WwJKMqg==}
+  /postcss@8.4.31:
+    resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
       nanoid: 3.3.6
@@ -1867,6 +1867,11 @@ packages:
       chokidar: 3.5.3
       immutable: 4.3.0
       source-map-js: 1.0.2
+
+  /semver@6.3.1:
+    resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
+    hasBin: true
+    dev: true
 
   /semver@7.5.4:
     resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}
@@ -2095,7 +2100,7 @@ packages:
         optional: true
     dependencies:
       esbuild: 0.17.17
-      postcss: 8.4.24
+      postcss: 8.4.31
       rollup: 3.24.0
       sass: 1.62.0
     optionalDependencies:
