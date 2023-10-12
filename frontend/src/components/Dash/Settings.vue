@@ -34,6 +34,12 @@
                         {{ account.account.totp ? "Disable" : "Enable" }} 2FA
                     </button>
                 </div>
+                <div class="input passkeys">
+                    <label>Webauthn/Passkeys</label>
+                    <button @click="newAuthenticator">
+                        Add new
+                    </button>
+                </div>
             </div>
         </div>
         <div class="integration">
@@ -82,6 +88,7 @@
 </template>
 
 <script>
+import { startRegistration } from "@simplewebauthn/browser";
 import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
 import { useAbout } from "../../stores/about";
@@ -110,6 +117,40 @@ export default {
                 this.popups.addPopup("EnableTOTP", {});
             } else {
                 this.popups.addPopup("DisableTOTP", {});
+            }
+        },
+        async newAuthenticator() {
+            const response = await this.account.fetch("/auth/webauthn/register/start", {
+                method: "GET",
+            });
+
+            if (response.success) {
+                const { options } = response.result;
+                try {
+                    const attResp = await startRegistration(options);
+                    this.popups.addPopup("VerifyAuthenticator", {
+                        attResp,
+                    });
+                } catch (error) {
+                    let errorText;
+                    if (error.name === "InvalidStateError") {
+                        errorText = "Error: Authenticator was probably already registered by user";
+                    } else {
+                        errorText = error;
+                    }
+
+                    this.popups.addPopup("Information", {
+                        title: "Error when adding a new WebAuthn authenticator 2",
+                        description: errorText,
+                        buttons: [
+                            {
+                                name: "Cancel",
+                                type: "primary",
+                                action: "close-all",
+                            },
+                        ],
+                    });
+                }
             }
         },
         async getConfig() {
