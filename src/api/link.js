@@ -4,6 +4,7 @@ const router = express.Router();
 const {
     list, get, create, update, remove,
 } = require("../db/modules/link");
+
 const returnLink = require("../modules/returnLink");
 const requireFields = require("./middleware/requireFields");
 const requireLogin = require("./middleware/requireLogin");

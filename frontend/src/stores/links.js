@@ -84,6 +84,8 @@ export const useLinks = defineStore("links", {
 
             this.links.unshift(link);
 
+            account.account.quota.links.used += 1;
+
             return {
                 success: true,
                 result: { link },
@@ -123,19 +125,29 @@ export const useLinks = defineStore("links", {
 
             return response;
         },
-        async delete({ ids }) {
+        async delete({ ids, all }) {
             const account = useAccountStore();
             const response = await account.fetch("/link", {
                 method: "DELETE",
                 body: JSON.stringify({
                     ids,
+                    all
                 }),
             });
 
             if (!response.success) return response;
 
-            this.links = this.links.filter((link) => !ids.includes(link.id));
-            this.selectedLinks = this.selectedLinks.filter((id) => !ids.includes(id));
+            if (all) {
+                this.links = [];
+                this.selectedLinks = [];
+            } else {
+                this.links = this.links.filter((link) => !ids.includes(link.id));
+                this.selectedLinks = this.selectedLinks.filter((id) => !ids.includes(id));
+            }
+            
+
+
+            account.account.quota.links.used -= ids.length;
 
             return response;
         },

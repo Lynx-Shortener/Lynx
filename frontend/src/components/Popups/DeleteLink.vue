@@ -32,9 +32,10 @@ export default {
     },
     methods: {
         async deleteLink() {
-            const ids = this.data;
+            const { links: ids, all } = this.data;
             const response = await this.links.delete({
                 ids,
+                all,
             });
 
             if (!response.success) {

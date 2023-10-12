@@ -3,6 +3,7 @@
         <div class="header">
             <div class="title">
                 <h1>Lynx</h1>
+                <h3>Used {{ account.account.quota.links.used }}/{{ account.account.quota.links.limit === -1 ? "&infin;" : account.account.quota.links.limit }} Links</h3>
             </div>
             <div class="actions">
                 <div class="icon refresh">
@@ -51,7 +52,11 @@
         <div class="links">
             <table>
                 <thead>
-                    <th />
+                    <th>
+                        <div class="checkbox" :selected="bulkLinkOptions.allSelected.clicked && bulkLinkOptions.allSelected.active" @click="selectAllLinks">
+                            <font-awesome-icon v-if="bulkLinkOptions.allSelected.clicked && bulkLinkOptions.allSelected.active" icon="check" />
+                        </div>
+                    </th>
                     <th>
                         <span :sortType="links.sort.field == 'author' ? links.sort.type : 0" @click="toggleSort('author')">Author <font-awesome-icon icon="sort-down" /></span>
                     </th>
@@ -71,15 +76,17 @@
                 </thead>
                 <tr v-for="link in links.links" :key="link.id" class="link">
                     <td>
-                        <div class="checkbox" :selected="links.selectedLinks.includes(link.id)" @click="toggleSelection(link)">
+                        <div class="checkbox" :selected="links.selectedLinks.includes(link.id)" @click="toggleSelection($event, link)">
                             <font-awesome-icon v-if="links.selectedLinks.includes(link.id)" icon="check" />
                         </div>
                     </td>
                     <td class="author">
-                        <strong>Author:&nbsp;</strong> <span>{{ link.account }}</span>
+                        <strong>Author:&nbsp;</strong>
+                        <span @click="copyText($el, $event, link.account)">{{ link.account }}</span>
                     </td>
                     <td class="date">
-                        <strong>Created:&nbsp;</strong>{{ link.creationDate }}
+                        <strong>Created:&nbsp;</strong>
+                        <span @click="copyText($el, $event, link.creationDate)">{{ link.creationDate }}</span>
                     </td>
                     <td class="slug">
                         <strong>Slug:&nbsp;</strong>
@@ -88,11 +95,11 @@
                     </td>
                     <td class="destination">
                         <strong>Destination:&nbsp;</strong>
-                        <span>{{ link.destination }}</span>
+                        <span @click="copyText($el, $event, link.destination)">{{ link.destination }}</span>
                     </td>
                     <td>
                         <strong>Visits:&nbsp;</strong>
-                        <span>{{ link.visits }} </span>
+                        <span @click="copyText($el, $event, link.visits)">{{ link.visits }} </span>
                     </td>
                     <td class="menu" @click="showContextMenu($event, link)">
                         <font-awesome-icon icon="ellipsis-vertical" />
@@ -102,7 +109,10 @@
                             <font-awesome-icon icon="pencil" />
                             <span>Edit</span>
                         </button>
-                        <button class="button-delete" @click="handleDelete([link.id])">
+                        <button class="button-delete"
+                                @click="handleDelete([{
+                                    id: link.id
+                                }])">
                             <font-awesome-icon icon="trash-can" />
                             <span>Delete</span>
                         </button>
@@ -168,12 +178,14 @@
 
 <script>
 import ContextMenu from "@imengyu/vue3-context-menu";
+import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
 import { useLinks } from "../../stores/links";
 
 export default {
     data() {
         return {
+            account: useAccountStore(),
             popups: usePopups(),
             links: useLinks(),
             endVisible: true,
@@ -189,6 +201,15 @@ export default {
                 slug: "Slug",
                 destination: "Destination",
                 visits: "Visits",
+            },
+            bulkLinkOptions: {
+                shift: false,
+                ctrl: false,
+                lastSelected: false,
+                allSelected: {
+                    clicked: false,
+                    active: false,
+                },
             },
         };
     },
@@ -229,6 +250,9 @@ export default {
             this.loadingMore = true;
             this.refreshSpinning = true;
             await this.links.paginate({ search: this.search.value });
+            if (this.bulkLinkOptions.allSelected.clicked && this.bulkLinkOptions.allSelected.active) {
+                this.links.selectedLinks = this.links.links;
+            }
             this.loadingMore = false;
 
             if (this.endVisible && this.links.remainingPages !== 0) {
@@ -253,7 +277,10 @@ export default {
             this.popups.addPopup("EditLink", { id: link.id });
         },
         handleDelete(links) {
-            this.popups.addPopup("DeleteLink", links);
+            this.popups.addPopup("DeleteLink", {
+                links,
+                all: this.bulkLinkOptions.allSelected.clicked && this.bulkLinkOptions.allSelected.active,
+            });
         },
         importLinks() {
             this.popups.addPopup("Import-Service");
@@ -265,11 +292,125 @@ export default {
             this.endVisible = visible;
             if (!this.loadingMore && visible && this.links.remainingPages > 0) this.loadMore();
         },
-        toggleSelection(link) {
-            if (this.links.selectedLinks.includes(link.id)) {
-                this.links.selectedLinks = this.links.selectedLinks.filter((id) => id !== link.id);
+        async copyText(parent, event, text) {
+            const fallbackCopyTextToClipboard = (value) => {
+                const textArea = document.createElement("textarea");
+                textArea.value = value;
+
+                // Avoid scrolling to bottom
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.position = "fixed";
+
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                let successful;
+
+                try {
+                    successful = document.execCommand("copy");
+                } catch {
+                    successful = false;
+                }
+                document.body.removeChild(textArea);
+                return successful;
+            };
+
+            const copyTextToClipboard = (value) => {
+                if (!navigator.clipboard) {
+                    fallbackCopyTextToClipboard(value);
+                }
+                return navigator.clipboard.writeText(value).then(() => true, () => false);
+            };
+
+            const copySuccess = await copyTextToClipboard(text);
+
+            const addToast = (toastParent, toastEvent, toastTextContent, background) => {
+                const rect = toastParent.getBoundingClientRect();
+
+                const x = toastEvent.clientX - rect.left;
+                const y = toastEvent.clientY - rect.top;
+
+                const toast = document.createElement("div");
+                toast.classList.add("toast");
+                toast.style = `
+                    position: absolute;
+                    left: ${x}px;
+                    top: ${y + 20}px;
+                    color: white;
+                    background-color: ${background};
+                    transform: translate(-50%, -50%);
+                    padding: 0.5em 0.8em;
+                    border-radius: 5px;
+                    font-weight: 200;
+                    font-size: 0.8rem;
+                    transition: opacity 1s linear;
+                `;
+
+                const toastText = document.createTextNode(toastTextContent);
+
+                toast.appendChild(toastText);
+
+                toastParent.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.style.opacity = 0;
+                    // toast.remove();
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 1000);
+                }, 500);
+            };
+
+            addToast(parent, event, copySuccess ? "Copied" : "Error", copySuccess ? "var(--accent)" : "var(--color-error)");
+
+            parent.style.position = "relative";
+        },
+        selectAllLinks() {
+            if (!this.bulkLinkOptions.allSelected.active && this.bulkLinkOptions.allSelected.clicked) {
+                this.bulkLinkOptions.allSelected.active = true;
+                this.bulkLinkOptions.allSelected.clicked = true;
             } else {
-                this.links.selectedLinks.push(link.id);
+                this.bulkLinkOptions.allSelected.clicked = !this.bulkLinkOptions.allSelected.clicked;
+                this.bulkLinkOptions.allSelected.active = !this.bulkLinkOptions.allSelected.active;
+            }
+
+            if (this.bulkLinkOptions.allSelected.clicked) {
+                this.links.selectedLinks = this.links.links;
+            } else {
+                this.links.selectedLinks = [];
+            }
+        },
+        toggleSelection(e, link) {
+            const { shiftKey } = e;
+            const ctrlKey = e.ctrlKey || e.metaKey;
+
+            const index = this.links.links.findIndex((Link) => Link.id === link.id);
+
+            if (shiftKey && this.bulkLinkOptions.lastSelected.checked) {
+                this.bulkLinkOptions.startOfSelection = this.bulkLinkOptions.lastSelected.index;
+
+                this.links.selectedLinks = [...this.links.selectedLinks, ...this.links.links.slice(this.bulkLinkOptions.startOfSelection, index + 1)];
+            } else {
+                const selected = this.links.selectedLinks.includes(link.id);
+
+                if (selected) {
+                    this.links.selectedLinks = this.links.selectedLinks.filter((id) => id !== link.id);
+                } else {
+                    this.links.selectedLinks.push(link.id);
+                }
+
+                if (!ctrlKey) {
+                    this.bulkLinkOptions.lastSelected = {
+                        index,
+                        checked: !selected,
+                    };
+                }
+            }
+
+            if (this.bulkLinkOptions.allSelected.clicked) {
+                this.bulkLinkOptions.allSelected.active = this.links.links.length === this.links.selectedLinks.length;
             }
         },
         openQRCode(link) {
@@ -353,9 +494,16 @@ export default {
         justify-content: space-between;
         align-items: center;
         .title {
+            text-align: left;
             h1 {
                 font-size: 3rem;
                 font-weight: 500;
+            }
+            h3 {
+                margin-top: 0.5rem;
+                color: var(--color-4);
+                font-weight: 600;
+                font-size: 0.8rem;
             }
         }
         .actions {
@@ -531,6 +679,10 @@ export default {
             table-layout: auto;
             width: 100%;
             position: relative;
+
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
 
             thead,
             tr {

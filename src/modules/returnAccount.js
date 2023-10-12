@@ -1,5 +1,5 @@
 module.exports = ({
-    id, username, email, role, secret, totp: { enabled: totp },
+    id, username, email, role, secret, totp: { enabled: totp }, quota,
 }) => ({
     id,
     username,
@@ -7,4 +7,5 @@ module.exports = ({
     role,
     secret,
     totp,
+    quota,
 });

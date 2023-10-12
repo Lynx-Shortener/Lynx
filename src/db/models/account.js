@@ -12,6 +12,12 @@ const schema = new mongoose.Schema({
         secret: String,
         backupCodes: [String],
     },
+    quota: {
+        links: {
+            used: Number, // -1 = unlimited, null = default
+            limit: Number,
+        },
+    },
 });
 
 const Account = mongoose.model("Account", schema);

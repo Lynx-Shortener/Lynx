@@ -11,8 +11,6 @@ const requireLogin = require("./middleware/requireLogin");
 const requireFields = require("./middleware/requireFields");
 const Account = require("../db/models/account");
 
-const accounts = {};
-
 const upload = multer({ dest: "tmp/uploads/" });
 
 const fields = {
@@ -55,6 +53,7 @@ router.post("/", requireLogin(), upload.single("file"), requireFields(["service"
         }
         let links;
         const filepath = path.join("tmp", "uploads", req.file.filename);
+        const accounts = await Account.find({});
         if (filetype === "csv") {
             const [rows, parseError] = await processFile(filepath);
             if (parseError) {
@@ -110,20 +109,23 @@ router.post("/", requireLogin(), upload.single("file"), requireFields(["service"
 
                 links = await Promise.all(
                     links.map(async (link) => {
-                        if (!Object.prototype.hasOwnProperty.call(accounts, link.author)) {
-                            const account = await Account.findOne({ id: link.author });
-                            if (account) {
-                                link.author = account.id;
-                                accounts[account.id] = account;
-                            } else {
-                                link.author = req.account.id;
-                            }
+                        const authorAccount = accounts.find((account) => account.id === link.author);
+                        if (!authorAccount) {
+                            // Claim urls from non-existing accounts
+                            link.author = req.account.id;
                         }
                         return link;
                     }),
                 );
                 fs.unlinkSync(filepath);
             }
+        }
+
+        if (links.length === 0) {
+            return res.status(200).json({
+                success: false,
+                message: "No valid links were provided, please make sure your file is correct.",
+            });
         }
 
         const slugs = links.map((link) => link.slug);
@@ -138,10 +140,83 @@ router.post("/", requireLogin(), upload.single("file"), requireFields(["service"
 
         const originalLinkCount = links.length;
 
+        if (req.account.role === "admin") {
+            links = links.filter((link) => {
+                const authorAccount = accounts.find((account) => account.id === link.author);
+
+                // remove links made by other admins or the owner
+                return authorAccount.id === req.account.id || authorAccount.role === "standard";
+            });
+        }
+
+        const authors = Object.fromEntries(await Promise.all(
+            [...new Set(await links.map((link) => link.author))].map(async (author) => [author, (await Account.findOne({ id: author }))]),
+        ));
+
+        if (links.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: "You do not have the permission to import any of your links, no actions have been performed.",
+            });
+        }
+
         links = links.filter((link) => !existingSlugs.includes(link.slug));
-        await Link.insertMany(links);
+
+        if (links.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: "All of your links already exist in Lynx (possibly under other users), no actions have been performed.",
+            });
+        }
+
+        if (req.account.role === "standard") {
+            // remove links under other users
+            links = links.filter((link) => link.author === req.account.id);
+
+            if (req.account.quota.links.limit !== -1) {
+                const remainingLinkQuota = req.account.quota.links.limit - req.account.quota.links.used;
+                if (links.length > remainingLinkQuota) {
+                    return res.status(422).json({
+                        success: false,
+                        message: `That import (${links.length} links) is too large for your current link quota (${remainingLinkQuota} links remaining), either removed unneeded links from the import file or request a quota increase.`,
+                    });
+                }
+
+                await Account.findOneAndUpdate({ id: req.account.id }, {
+                    $inc: {
+                        "quota.links.used": links.length,
+                    },
+                });
+            }
+        } else {
+            const authorLinkCounts = links.reduce((counts, item) => {
+                const authorID = item.author;
+
+                counts[authorID] = (Object.prototype.hasOwnProperty.call(counts, authorID) ? { links: counts[authorID].links + 1, data: counts[authorID].data } : { links: 1, data: null });
+
+                if (!counts[authorID].data) {
+                    counts[authorID].data = authors[authorID];
+                }
+                return counts;
+            }, {});
+
+            const quotaUpdates = Object.entries(authorLinkCounts).map(([accountID, accountDetails]) => ({
+                updateOne: {
+                    filter: { id: accountID },
+                    update: {
+                        $inc: {
+                            "quota.links.used": accountDetails.links,
+                        },
+                    },
+                },
+            }));
+
+            await Account.bulkWrite(quotaUpdates);
+        }
+
+        // await Link.insertMany(links);
         return res.status(200).json({
-            success: true,
+            success: false,
             message: `Imported ${links.length} / ${originalLinkCount} links!`,
         });
     } catch (e) {

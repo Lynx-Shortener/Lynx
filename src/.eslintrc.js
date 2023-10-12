@@ -24,6 +24,7 @@ module.exports = {
         sourceType: "module",
     },
     rules: {
+        "no-underscore-dangle": ["error", { allow: ["_id"] }],
         "global-require": "off",
         "no-prototype-buildins": "off",
         "no-console": "off",
@@ -31,6 +32,8 @@ module.exports = {
         "no-shadow": ["error", { ignoreOnInitialization: true }],
         "max-len": ["error", {
             code: 200,
+            ignoreStrings: true,
+            ignoreTemplateLiterals: true
         }],
         "import/prefer-default-export": ["off"],
         "consistent-return": 0,
