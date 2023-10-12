@@ -58,8 +58,10 @@ export const usePopups = defineStore("popup", {
             }
         },
         closeAll() {
-            this.popups.forEach((popup) => {
-                this.closePopup(popup.id);
+            const popupIDs = this.popups.map((popup) => popup.id);
+            popupIDs.map((id) => {
+                this.closePopup(id);
+                return false;
             });
         },
         closeSelf(a, data) {
