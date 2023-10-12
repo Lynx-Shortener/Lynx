@@ -2,10 +2,10 @@ const express = require("express");
 
 const router = express.Router();
 const { generateRegistrationOptions, verifyRegistrationResponse } = require("@simplewebauthn/server");
-const requireFields = require("../middleware/requireFields");
-const requireLogin = require("../middleware/requireLogin");
+const requireFields = require("./middleware/requireFields");
+const requireLogin = require("./middleware/requireLogin");
 
-const Account = require("../../db/models/account");
+const Account = require("../db/models/account");
 
 // https://simplewebauthn.dev/docs/packages/browser#startregistration
 
@@ -115,6 +115,10 @@ router.post("/register/verify", requireLogin(true), async (req, res) => {
             message: "Internal Server Error when verifying WebAuthn authenticator",
         });
     }
+});
+
+router.get("/auth/start", async (req, res) => {
+
 });
 
 router.get("/authenticators", requireLogin(true), async (req, res) => {

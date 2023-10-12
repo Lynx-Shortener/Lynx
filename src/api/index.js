@@ -6,6 +6,8 @@ const requireAccountValue = require("./middleware/requireAccountValue");
 
 router.use("/auth", require("./auth"));
 
+router.use("/webauthn", require("./webauthn"));
+
 router.use("/link", require("./link"));
 
 router.use("/import", require("./import"));

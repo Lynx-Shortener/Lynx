@@ -120,7 +120,7 @@ export default {
             }
         },
         async newAuthenticator() {
-            const response = await this.account.fetch("/auth/webauthn/register/start", {
+            const response = await this.account.fetch("/webauthn/register/start", {
                 method: "GET",
             });
 

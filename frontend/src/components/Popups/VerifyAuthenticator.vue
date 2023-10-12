@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         async verify() {
-            const verificationResponse = await this.account.fetch("/auth/webauthn/register/verify", {
+            const verificationResponse = await this.account.fetch("/webauthn/register/verify", {
                 method: "POST",
                 body: JSON.stringify({
                     name: this.name,

@@ -1,20 +1,20 @@
 const express = require("express");
 
 const router = express.Router();
-const requireFields = require("../middleware/requireFields");
-const requireLogin = require("../middleware/requireLogin");
-const requireTOTP = require("../middleware/requireTOTP");
-const countAccounts = require("../../db/modules/account/count");
-const createSecret = require("../../db/modules/secret/create");
-const totp = require("../../db/modules/totp");
-const returnAccount = require("../../modules/returnAccount");
-const getAccountById = require("../../db/modules/account/get/byID");
+const requireFields = require("./middleware/requireFields");
+const requireLogin = require("./middleware/requireLogin");
+const requireTOTP = require("./middleware/requireTOTP");
+const countAccounts = require("../db/modules/account/count");
+const createSecret = require("../db/modules/secret/create");
+const totp = require("../db/modules/totp");
+const returnAccount = require("../modules/returnAccount");
+const getAccountById = require("../db/modules/account/get/byID");
 
 const {
     login,
     update: { email: updateEmail, password: updatePassword, username: updateUsername },
     register,
-} = require("../../db/modules/account");
+} = require("../db/modules/account");
 
 const randomString = (length) => {
     const alphabet = [...Array(26)].map((_, i) => String.fromCharCode(i + 97)).join("");
@@ -28,8 +28,6 @@ const randomString = (length) => {
 
     return [...Array(length)].map(() => characters.at(Math.floor(Math.random() * characters.length))).join("");
 };
-
-router.use("/webauthn", require("./webauthn"));
 
 router.post("/login", requireFields(["username", "password"]), async (req, res) => {
     try {
