@@ -7,6 +7,9 @@
   - email
   - password
 - Improve responsiveness for narrow (but non-mobile) screens
+- Add WebAuthn support for 2FA and passwordless login
+- Adjust account database schema to ready for OAuth logins
+
 - Bug fixes:
   - Admins were not able to update standard user's roles, this has been resolved.
   - Admins are no longer able to see other admin's links.

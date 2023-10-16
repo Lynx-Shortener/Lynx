@@ -1,10 +1,20 @@
 module.exports = ({
-    id, username, email, role, secret, totp: { enabled: totp },
+    id, username, email, role, secret, loginMethods, twoFactorAuthentication,
 }) => ({
     id,
     username,
     email,
     role,
     secret,
-    totp,
+    loginMethods: {
+        password: !!loginMethods.password,
+        webAuthn: loginMethods.webAuthn,
+    },
+    twoFactorAuthentication: {
+        enabled: twoFactorAuthentication.enabled,
+        totp: !!twoFactorAuthentication.totp.enabled,
+        webAuthn: {
+            authenticators: (twoFactorAuthentication?.authenticators || []).map((authenticator) => ({ name: authenticator.name })),
+        },
+    },
 });

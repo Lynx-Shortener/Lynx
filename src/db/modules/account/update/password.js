@@ -5,7 +5,7 @@ require("dotenv").config();
 
 module.exports = async ({ account: accountID, password }) => {
     const hashedPassword = hashPassword(password);
-    const account = await Account.findOneAndUpdate({ id: accountID }, { $set: { password: hashedPassword } }, {
+    const account = await Account.findOneAndUpdate({ id: accountID }, { $set: { "loginMethods.password": hashedPassword } }, {
         new: true,
     });
     if (!account) return [null, { code: 400, message: "Invalid account ID" }];

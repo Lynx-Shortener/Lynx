@@ -31,7 +31,7 @@
                 <div class="input totp">
                     <label>2FA settings</label>
                     <button :disabled="about.data.demo" @click="toggleTOTP">
-                        {{ account.account.totp ? "Disable" : "Enable" }} 2FA
+                        {{ account.account.twoFactorAuthentication.totp ? "Disable" : "Enable" }} 2FA
                     </button>
                 </div>
                 <div class="input passkeys">
@@ -112,7 +112,7 @@ export default {
         },
         async toggleTOTP() {
             if (this.about.data.demo) return;
-            const totpEnabled = this.account.account.totp;
+            const totpEnabled = this.account.account.twoFactorAuthentication.totp;
             if (!totpEnabled) {
                 this.popups.addPopup("EnableTOTP", {});
             } else {

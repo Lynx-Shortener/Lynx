@@ -36,7 +36,7 @@ module.exports = async ({ username, password }) => {
             },
         ];
     }
-    const passwordIsCorrect = checkPassword(password, account?.password);
+    const passwordIsCorrect = checkPassword(password, account?.loginMethods?.password);
     if (!passwordIsCorrect) {
         return [
             null,

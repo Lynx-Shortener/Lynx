@@ -1,7 +1,7 @@
 const totp = require("../../db/modules/totp");
 
 module.exports = (req, res, next) => {
-    if (!req.account.totp.enabled) return next();
+    if (!req.account.twoFactorAuthentication.totp.enabled) return next();
 
     const { token } = req.body;
 
@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
         });
     }
 
-    const totpVerificationFailure = totp.verify(req.account.username, req.account.totp.secret, req.body.token)[1];
+    const totpVerificationFailure = totp.verify(req.account.username, req.account.twoFactorAuthentication.totp.secret, req.body.token)[1];
 
     if (totpVerificationFailure) {
         return res.status(totpVerificationFailure.code).json({

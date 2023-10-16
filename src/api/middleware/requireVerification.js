@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
     }
 
     const { token, password } = verification;
-    if (req.account.totp.enabled) {
+    if (req.account.twoFactorAuthentication.totp.enabled) {
         if (!token) {
             return res.status(403).json({
                 success: false,
@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
             });
         }
 
-        const totpVerificationFailure = totp.verify(req.account.username, req.account.totp.secret, token)[1];
+        const totpVerificationFailure = totp.verify(req.account.username, req.account.twoFactorAuthentication.totp.secret, token)[1];
 
         if (totpVerificationFailure) {
             return res.status(totpVerificationFailure.code).json({
@@ -35,7 +35,7 @@ module.exports = (req, res, next) => {
             });
         }
 
-        const passwordCorrect = checkPassword(password, req.account.password);
+        const passwordCorrect = checkPassword(password, req.account.loginMethods.password);
 
         if (!passwordCorrect) {
             return res.status(401).json({

@@ -8,7 +8,7 @@
             @submit="verify"
         >
             <FormKit
-                v-if="account.account.totp"
+                v-if="account.account.twoFactorAuthentication.totp"
                 v-model="verification.token"
                 type="text"
                 label="Your 2FA token"

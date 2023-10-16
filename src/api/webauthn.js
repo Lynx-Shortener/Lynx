@@ -23,13 +23,13 @@ router.get("/register/start", requireLogin(true), async (req, res) => {
             userID: account.id,
             userName: account.username,
             attestationType: "none",
-            excludeCredentials: account.webauthn.authenticators.map((authenticator) => ({
+            excludeCredentials: account.twoFactorAuthentication.webAuthn.authenticators.map((authenticator) => ({
                 id: authenticator.id,
                 type: "public-key",
             })),
         });
 
-        const updatedAccount = await Account.findOneAndUpdate({ id: account.id }, { $set: { "webauthn.lastChallenge": options.challenge } }, { new: true });
+        const updatedAccount = await Account.findOneAndUpdate({ id: account.id }, { $set: { "twoFactorAuthentication.webAuthn.lastChallenge": options.challenge } }, { new: true });
         if (!updatedAccount) {
             return res.status(404).json({
                 success: false,
@@ -53,7 +53,7 @@ router.post("/register/verify", requireLogin(true), requireFields(["attpResp", "
 
         const { attpResp: response, name: authenticatorName } = req.body;
 
-        if (req.account.webauthn.authenticators.map((authenticator) => authenticator.name).includes(authenticatorName)) {
+        if (req.account.twoFactorAuthentication.webAuthn.authenticators.map((authenticator) => authenticator.name).includes(authenticatorName)) {
             return res.status(409).json({
                 success: false,
                 message: "An authenticator already exists with that name",
@@ -63,7 +63,7 @@ router.post("/register/verify", requireLogin(true), requireFields(["attpResp", "
         try {
             verification = await verifyRegistrationResponse({
                 response,
-                expectedChallenge: req.account.webauthn.lastChallenge,
+                expectedChallenge: req.account.twoFactorAuthentication.webAuthn.lastChallenge,
                 expectedOrigin: origin,
                 expectedRPID: rpID,
             });
@@ -86,7 +86,7 @@ router.post("/register/verify", requireLogin(true), requireFields(["attpResp", "
 
             const updatedAccount = await Account.findOneAndUpdate(
                 { id: req.account.id },
-                { $push: { "webauthn.authenticators": authenticator }, $unset: { "webauthn.lastChallenge": "" } },
+                { $push: { "twoFactorAuthentication.webAuthn.authenticators": authenticator }, $unset: { "twoFactorAuthentication.webAuthn.lastChallenge": "" } },
                 { new: true },
             );
             if (!updatedAccount) {
@@ -116,7 +116,7 @@ router.post("/register/verify", requireLogin(true), requireFields(["attpResp", "
 });
 
 router.get("/authenticators", requireLogin(true), async (req, res) => {
-    const authenticators = req.account.webauthn.authenticators.map((authenticator) => ({
+    const authenticators = req.account.twoFactorAuthentication.webAuthn.authenticators.map((authenticator) => ({
         id: authenticator.id,
         name: authenticator.name,
     }));

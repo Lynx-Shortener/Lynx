@@ -53,9 +53,11 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
             });
         }
 
-        if (data.account.totp.enabled) {
+        if (data.account.twoFactorAuthentication.enabled) {
             if (webAuthnResponse) {
-                const authenticator = data.account.webauthn.authenticators.find((authenticator) => isoUint8Array.areEqual(authenticator.id, isoBase64URL.toBuffer(webAuthnResponse.rawId)));
+                const authenticator = data.account.twoFactorAuthentication.webAuthn.authenticators.find(
+                    (authenticator) => isoUint8Array.areEqual(authenticator.id, isoBase64URL.toBuffer(webAuthnResponse.rawId)),
+                );
 
                 if (!authenticator) {
                     return res.status(400).json({
@@ -69,7 +71,7 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
                 try {
                     verification = await verifyAuthenticationResponse({
                         response: webAuthnResponse,
-                        expectedChallenge: data.account.webauthn.lastChallenge,
+                        expectedChallenge: data.account.twoFactorAuthentication.webAuthn.lastChallenge,
                         expectedOrigin: origin,
                         expectedRPID: rpID,
                         authenticator,
@@ -85,8 +87,8 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
 
                 if (verification.verified) {
                     await Account.findOneAndUpdate(
-                        { "webauthn.authenticators": { $elemMatch: { _id: authenticator._id } } },
-                        { $set: { "webauthn.authenticators.$.counter": verification.authenticationInfo.newCounter } },
+                        { "twoFactorAuthentication.webAuthn.authenticators": { $elemMatch: { _id: authenticator._id } } },
+                        { $set: { "twoFactorAuthentication.webAuthn.authenticators.$.counter": verification.authenticationInfo.newCounter } },
                     );
 
                     res.setHeader("Set-Cookie", data.serialized);
@@ -97,7 +99,7 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
                     });
                 }
             } if (token) {
-                const totpVerificationFailure = totp.verify(username, data.account.totp.secret, token)[1];
+                const totpVerificationFailure = totp.verify(username, data.account.twoFactorAuthentication.totp.secret, token)[1];
 
                 if (totpVerificationFailure) {
                     return res.status(totpVerificationFailure.code).json({
@@ -106,7 +108,7 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
                     });
                 }
             } else {
-                const accountAuthenticators = data.account.webauthn.authenticators;
+                const accountAuthenticators = data.account.twoFactorAuthentication.webAuthn.authenticators;
                 const options = await generateAuthenticationOptions({
                     allowCredentials: accountAuthenticators.map((authenticator) => ({
                         id: new Uint8Array(authenticator.id),
@@ -115,7 +117,7 @@ router.post("/login", requireFields(["username", "password"]), async (req, res) 
                     userVerification: true,
                 });
 
-                await Account.findOneAndUpdate({ id: data.account.id }, { $set: { "webauthn.lastChallenge": options.challenge } });
+                await Account.findOneAndUpdate({ id: data.account.id }, { $set: { "twoFactorAuthentication.webAuthn.lastChallenge": options.challenge } });
 
                 return res.status(403).json({
                     success: false,
@@ -378,7 +380,7 @@ router.get("/totp", requireLogin(true), async (req, res) => {
         });
     }
 
-    if (req.account?.totp?.enabled === true) {
+    if (req.account?.twoFactorAuthentication?.totp?.enabled) {
         return res.status(412).json({
             success: false,
             message: "2FA already enabled",
@@ -393,8 +395,9 @@ router.get("/totp", requireLogin(true), async (req, res) => {
         });
     }
 
-    req.account.totp = {
+    req.account.twoFactorAuthentication.totp = {
         secret: totpResult.secret,
+        backupCodes: [],
         enabled: false,
     };
 
@@ -415,14 +418,14 @@ router.post("/totp", requireLogin(true), requireFields(["token"]), async (req, r
         });
     }
 
-    if (!req.account?.totp?.secret) {
+    if (!req.account?.twoFactorAuthentication?.totp?.secret) {
         return res.status(412).json({
             success: false,
             message: "2FA process hasn't been started",
         });
     }
 
-    if (req.account?.totp?.enabled === true) {
+    if (req.account?.twoFactorAuthentication?.totp?.enabled === true) {
         return res.status(412).json({
             success: false,
             message: "2FA already enabled, no need to verify",
@@ -436,7 +439,7 @@ router.post("/totp", requireLogin(true), requireFields(["token"]), async (req, r
         });
     }
 
-    const totpVerificationFailure = totp.verify(req.account.username, req.account.totp.secret, req.body.token)[1];
+    const totpVerificationFailure = totp.verify(req.account.username, req.account.twoFactorAuthentication.totp.secret, req.body.token)[1];
 
     if (totpVerificationFailure) {
         return res.status(totpVerificationFailure.code).json({
@@ -447,8 +450,8 @@ router.post("/totp", requireLogin(true), requireFields(["token"]), async (req, r
 
     const backupCodes = [...Array(6)].map(() => randomString(12));
 
-    req.account.totp = {
-        secret: req.account.totp.secret,
+    req.account.twoFactorAuthentication.totp = {
+        secret: req.account.twoFactorAuthentication.totp.secret,
         backupCodes,
         enabled: true,
     };
@@ -481,23 +484,23 @@ router.post("/totp/recover", requireFields(["backupCode", "username", "password"
 
     const { account } = data;
 
-    if (!account.totp.enabled) {
+    if (!account.twoFactorAuthentication.totp.enabled) {
         return res.status(412).json({
             success: false,
             message: "2FA is not enabled",
         });
     }
 
-    if (!account.totp.backupCodes.includes(backupCode)) {
+    if (!account.twoFactorAuthentication.totp.backupCodes.includes(backupCode)) {
         return res.status(403).json({
             success: false,
             message: "Invalid backup code",
         });
     }
 
-    account.totp.enabled = false;
-    account.totp.backupCodes = [];
-    account.totp.secret = null;
+    account.twoFactorAuthentication.totp.enabled = false;
+    account.twoFactorAuthentication.totp.backupCodes = [];
+    account.twoFactorAuthentication.totp.secret = null;
     account.save();
 
     res.setHeader("Set-Cookie", data.serialized);
@@ -509,14 +512,14 @@ router.post("/totp/recover", requireFields(["backupCode", "username", "password"
 });
 
 router.delete("/totp", requireLogin(true), requireFields(["token"]), async (req, res) => {
-    if (!req.account.totp.enabled) {
+    if (!req.account.twoFactorAuthentication.totp.enabled) {
         return res.status(412).json({
             success: false,
             message: "2FA is not enabled",
         });
     }
 
-    const totpVerificationFailure = totp.verify(req.account.username, req.account.totp.secret, req.body.token)[1];
+    const totpVerificationFailure = totp.verify(req.account.username, req.account.twoFactorAuthentication.totp.secret, req.body.token)[1];
 
     if (totpVerificationFailure) {
         return res.status(totpVerificationFailure.code).json({
@@ -525,9 +528,9 @@ router.delete("/totp", requireLogin(true), requireFields(["token"]), async (req,
         });
     }
 
-    req.account.totp.enabled = false;
-    req.account.totp.backupCodes = [];
-    req.account.totp.secret = null;
+    req.account.twoFactorAuthentication.totp.enabled = false;
+    req.account.twoFactorAuthentication.totp.backupCodes = [];
+    req.account.twoFactorAuthentication.totp.secret = null;
     await req.account.save();
 
     res.json({

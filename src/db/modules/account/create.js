@@ -9,10 +9,25 @@ module.exports = async ({
         const account = new Account({
             id: uuid4(),
             username,
-            password: hashPassword(password),
             email,
             role,
             secret: null,
+            loginMethods: {
+                password: hashPassword(password),
+                webAuthn: false,
+            },
+            twoFactorAuthentication: {
+                enabled: false,
+                totp: {
+                    secret: false,
+                    backupCodes: [],
+                    enabled: false,
+                },
+                webAuthn: {
+                    lastChallenge: false,
+                    authenticators: [],
+                },
+            },
         });
 
         await account.save();
