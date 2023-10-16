@@ -9,8 +9,8 @@ const Account = require("../db/models/account");
 
 // https://simplewebauthn.dev/docs/packages/browser#startregistration
 
-const rpID = "localhost";
-const origin = "http://localhost:5173";
+const origin = process.env.DOMAIN;
+const rpID = origin.match(/(?:(localhost:\d+)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+)|([a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}))(?::\d+)?/)[0];
 const rpName = "Lynx";
 
 router.get("/register/start", requireLogin(true), async (req, res) => {
@@ -23,12 +23,10 @@ router.get("/register/start", requireLogin(true), async (req, res) => {
             userID: account.id,
             userName: account.username,
             attestationType: "none",
-        // excludeCredentials: userAuthenticators.map((authenticator) => ({
-        //     id: authenticator.credentialID,
-        //     type: "public-key",
-        //     // Optional
-        //     transports: authenticator.transports,
-        // })),
+            excludeCredentials: account.webauthn.authenticators.map((authenticator) => ({
+                id: authenticator.id,
+                type: "public-key",
+            })),
         });
 
         const updatedAccount = await Account.findOneAndUpdate({ id: account.id }, { $set: { "webauthn.lastChallenge": options.challenge } }, { new: true });
@@ -49,7 +47,7 @@ router.get("/register/start", requireLogin(true), async (req, res) => {
     }
 });
 
-router.post("/register/verify", requireLogin(true), async (req, res) => {
+router.post("/register/verify", requireLogin(true), requireFields(["attpResp", "name"]), async (req, res) => {
     try {
         let verification;
 
@@ -80,7 +78,7 @@ router.post("/register/verify", requireLogin(true), async (req, res) => {
 
         if (verification.verified) {
             const authenticator = {
-                publicKey: Buffer.from(credentialPublicKey),
+                credentialPublicKey: Buffer.from(credentialPublicKey),
                 id: Buffer.from(credentialID),
                 counter,
                 name: authenticatorName,
@@ -115,10 +113,6 @@ router.post("/register/verify", requireLogin(true), async (req, res) => {
             message: "Internal Server Error when verifying WebAuthn authenticator",
         });
     }
-});
-
-router.get("/auth/start", async (req, res) => {
-
 });
 
 router.get("/authenticators", requireLogin(true), async (req, res) => {

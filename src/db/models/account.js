@@ -18,7 +18,7 @@ const schema = new mongoose.Schema({
         authenticators: [
             {
                 id: Buffer,
-                publicKey: Buffer,
+                credentialPublicKey: Buffer,
                 counter: Number,
                 name: String,
             },

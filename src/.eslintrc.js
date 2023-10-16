@@ -24,6 +24,7 @@ module.exports = {
         sourceType: "module",
     },
     rules: {
+        "no-underscore-dangle": ["error", { allow: ["_id"] }],
         "global-require": "off",
         "no-prototype-buildins": "off",
         "no-console": "off",

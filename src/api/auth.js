@@ -1,4 +1,6 @@
 const express = require("express");
+const { generateAuthenticationOptions, verifyAuthenticationResponse } = require("@simplewebauthn/server");
+const { isoBase64URL, isoUint8Array } = require("@simplewebauthn/server/helpers");
 
 const router = express.Router();
 const requireFields = require("./middleware/requireFields");
@@ -15,6 +17,10 @@ const {
     update: { email: updateEmail, password: updatePassword, username: updateUsername },
     register,
 } = require("../db/modules/account");
+const Account = require("../db/models/account");
+
+const origin = process.env.DOMAIN;
+const rpID = origin.match(/(?:(localhost:\d+)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+)|([a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}))(?::\d+)?/)[0];
 
 const randomString = (length) => {
     const alphabet = [...Array(26)].map((_, i) => String.fromCharCode(i + 97)).join("");
@@ -31,34 +37,92 @@ const randomString = (length) => {
 
 router.post("/login", requireFields(["username", "password"]), async (req, res) => {
     try {
-        const { username, password, token } = req.body;
+        const {
+            username, password, token, webAuthnResponse,
+        } = req.body;
 
-        const [data, error] = await login({
+        const [data, loginError] = await login({
             username,
             password,
         });
 
-        if (error) {
-            return res.status(error.code).json({
+        if (loginError) {
+            return res.status(loginError.code).json({
                 success: false,
-                message: error.message,
+                message: loginError.message,
             });
         }
 
         if (data.account.totp.enabled) {
-            if (!token) {
+            if (webAuthnResponse) {
+                const authenticator = data.account.webauthn.authenticators.find((authenticator) => isoUint8Array.areEqual(authenticator.id, isoBase64URL.toBuffer(webAuthnResponse.rawId)));
+
+                if (!authenticator) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Invalid authenticator for this user",
+                    });
+                }
+
+                let verification;
+
+                try {
+                    verification = await verifyAuthenticationResponse({
+                        response: webAuthnResponse,
+                        expectedChallenge: data.account.webauthn.lastChallenge,
+                        expectedOrigin: origin,
+                        expectedRPID: rpID,
+                        authenticator,
+                    });
+                } catch (error) {
+                    console.log(error);
+
+                    return res.status(400).json({
+                        success: false,
+                        message: error,
+                    });
+                }
+
+                if (verification.verified) {
+                    await Account.findOneAndUpdate(
+                        { "webauthn.authenticators": { $elemMatch: { _id: authenticator._id } } },
+                        { $set: { "webauthn.authenticators.$.counter": verification.authenticationInfo.newCounter } },
+                    );
+
+                    res.setHeader("Set-Cookie", data.serialized);
+
+                    return res.status(200).json({
+                        success: true,
+                        message: "Successfully logged in!",
+                    });
+                }
+            } if (token) {
+                const totpVerificationFailure = totp.verify(username, data.account.totp.secret, token)[1];
+
+                if (totpVerificationFailure) {
+                    return res.status(totpVerificationFailure.code).json({
+                        success: false,
+                        message: totpVerificationFailure.message,
+                    });
+                }
+            } else {
+                const accountAuthenticators = data.account.webauthn.authenticators;
+                const options = await generateAuthenticationOptions({
+                    allowCredentials: accountAuthenticators.map((authenticator) => ({
+                        id: new Uint8Array(authenticator.id),
+                        type: "public-key",
+                    })),
+                    userVerification: true,
+                });
+
+                await Account.findOneAndUpdate({ id: data.account.id }, { $set: { "webauthn.lastChallenge": options.challenge } });
+
                 return res.status(403).json({
                     success: false,
-                    message: "2FA token required",
-                });
-            }
-
-            const totpVerificationFailure = totp.verify(username, data.account.totp.secret, token)[1];
-
-            if (totpVerificationFailure) {
-                return res.status(totpVerificationFailure.code).json({
-                    success: false,
-                    message: totpVerificationFailure.message,
+                    message: "2FA required",
+                    result: {
+                        webAuthnOptions: options,
+                    },
                 });
             }
         }

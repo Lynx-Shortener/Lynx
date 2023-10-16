@@ -37,6 +37,7 @@ module.exports = {
         "no-shadow": ["error", { ignoreOnInitialization: true }],
         "max-len": ["error", {
             code: 200,
+            ignoreTemplateLiterals: true,
         }],
         "import/prefer-default-export": ["off"],
         "vue/multi-word-component-names": 0,

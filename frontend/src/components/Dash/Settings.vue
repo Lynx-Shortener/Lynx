@@ -140,7 +140,7 @@ export default {
                     }
 
                     this.popups.addPopup("Information", {
-                        title: "Error when adding a new WebAuthn authenticator 2",
+                        title: "Error when adding a new WebAuthn authenticator",
                         description: errorText,
                         buttons: [
                             {
