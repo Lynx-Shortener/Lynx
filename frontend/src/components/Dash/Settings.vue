@@ -36,6 +36,22 @@
                 </div>
             </div>
         </div>
+        <div class="sole-user">
+            <h2>Automatic login</h2>
+            <p>
+                All requests will be automatically authenticated by this account.<br>
+                Requires <a href="https://docs.getlynx.dev/installation/environment-variables" target="_blank" rel="noopener noreferrer">SOLE_USER</a>
+                to be set to <code style="background-color: var(--bg-color-2); padding: 0.2em; border-radius: 5px;">{{  account.account.id }}</code><br>
+                Do not enable unless you have alternative authentication methods in place.
+            </p>
+            <div class="inputs" style="margin-top: 0">
+                <div class="input automatic-login">
+                    <button @click="toggleAutomaticLogin">
+                        {{ account.account.allowAutomaticLogin ? "Disable" : "Enable" }}
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="integration">
             <h2>Integration</h2>
             <p>Here you can access your ShareX configuration file and manage your secret.</p>
@@ -67,6 +83,10 @@
                 <tr>
                     <td>Account Role</td>
                     <td>{{ account.account.role }}</td>
+                </tr>
+                <tr>
+                    <td>Account ID</td>
+                    <td>{{ account.account.id }}</td>
                 </tr>
                 <tr v-if="Object.prototype.hasOwnProperty.call(about.data, 'links')">
                     <td>Links</td>
@@ -111,6 +131,36 @@ export default {
             } else {
                 this.popups.addPopup("DisableTOTP", {});
             }
+        },
+        async toggleAutomaticLogin() {
+            const verificationData = await this.popups.addPopup("Verify", { async: true });
+            const loadingPopup = await this.popups.addPopup("Loader");
+
+            const response = await this.account.fetch("/auth/automatic-login", {
+                method: this.account.account.allowAutomaticLogin ? "DELETE" : "POST",
+                body: JSON.stringify({
+                    verification: verificationData,
+                }),
+            });
+
+            this.popups.closePopup(loadingPopup.id);
+
+            if (!response.success) {
+                this.popups.addPopup("Information", {
+                    title: `Error ${this.account.account.allowAutomaticLogin ? "disabling" : "enabling"} automatic login`,
+                    description: response.message,
+                    buttons: [
+                        {
+                            name: "Okay",
+                            type: "primary",
+                            action: "close-all",
+                        },
+                    ],
+                });
+                return;
+            }
+
+            this.account.getAccount();
         },
         async getConfig() {
             const data = await this.account.fetch("/sharex/config", {
@@ -172,6 +222,7 @@ export default {
         p {
             color: var(--color-3);
             font-weight: 300;
+            max-width: 80ch;
         }
         .inputs {
             margin-top: 2rem;
@@ -296,7 +347,7 @@ export default {
         &.about {
             table.about-table {
                 border-collapse:separate;
-                width: 20rem;
+                width: max-content;
                 border: 1px solid var(--bg-color-3);
                 border-radius: 10px;
                 tr, th {

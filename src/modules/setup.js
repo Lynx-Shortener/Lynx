@@ -30,6 +30,8 @@ module.exports = async () => {
             const newOwner = await Account.findOneAndUpdate({}, { $set: { role: "owner" } });
             console.log(`Automatically promoted ${newOwner.username} to owner, as no owner previously existed.`);
         }
+
+        await Account.updateMany({ allowAutomaticLogin: { $exists: false } }, { $set: { allowAutomaticLogin: false } });
     }
 
     // Remove tmp files

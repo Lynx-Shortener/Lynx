@@ -12,9 +12,12 @@ const getAccountById = require("../db/modules/account/get/byID");
 
 const {
     login,
-    update: { email: updateEmail, password: updatePassword, username: updateUsername },
+    update: {
+        email: updateEmail, password: updatePassword, username: updateUsername, automaticLogin,
+    },
     register,
 } = require("../db/modules/account");
+const requireVerification = require("./middleware/requireVerification");
 
 const randomString = (length) => {
     const alphabet = [...Array(26)].map((_, i) => String.fromCharCode(i + 97)).join("");
@@ -469,6 +472,64 @@ router.delete("/totp", requireLogin(true), requireFields(["token"]), async (req,
     res.json({
         success: true,
         message: "2FA has been successfully disabled",
+    });
+});
+
+router.post("/automatic-login", requireLogin(true), requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of credentials is not enabled in demo mode.",
+        });
+    }
+
+    const [account, error] = await automaticLogin({
+        account: req.account.id,
+        value: true,
+    });
+
+    if (error) {
+        return res.status(error.code).json({
+            success: false,
+            message: error.message,
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: account.message,
+        details: {
+            account: account.account,
+        },
+    });
+});
+
+router.delete("/automatic-login", requireLogin(true), requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of credentials is not enabled in demo mode.",
+        });
+    }
+
+    const [account, error] = await automaticLogin({
+        account: req.account.id,
+        value: false,
+    });
+
+    if (error) {
+        return res.status(error.code).json({
+            success: false,
+            message: error.message,
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: account.message,
+        details: {
+            account: account.account,
+        },
     });
 });
 

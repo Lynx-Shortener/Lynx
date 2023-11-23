@@ -7,6 +7,7 @@ const schema = new mongoose.Schema({
     email: String,
     role: String, // owner || admin || standard
     secret: String,
+    allowAutomaticLogin: Boolean,
     totp: {
         enabled: Boolean,
         secret: String,
