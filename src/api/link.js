@@ -11,7 +11,7 @@ const requireLogin = require("./middleware/requireLogin");
 router.get("/list", requireLogin(), async (req, res) => {
     try {
         const {
-            pagesize, page, search, sortType, sortField,
+            pagesize, page, search, sortType, sortField, userID,
         } = req.query;
         if (pagesize > 100) {
             return res.status(400).json({
@@ -21,7 +21,7 @@ router.get("/list", requireLogin(), async (req, res) => {
         }
 
         const data = await list({
-            pagesize, page, sortType, sortField, account: req.account, search,
+            pagesize, page, sortType, sortField, account: req.account, search, userID,
         });
 
         data.links = data.links.map((link) => returnLink(link));

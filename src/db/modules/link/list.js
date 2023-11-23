@@ -2,7 +2,7 @@ const Link = require("../../models/link");
 const Account = require("../../models/account");
 
 module.exports = async ({
-    pagesize, page, sortType, sortField, account, search,
+    pagesize, page, sortType, sortField, account, search, userID,
 }) => {
     const total = await Link.count();
     const query = {};
@@ -30,6 +30,12 @@ module.exports = async ({
         filter.push({ destination: new RegExp(search, "i") });
         andQuery.push({
             $or: filter,
+        });
+    }
+
+    if (userID !== "") {
+        andQuery.push({
+            author: userID,
         });
     }
 

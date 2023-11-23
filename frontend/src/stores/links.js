@@ -42,7 +42,7 @@ export const useLinks = defineStore("links", {
 
             return `${month} ${day}, ${year}`;
         },
-        async paginate({ search }) {
+        async paginate({ search, userID }) {
             const account = useAccountStore();
             const response = await account.fetch(
                 `/link/list?${
@@ -52,6 +52,7 @@ export const useLinks = defineStore("links", {
                         sortType: this.sort.type,
                         sortField: this.sort.field,
                         search,
+                        userID,
                     })}`,
                 {},
             );

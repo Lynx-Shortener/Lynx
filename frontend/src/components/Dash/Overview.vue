@@ -13,6 +13,20 @@
                         @click="refresh"
                     />
                 </div>
+                <div class="custom userFilter" v-if="['owner', 'admin'].includes(account.account.role)">
+                    <div class="userList">
+                        <select v-model="userFilterValue"
+                                ref="userFilterInput"
+                                @focus="getUsers"
+                                :data-empty="userFilterValue === ''">
+                            <option value=""></option>
+                            <option :value="user.id" v-for="user in users" :key="user.id">
+                                {{ user.username }}
+                            </option>
+                        </select>
+                    </div>
+                    <font-awesome-icon icon="user"/>
+                </div>
                 <div class="custom search" @click.self="$refs.searchbox.focus()">
                     <input
                         ref="searchbox"
@@ -170,12 +184,14 @@
 import ContextMenu from "@imengyu/vue3-context-menu";
 import { usePopups } from "../../stores/popups";
 import { useLinks } from "../../stores/links";
+import { useAccountStore } from "../../stores/account";
 
 export default {
     data() {
         return {
             popups: usePopups(),
             links: useLinks(),
+            account: useAccountStore(),
             endVisible: true,
             loadingMore: false,
             search: {
@@ -190,6 +206,8 @@ export default {
                 destination: "Destination",
                 visits: "Visits",
             },
+            userFilterValue: "",
+            users: [],
         };
     },
     watch: {
@@ -198,6 +216,10 @@ export default {
             this.refreshSpinning = true;
             clearTimeout(this.search.timeout);
             this.search.timeout = setTimeout(this.createSearch, typingInterval);
+        },
+        userFilterValue() {
+            this.links.clear();
+            this.loadMore();
         },
         "links.sort.field": function () {
             this.applySort();
@@ -228,7 +250,7 @@ export default {
             if (this.loadingMore) return;
             this.loadingMore = true;
             this.refreshSpinning = true;
-            await this.links.paginate({ search: this.search.value });
+            await this.links.paginate({ search: this.search.value, userID: this.userFilterValue });
             this.loadingMore = false;
 
             if (this.endVisible && this.links.remainingPages !== 0) {
@@ -247,6 +269,29 @@ export default {
                 this.newLink.response = response.result.link;
             } else {
                 this.newLink.data.error = response.message;
+            }
+        },
+        async getUsers() {
+            const userResponse = await this.account.fetch("/user/list", {});
+            if (!userResponse.success) {
+                this.popups.addPopup("Information", {
+                    title: "Error getting list of users",
+                    description: userResponse.message,
+                    buttons: [
+                        {
+                            name: "Retry",
+                            type: "primary",
+                            action: "refresh",
+                        },
+                        {
+                            name: "Cancel",
+                            type: "secondary",
+                            actions: ["navigate-home", "return"],
+                        },
+                    ],
+                });
+            } else {
+                this.users = userResponse.result;
             }
         },
         handleEdit(link) {
@@ -401,6 +446,7 @@ export default {
             }
             .custom {
                 border: 1px solid var(--bg-color-2);
+                position: relative;
                 input {
                     background: none;
                     margin: 0;
@@ -409,6 +455,39 @@ export default {
                 }
                 svg {
                     margin: 0;
+                }
+
+                &.userFilter {
+                    padding: 0;
+                    position: relative;
+                    z-index: 0;
+
+                    .userList {
+                        select {
+                            width: 0;
+                            border: 0;
+                            padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+                            background: none;
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            z-index: 5;
+                            &::-ms-expand {
+                                display: none;
+                            }
+                            &[data-empty="false"] {
+                                width: max-content;
+                                padding-right: 2rem;
+
+                            }
+                        }
+                    }
+                    svg {
+                        position: absolute;
+                        top: 50%;
+                        right: 0.5rem;
+                        transform: translateY(-50%);
+                        z-index: -1;
+                    }
                 }
 
                 &.search {
