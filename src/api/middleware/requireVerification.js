@@ -11,21 +11,25 @@ module.exports = (req, res, next) => {
     }
 
     const { token, password } = verification;
-    if (req.account.totp.enabled) {
-        if (!token) {
-            return res.status(403).json({
-                success: false,
-                message: "2FA token required",
-            });
-        }
+    if (req.account.twoFactorAuthentication.enabled) {
+        if (req.account.twoFactorAuthentication.totp.verified) {
+            if (!token) {
+                return res.status(403).json({
+                    success: false,
+                    message: "2FA required",
+                });
+            }
 
-        const totpVerificationFailure = totp.verify(req.account.username, req.account.totp.secret, token)[1];
+            const totpVerificationFailure = totp.verify(req.account.username, req.account.twoFactorAuthentication.totp.secret, token)[1];
 
-        if (totpVerificationFailure) {
-            return res.status(totpVerificationFailure.code).json({
-                success: false,
-                message: totpVerificationFailure.message,
-            });
+            if (totpVerificationFailure) {
+                return res.status(totpVerificationFailure.code).json({
+                    success: false,
+                    message: totpVerificationFailure.message,
+                });
+            }
+        } else {
+            console.log("Two factor enabled, but no methods available, allowing access by password.");
         }
     } else {
         if (!password) {

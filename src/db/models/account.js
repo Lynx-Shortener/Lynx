@@ -8,10 +8,13 @@ const schema = new mongoose.Schema({
     role: String, // owner || admin || standard
     secret: String,
     allowAutomaticLogin: Boolean,
-    totp: {
+    twoFactorAuthentication: {
         enabled: Boolean,
-        secret: String,
         backupCodes: [String],
+        totp: {
+            secret: String,
+            verified: Boolean,
+        },
     },
 });
 

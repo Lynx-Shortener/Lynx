@@ -10,7 +10,7 @@ const valid = require("../db/modules/valid");
 const requireVerification = require("./middleware/requireVerification");
 
 // const requireFields = require("./middleware/requireFields");
-// const requireTOTP = require("./middleware/requireTOTP");
+// const requireTwoFactor = require("./middleware/requireTwoFactor");
 
 router.get("/list", async (req, res) => {
     try {

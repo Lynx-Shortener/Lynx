@@ -32,6 +32,27 @@ module.exports = async () => {
         }
 
         await Account.updateMany({ allowAutomaticLogin: { $exists: false } }, { $set: { allowAutomaticLogin: false } });
+
+        await Account.updateMany(
+            { totp: { $exists: true } },
+            [
+                {
+                    $set: {
+                        twoFactorAuthentication: {
+                            enabled: "$totp.enabled",
+                            backupCodes: "$totp.backupCodes",
+                            totp: {
+                                secret: "$totp.secret",
+                                verified: "$totp.enabled",
+                            },
+                        },
+                    },
+                },
+                {
+                    $unset: ["totp"],
+                },
+            ],
+        );
     }
 
     // Remove tmp files
