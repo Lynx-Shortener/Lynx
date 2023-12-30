@@ -71,6 +71,7 @@ export default {
                 if (updatingSelf) this.account.account = response.result.account;
 
                 this.popups.closeSelf(this, { account: response.result.account });
+                if (this.account.preferences.reducedPopups) return;
                 this.popups.addPopup("Information", {
                     title: `Successfully updated ${updatingSelf ? "your" : "their"} username`,
                     buttons: [

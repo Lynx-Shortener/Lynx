@@ -2,10 +2,24 @@ import { defineStore } from "pinia";
 import { usePopups } from "./popups";
 
 export const useAccountStore = defineStore("account", {
-    state: () => ({
-        account: null,
-    }),
+    state: () => {
+        let preferences = {
+            reducedPopups: false,
+        };
+        if (localStorage.getItem("preferences")) {
+            preferences = JSON.parse(localStorage.getItem("preferences"));
+        }
+        return {
+            account: null,
+            preferences,
+        };
+    },
     actions: {
+        updatePreference(preference, value) {
+            this.preferences[preference] = value;
+
+            localStorage.setItem("preferences", JSON.stringify(this.preferences));
+        },
         async login(logindata) {
             const response = await fetch("/api/auth/login", {
                 method: "POST",

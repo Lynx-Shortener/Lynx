@@ -207,7 +207,7 @@ export default {
     @media screen and (max-width: 768px) {
         > div {
             h2 {
-                font-size: 3rem;
+                font-size: 2rem;
             }
             p {
                 font-size: 1.3rem;

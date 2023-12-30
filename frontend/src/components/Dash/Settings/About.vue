@@ -96,7 +96,7 @@ export default {
     @media screen and (max-width: 768px) {
         > .about {
             h2 {
-                font-size: 3rem;
+                font-size: 2rem;
             }
             p {
                 font-size: 1.5rem;

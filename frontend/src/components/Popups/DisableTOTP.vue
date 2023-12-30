@@ -46,6 +46,7 @@ export default {
             } else {
                 this.about.track("Disabled 2FA");
                 this.account.getAccount();
+                if (this.account.preferences.reducedPopups) return;
                 this.popups.addPopup("Information", {
                     title: "Successfully disabled 2FA",
                     buttons: [

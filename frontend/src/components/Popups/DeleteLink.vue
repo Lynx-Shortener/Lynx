@@ -19,6 +19,7 @@
 import { usePopups } from "../../stores/popups";
 import { useLinks } from "../../stores/links";
 import { useAbout } from "../../stores/about";
+import { useAccountStore } from "../../stores/account";
 
 export default {
     props: ["data"],
@@ -27,6 +28,7 @@ export default {
             popups: usePopups(),
             links: useLinks(),
             about: useAbout(),
+            account: useAccountStore(),
             title: "",
         };
     },
@@ -53,6 +55,7 @@ export default {
                 this.about.track("Link Deleted");
                 this.about.removeLink();
                 this.popups.closeSelf(this);
+                if (this.account.preferences.reducedPopups) return;
                 this.popups.addPopup("Information", {
                     title: `Successfully deleted your link${ids.length > 1 ? "s" : ""}`,
                     buttons: [

@@ -44,6 +44,13 @@ const routes = [
                         },
                     },
                     {
+                        path: "/dash/settings/preferences",
+                        component: () => import("../components/Dash/Settings/Preferences.vue"),
+                        meta: {
+                            title: "Preferences",
+                        },
+                    },
+                    {
                         path: "/dash/settings/security",
                         component: () => import("../components/Dash/Settings/Security.vue"),
                         meta: {

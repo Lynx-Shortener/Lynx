@@ -15,6 +15,12 @@
                         <span>Login & Security</span>
                     </li>
                 </router-link>
+                <router-link to="/dash/settings/preferences" class="settings-tab">
+                    <li>
+                        <font-awesome-icon :icon="['fas', 'wrench']"/>
+                        <span>Preferences</span>
+                    </li>
+                </router-link>
                 <router-link to="/dash/settings/about" class="settings-tab">
                     <li>
                         <font-awesome-icon :icon="['fas', 'circle-info']"/>
@@ -48,7 +54,7 @@ export default {
                     let leftOffset = 0;
                     if (window.innerWidth < 768) {
                         const rem = window.getComputedStyle(document.documentElement).fontSize.split("px")[0];
-                        const gapWidth = rem * 3;
+                        const gapWidth = rem * 2;
 
                         leftOffset = index * gapWidth;
                     }
@@ -138,8 +144,8 @@ export default {
             padding: 1rem 2rem;
             ul {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 3rem;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
                 a {
                     li {
                         display: grid;

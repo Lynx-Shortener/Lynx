@@ -27,6 +27,7 @@
 import { usePopups } from "../../stores/popups";
 import { useLinks } from "../../stores/links";
 import { useAbout } from "../../stores/about";
+import { useAccountStore } from "../../stores/account";
 
 export default {
     data() {
@@ -34,6 +35,7 @@ export default {
             links: useLinks(),
             popups: usePopups(),
             about: useAbout(),
+            account: useAccountStore(),
             link: {
                 destination: "",
                 slug: "",
@@ -64,6 +66,7 @@ export default {
                 this.about.track("Link Created");
                 this.about.addLink();
                 this.popups.closeSelf(this);
+                if (this.account.preferences.reducedPopups) return;
                 this.popups.addPopup("Information", {
                     title: "Successfully created your link",
                     description: `Your short link is <a href="${response.result.link.link}" target="_blank">${response.result.link.slug}</a>`,

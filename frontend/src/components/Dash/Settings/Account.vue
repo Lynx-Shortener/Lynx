@@ -2,7 +2,6 @@
     <div class="settings-section">
         <div class="account-information">
             <h2>Account</h2>
-            <p>Here you can edit your login information and username.</p>
             <div class="inputs">
                 <div class="input">
                     <label>Email</label>
@@ -20,7 +19,6 @@
         </div>
         <div class="integration">
             <h2>Integration</h2>
-            <p>Here you can access your ShareX configuration file and manage your secret.</p>
             <p v-if="about.data.demo">
                 This secret is automatically recreated on the hour.
             </p>
@@ -246,7 +244,7 @@ export default {
     @media screen and (max-width: 768px) {
         > div {
             h2 {
-                font-size: 3rem;
+                font-size: 2rem;
             }
             p {
                 font-size: 1.5rem;
