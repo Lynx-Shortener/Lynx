@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.7.4] - 2023-12-30
+
+- Properly assign the author of links uploaded via the ShareX endpoint
+
 ## [1.7.3] - 2023-08-21
 
 - Bug fixes:
