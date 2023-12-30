@@ -2,7 +2,7 @@
     <div v-show="popups.popups.length" class="popupContainer" @click.self="popups.closeTopmost">
         <div v-for="popup in popups.popups" :key="popup.id" :class="['popup', popup.loaded ? 'loaded' : 'loading', !popup.loaded || popup.data.hideCross || !popup.component ? 'hide-cross' : '']">
             <div v-if="(popup.loaded && !popup.data.hideCross) || !popup.component" class="exitIcon" @click="popups.closePopup(popup.id)">
-                <font-awesome-icon icon="x" />
+                <font-awesome-icon :icon="['fas','x']" />
             </div>
             <component
                 :is="popup.component"

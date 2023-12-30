@@ -8,7 +8,7 @@
                 <div class="icon refresh">
                     <font-awesome-icon
                         ref="refreshButton"
-                        icon="arrows-rotate"
+                        :icon="['fas','arrows-rotate']"
                         :spinning="refreshSpinning"
                         @click="refresh"
                     />
@@ -25,7 +25,7 @@
                             </option>
                         </select>
                     </div>
-                    <font-awesome-icon icon="user"/>
+                    <font-awesome-icon :icon="['fas','user']"/>
                 </div>
                 <div class="custom search" @click.self="$refs.searchbox.focus()">
                     <input
@@ -34,14 +34,14 @@
                         type="text"
                         placeholder="Search"
                     >
-                    <font-awesome-icon icon="magnifying-glass" @click="$refs.searchbox.focus()" />
+                    <font-awesome-icon :icon="['fas','magnifying-glass']" @click="$refs.searchbox.focus()" />
                 </div>
                 <button @click="importLinks">
-                    <font-awesome-icon icon="upload" />
+                    <font-awesome-icon :icon="['fas','upload']" />
                     <span>Import</span>
                 </button>
                 <button @click="exportLinks">
-                    <font-awesome-icon icon="download" />
+                    <font-awesome-icon :icon="['fas','download']" />
                     <span>Export</span>
                 </button>
                 <button @click="popups.addPopup('CreateLink', {})">
@@ -58,7 +58,7 @@
                     </select>
                 </p>
                 <div class="icon" :sortType="links.sort.type" @click="links.sort.type *= -1">
-                    <font-awesome-icon icon="sort-down" />
+                    <font-awesome-icon :icon="['fas','sort-down']" />
                 </div>
             </div>
         </div>
@@ -67,26 +67,36 @@
                 <thead>
                     <th />
                     <th>
-                        <span :sortType="links.sort.field == 'author' ? links.sort.type : 0" @click="toggleSort('author')">Author <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'author' ? links.sort.type : 0" @click="toggleSort('author')">
+                            Author <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th>
-                        <span :sortType="links.sort.field == 'creationDate' ? links.sort.type : 0" @click="toggleSort('creationDate')">Created At <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'creationDate' ? links.sort.type : 0" @click="toggleSort('creationDate')">
+                            Created At <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th>
-                        <span :sortType="links.sort.field == 'slug' ? links.sort.type : 0" @click="toggleSort('slug')">Slug <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'slug' ? links.sort.type : 0" @click="toggleSort('slug')">
+                            Slug <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th>
-                        <span :sortType="links.sort.field == 'destination' ? links.sort.type : 0" @click="toggleSort('destination')">Destination <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'destination' ? links.sort.type : 0" @click="toggleSort('destination')">
+                            Destination <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th>
-                        <span :sortType="links.sort.field == 'visits' ? links.sort.type : 0" @click="toggleSort('visits')">Visits <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'visits' ? links.sort.type : 0" @click="toggleSort('visits')">
+                            Visits <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th />
                 </thead>
                 <tr v-for="link in links.links" :key="link.id" class="link">
                     <td>
                         <div class="checkbox" :selected="links.selectedLinks.includes(link.id)" @click="toggleSelection(link)">
-                            <font-awesome-icon v-if="links.selectedLinks.includes(link.id)" icon="check" />
+                            <font-awesome-icon v-if="links.selectedLinks.includes(link.id)" :icon="['fas','check']" />
                         </div>
                     </td>
                     <td class="author">
@@ -109,25 +119,25 @@
                         <span>{{ link.visits }} </span>
                     </td>
                     <td class="menu" @click="showContextMenu($event, link)">
-                        <font-awesome-icon icon="ellipsis-vertical" />
+                        <font-awesome-icon :icon="['fas','ellipsis-vertical']" />
                     </td>
                     <td class="buttons">
                         <button class="button-edit" @click="handleEdit(link)">
-                            <font-awesome-icon icon="pencil" />
+                            <font-awesome-icon :icon="['fas','pencil']" />
                             <span>Edit</span>
                         </button>
                         <button class="button-delete" @click="handleDelete([link.id])">
-                            <font-awesome-icon icon="trash-can" />
+                            <font-awesome-icon :icon="['fas','trash-can']" />
                             <span>Delete</span>
                         </button>
                         <button class="button-qrcode" @click="openQRCode(link)">
-                            <font-awesome-icon icon="qrcode" />
+                            <font-awesome-icon :icon="['fas','qrcode']" />
                         </button>
                     </td>
                 </tr>
                 <div v-if="links.selectedLinks.length > 0" class="bulkManagement">
                     <button @click="handleDelete(links.selectedLinks)">
-                        <font-awesome-icon icon="trash-can" />
+                        <font-awesome-icon :icon="['fas','trash-can']" />
                         Delete Selected Links
                     </button>
                 </div>

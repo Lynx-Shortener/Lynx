@@ -3,13 +3,13 @@
         <div class="sidebarContent">
             <div class="upperIcons">
                 <router-link to="/dash/overview">
-                    <font-awesome-icon icon="list" />
+                    <font-awesome-icon :icon="['fas','list']" />
                 </router-link>
                 <router-link v-if="['owner','admin'].includes(account.account.role)" to="/dash/users">
-                    <font-awesome-icon icon="users" />
+                    <font-awesome-icon :icon="['fas','users']" />
                 </router-link>
                 <router-link to="/dash/settings">
-                    <font-awesome-icon icon="gear" />
+                    <font-awesome-icon :icon="['fas','gear']" />
                 </router-link>
             </div>
             <div class="lowerIcons">
@@ -17,7 +17,7 @@
                     <font-awesome-icon :icon="darkMode.dark ? 'sun' : 'moon'" />
                 </a>
                 <a class="logout" @click="account.logout">
-                    <font-awesome-icon icon="right-from-bracket" />
+                    <font-awesome-icon :icon="['fas','right-from-bracket']" />
                 </a>
             </div>
         </div>

@@ -38,7 +38,7 @@
                         <span>{{ user.role }}</span>
                         <font-awesome-icon
                             v-if="user.id !== account.account.id && account.account.role === 'owner'"
-                            icon="ellipsis-vertical"
+                            :icon="['fas','ellipsis-vertical']"
                             @click="updateRoleMenu($event, user)"
                             class="update-role-icon"
                         />
@@ -53,16 +53,16 @@
                             @update-user="updateUser"
                         />
                         <button @click="updateRoleMenu($event, user)" v-if="user.id !== account.account.id && account.account.role === 'owner'" class="update-role">
-                            <font-awesome-icon icon="users"/>
+                            <font-awesome-icon :icon="['fas','users']"/>
                             Update Role
                         </button>
                         <button @click="deleteUser(user)" v-if="user.id !== account.account.id" class="delete-user">
-                            <font-awesome-icon  icon="trash-can"/>
+                            <font-awesome-icon  :icon="['fas','trash-can']"/>
                             Delete
                         </button>
                     </td>
                     <td class="delete-user">
-                        <font-awesome-icon v-if="user.id !== account.account.id" icon="trash-can" @click="deleteUser(user)" />
+                        <font-awesome-icon v-if="user.id !== account.account.id" :icon="['fas','trash-can']" @click="deleteUser(user)" />
                     </td>
                 </tr>
             </tbody>
