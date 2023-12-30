@@ -67,7 +67,7 @@ export default {
                 cursor: pointer;
                 transition: 250ms ease-in-out;
                 border-radius: 5px;
-                &.router-link-exact-active {
+                &.router-link-active {
                     background: var(--accent-hover);
                     color: var(--accent-color);
                 }
