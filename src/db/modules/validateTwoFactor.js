@@ -1,7 +1,6 @@
 const verifyTotp = require("./totp/verify");
 
 module.exports = (account, token) => {
-    console.log(account);
     if (!account.twoFactorAuthentication.enabled) return [{ code: 200, message: "Two factor not enabled" }, null];
 
     if (!token) return [null, { code: 403, message: "2FA token required" }];

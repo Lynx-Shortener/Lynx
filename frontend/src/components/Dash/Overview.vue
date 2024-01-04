@@ -19,7 +19,9 @@
                                 ref="userFilterInput"
                                 @focus="getUsers"
                                 :data-empty="userFilterValue === ''">
-                            <option value=""></option>
+                            <option value="">
+                                All users
+                            </option>
                             <option :value="user.id" v-for="user in users" :key="user.id">
                                 {{ user.username }}
                             </option>
