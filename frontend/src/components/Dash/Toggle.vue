@@ -22,7 +22,7 @@ export default {
     border-radius: 1rem;
     position: relative;
     cursor: pointer;
-    background-color: var(--accent);
+    background-color: var(--bg-color-2);
     &::after {
         content: "";
         width: 1.4rem;
@@ -32,10 +32,10 @@ export default {
         left: 0.3rem;
         border-radius: 1rem;
         transition: 250ms ease-in-out;
-        background-color: var(--color-1);
+        background-color: white;
     }
-    &[value="false"] {
-        background-color: var(--bg-color-2);
+    &[value="true"] {
+        background-color: var(--accent);
         &::after {
             left: 1.8rem;
         }
