@@ -70,6 +70,7 @@ body {
         }
         main {
             overflow-y: auto;
+            padding-right: 2rem;
         }
         &[demo="true"] {
             margin-top: 5rem;
