@@ -1,5 +1,5 @@
 <template>
-    <div class="overview">
+    <div class="overview" ref="overview">
         <div class="header">
             <div class="title">
                 <h1>Lynx</h1>
@@ -110,7 +110,11 @@
                     <td class="slug">
                         <strong>Slug:&nbsp;</strong>
                         <span>
-                            <a :href="`/${link.slug}`" target="_blank">{{ link.slug }}</a></span>
+                            <span @click="copyLink($event, link.slug)">{{ link.slug }}</span>
+                            <a :href="`/${link.slug}`" target="_blank">
+                                <font-awesome-icon :icon="['fas', 'arrow-up-right-from-square']" />
+                            </a>
+                        </span>
                     </td>
                     <td class="destination">
                         <strong>Destination:&nbsp;</strong>
@@ -197,6 +201,7 @@ import ContextMenu from "@imengyu/vue3-context-menu";
 import { usePopups } from "../../stores/popups";
 import { useLinks } from "../../stores/links";
 import { useAccountStore } from "../../stores/account";
+import { useAbout } from "../../stores/about";
 
 export default {
     data() {
@@ -204,6 +209,7 @@ export default {
             popups: usePopups(),
             links: useLinks(),
             account: useAccountStore(),
+            about: useAbout(),
             endVisible: true,
             loadingMore: false,
             search: {
@@ -282,6 +288,36 @@ export default {
             } else {
                 this.newLink.data.error = response.message;
             }
+        },
+        copyLink(event, slug) {
+            const copyContent = `${this.about.data.domain || window.location.origin}/${slug}`;
+            // https://gist.github.com/povalish/76d7dd1e819d067e916f1a1ddba7e68a
+            if (!navigator.clipboard) {
+                const textArea = document.createElement("textarea");
+                textArea.value = copyContent;
+
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.position = "fixed";
+
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+            } else {
+                navigator.clipboard.writeText(copyContent);
+            }
+            const tooltip = document.createElement("div");
+            tooltip.className = "tooltip copy-link";
+            tooltip.innerText = "Copied!";
+
+            event.target.appendChild(tooltip);
+
+            setTimeout(() => {
+                event.target.removeChild(tooltip);
+            }, 2000);
         },
         async getUsers() {
             const userResponse = await this.account.fetch("/user/list", {});
@@ -696,6 +732,16 @@ export default {
                         }
                     }
                     position: relative;
+                    &.slug > span {
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 0.5rem;
+                        > span {
+                            color: var(--color-2);
+                            cursor: pointer;
+                            position: relative;
+                        }
+                    }
                     &.destination {
                         width: 100%;
                         span {
@@ -742,6 +788,26 @@ export default {
 
     > svg {
         display: none;
+    }
+    :deep(.tooltip) {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%, 0.5rem);
+        background-color: var(--accent);
+        padding: 0.5rem;
+        border-radius: 10px;
+        z-index: 2;
+        animation: tooltipFadeOut 1s linear 1s forwards;
+    }
+
+    @keyframes tooltipFadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
     }
 
     @media screen and (max-width: 768px) {
@@ -800,6 +866,9 @@ export default {
                         &:first-of-type {
                             // hide checkbox
                             display: none;
+                        }
+                        &.slug {
+                            display: flex;
                         }
                         &.destination {
                             overflow-x: auto;
