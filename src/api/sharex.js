@@ -13,11 +13,11 @@ const domain = process.env.DOMAIN || "http://localhost:3000";
 router.post("/", upload.none(), async (req, res) => {
     const { secret, url } = req.body;
 
-    const Account = await getAccountBySecret({ secret });
-    if (!Account) {
-        return res.status(403).json({
+    const [Account, accountError] = await getAccountBySecret({ secret });
+    if (accountError) {
+        return res.status(accountError.code).json({
             success: false,
-            error: "Invalid Secret.",
+            error: accountError.message,
         });
     }
 

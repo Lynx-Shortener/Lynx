@@ -10,10 +10,10 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 8.8.0
           run_install: |
             - recursive: true
               args: [--frozen-lockfile]
@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 18
       - name: Lint Backend
-        uses: jackbailey/action-eslint@6494c60dd93dbb092144ca58dbf0ca14e85e4574
+        uses: sibiraj-s/action-eslint@2e3213f837c945a07368d53e42f4c16453c02087
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # optional
           working-directory: src
@@ -29,7 +29,7 @@ jobs:
           annotations: true
           use-npx: true
       - name: Lint Frontend
-        uses: jackbailey/action-eslint@6494c60dd93dbb092144ca58dbf0ca14e85e4574
+        uses: sibiraj-s/action-eslint@2e3213f837c945a07368d53e42f4c16453c02087
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend

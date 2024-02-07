@@ -45,6 +45,7 @@ trigger:
   branch:
     exclude:
     - main
+    - dependabot/*
 
 steps:
   - name: Get version
@@ -72,6 +73,6 @@ steps:
       cache_from: "jackbailey/lynx:beta"
 ---
 kind: signature
-hmac: 9e22479e26d7f7d8a042ee89e1d3a6d41d7082492b562b9f5d0c9162cc4fe688
+hmac: 251d01b17d7e3547670d8f1bafa347a76e65ea118d9230156e64939eab37f12e
 
 ...

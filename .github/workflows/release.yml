@@ -26,7 +26,7 @@ jobs:
         runs-on: ubuntu-latest
         if: github.event.pull_request.merged == true && needs.changes.outputs.version == 'true'
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Get version
               run: |
                 echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
@@ -71,7 +71,7 @@ jobs:
         runs-on: ubuntu-latest
         if: github.event.pull_request.merged == true && needs.changes.outputs.version == 'true'
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Get version
               run: |
                 echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
