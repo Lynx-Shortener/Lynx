@@ -3,11 +3,14 @@ const express = require("express");
 const router = express.Router();
 const requireAccountValue = require("./middleware/requireAccountValue");
 const account = require("../db/modules/account");
+const requireFields = require("./middleware/requireFields");
+const updateAccount = require("../db/modules/account/update");
+const valid = require("../db/modules/valid");
 
 const requireVerification = require("./middleware/requireVerification");
 
 // const requireFields = require("./middleware/requireFields");
-// const requireTOTP = require("./middleware/requireTOTP");
+// const requireTwoFactor = require("./middleware/requireTwoFactor");
 
 router.get("/list", async (req, res) => {
     try {
@@ -154,6 +157,150 @@ router.post("/", requireVerification, async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Internal Server Error when creating user",
+        });
+    }
+});
+
+router.patch("/username", requireFields(["user"]), requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of usernames is not enabled in demo mode.",
+        });
+    }
+    try {
+        const { username, account: accountID } = req.body.user;
+        const validUsername = valid.username(username);
+        if (!validUsername) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid username format",
+            });
+        }
+
+        const [user, userError] = await account.get.byID({ id: accountID });
+        if (!user) return res.status(userError.code).json({ success: false, message: userError.message });
+
+        const canUpdate = req.account.id === user.id
+            || (req.account.role === "owner" && user.role !== "owner")
+            || (req.account.role === "admin" && user.role === "standard");
+
+        if (!canUpdate) {
+            return res.status(403).json({
+                success: false,
+                message: "You do not have the required role to update that user.",
+            });
+        }
+
+        const [usernameUpdate, usernameUpdateError] = await updateAccount.username({ account: accountID, username });
+
+        if (usernameUpdateError) return res.status(usernameUpdateError.code).json({ success: false, message: usernameUpdateError.message });
+
+        return res.status(200).json({
+            success: true,
+            result: usernameUpdate,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error when updating user",
+        });
+    }
+});
+
+router.patch("/email", requireFields(["user"]), requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of user emails is not enabled in demo mode.",
+        });
+    }
+    try {
+        const { email, account: accountID } = req.body.user;
+        const validEmail = valid.email(email);
+        if (!validEmail) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid email format",
+            });
+        }
+
+        const [user, userError] = await account.get.byID({ id: accountID });
+        if (!user) return res.status(userError.code).json({ success: false, message: userError.message });
+
+        const canUpdate = req.account.id === user.id
+            || (req.account.role === "owner" && user.role !== "owner")
+            || (req.account.role === "admin" && user.role === "standard");
+
+        if (!canUpdate) {
+            return res.status(403).json({
+                success: false,
+                message: "You do not have the required role to update that user.",
+            });
+        }
+
+        const [emailUpdate, emailUpdateError] = await updateAccount.email({ account: accountID, email });
+
+        if (emailUpdateError) return res.status(emailUpdateError.code).json({ success: false, message: emailUpdateError.message });
+
+        return res.status(200).json({
+            success: true,
+            result: emailUpdate,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error when updating user",
+        });
+    }
+});
+
+router.patch("/password", requireFields(["user"]), requireVerification, async (req, res) => {
+    if (process.env.DEMO === "true") {
+        return res.status(406).json({
+            success: false,
+            message: "Updating of user passwords is not enabled in demo mode.",
+        });
+    }
+    try {
+        const { password, account: accountID } = req.body.user;
+        const validPassword = valid.password(password);
+        if (!validPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid password format",
+            });
+        }
+
+        const [user, userError] = await account.get.byID({ id: accountID });
+        if (!user) return res.status(userError.code).json({ success: false, message: userError.message });
+
+        const canUpdate = req.account.id === user.id
+            || (req.account.role === "owner" && user.role !== "owner")
+            || (req.account.role === "admin" && user.role === "standard");
+
+        if (!canUpdate) {
+            return res.status(403).json({
+                success: false,
+                message: "You do not have the required role to update that user.",
+            });
+        }
+
+        const [passwordUpdate, passwordUpdateError] = await updateAccount.password({ account: accountID, password });
+
+        if (passwordUpdateError) return res.status(passwordUpdateError.code).json({ success: false, message: passwordUpdateError.message });
+
+        return res.status(200).json({
+            success: true,
+            result: passwordUpdate,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error when updating user",
         });
     }
 });

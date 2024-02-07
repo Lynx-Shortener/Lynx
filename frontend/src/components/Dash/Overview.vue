@@ -1,5 +1,5 @@
 <template>
-    <div class="overview">
+    <div class="overview" ref="overview">
         <div class="header">
             <div class="title">
                 <h1>Lynx</h1>
@@ -8,10 +8,26 @@
                 <div class="icon refresh">
                     <font-awesome-icon
                         ref="refreshButton"
-                        icon="arrows-rotate"
+                        :icon="['fas','arrows-rotate']"
                         :spinning="refreshSpinning"
                         @click="refresh"
                     />
+                </div>
+                <div class="custom userFilter" v-if="['owner', 'admin'].includes(account.account.role)">
+                    <div class="userList">
+                        <select v-model="userFilterValue"
+                                ref="userFilterInput"
+                                @focus="getUsers"
+                                :data-empty="userFilterValue === ''">
+                            <option value="">
+                                All users
+                            </option>
+                            <option :value="user.id" v-for="user in users" :key="user.id">
+                                {{ user.username }}
+                            </option>
+                        </select>
+                    </div>
+                    <font-awesome-icon :icon="['fas','user']"/>
                 </div>
                 <div class="custom search" @click.self="$refs.searchbox.focus()">
                     <input
@@ -20,14 +36,14 @@
                         type="text"
                         placeholder="Search"
                     >
-                    <font-awesome-icon icon="magnifying-glass" @click="$refs.searchbox.focus()" />
+                    <font-awesome-icon :icon="['fas','magnifying-glass']" @click="$refs.searchbox.focus()" />
                 </div>
                 <button @click="importLinks">
-                    <font-awesome-icon icon="upload" />
+                    <font-awesome-icon :icon="['fas','upload']" />
                     <span>Import</span>
                 </button>
                 <button @click="exportLinks">
-                    <font-awesome-icon icon="download" />
+                    <font-awesome-icon :icon="['fas','download']" />
                     <span>Export</span>
                 </button>
                 <button @click="popups.addPopup('CreateLink', {})">
@@ -44,7 +60,7 @@
                     </select>
                 </p>
                 <div class="icon" :sortType="links.sort.type" @click="links.sort.type *= -1">
-                    <font-awesome-icon icon="sort-down" />
+                    <font-awesome-icon :icon="['fas','sort-down']" />
                 </div>
             </div>
         </div>
@@ -53,26 +69,36 @@
                 <thead>
                     <th />
                     <th>
-                        <span :sortType="links.sort.field == 'author' ? links.sort.type : 0" @click="toggleSort('author')">Author <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'author' ? links.sort.type : 0" @click="toggleSort('author')">
+                            Author <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th>
-                        <span :sortType="links.sort.field == 'creationDate' ? links.sort.type : 0" @click="toggleSort('creationDate')">Created At <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'creationDate' ? links.sort.type : 0" @click="toggleSort('creationDate')">
+                            Created At <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th>
-                        <span :sortType="links.sort.field == 'slug' ? links.sort.type : 0" @click="toggleSort('slug')">Slug <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'slug' ? links.sort.type : 0" @click="toggleSort('slug')">
+                            Slug <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th>
-                        <span :sortType="links.sort.field == 'destination' ? links.sort.type : 0" @click="toggleSort('destination')">Destination <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'destination' ? links.sort.type : 0" @click="toggleSort('destination')">
+                            Destination <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th>
-                        <span :sortType="links.sort.field == 'visits' ? links.sort.type : 0" @click="toggleSort('visits')">Visits <font-awesome-icon icon="sort-down" /></span>
+                        <span :sortType="links.sort.field == 'visits' ? links.sort.type : 0" @click="toggleSort('visits')">
+                            Visits <font-awesome-icon :icon="['fas','sort-down']" />
+                        </span>
                     </th>
                     <th />
                 </thead>
                 <tr v-for="link in links.links" :key="link.id" class="link">
                     <td>
                         <div class="checkbox" :selected="links.selectedLinks.includes(link.id)" @click="toggleSelection(link)">
-                            <font-awesome-icon v-if="links.selectedLinks.includes(link.id)" icon="check" />
+                            <font-awesome-icon v-if="links.selectedLinks.includes(link.id)" :icon="['fas','check']" />
                         </div>
                     </td>
                     <td class="author">
@@ -84,7 +110,11 @@
                     <td class="slug">
                         <strong>Slug:&nbsp;</strong>
                         <span>
-                            <a :href="`/${link.slug}`" target="_blank">{{ link.slug }}</a></span>
+                            <span @click="copyLink($event, link.slug)">{{ link.slug }}</span>
+                            <a :href="`/${link.slug}`" target="_blank">
+                                <font-awesome-icon :icon="['fas', 'arrow-up-right-from-square']" />
+                            </a>
+                        </span>
                     </td>
                     <td class="destination">
                         <strong>Destination:&nbsp;</strong>
@@ -95,25 +125,25 @@
                         <span>{{ link.visits }} </span>
                     </td>
                     <td class="menu" @click="showContextMenu($event, link)">
-                        <font-awesome-icon icon="ellipsis-vertical" />
+                        <font-awesome-icon :icon="['fas','ellipsis-vertical']" />
                     </td>
                     <td class="buttons">
                         <button class="button-edit" @click="handleEdit(link)">
-                            <font-awesome-icon icon="pencil" />
+                            <font-awesome-icon :icon="['fas','pencil']" />
                             <span>Edit</span>
                         </button>
                         <button class="button-delete" @click="handleDelete([link.id])">
-                            <font-awesome-icon icon="trash-can" />
+                            <font-awesome-icon :icon="['fas','trash-can']" />
                             <span>Delete</span>
                         </button>
                         <button class="button-qrcode" @click="openQRCode(link)">
-                            <font-awesome-icon icon="qrcode" />
+                            <font-awesome-icon :icon="['fas','qrcode']" />
                         </button>
                     </td>
                 </tr>
                 <div v-if="links.selectedLinks.length > 0" class="bulkManagement">
                     <button @click="handleDelete(links.selectedLinks)">
-                        <font-awesome-icon icon="trash-can" />
+                        <font-awesome-icon :icon="['fas','trash-can']" />
                         Delete Selected Links
                     </button>
                 </div>
@@ -170,12 +200,16 @@
 import ContextMenu from "@imengyu/vue3-context-menu";
 import { usePopups } from "../../stores/popups";
 import { useLinks } from "../../stores/links";
+import { useAccountStore } from "../../stores/account";
+import { useAbout } from "../../stores/about";
 
 export default {
     data() {
         return {
             popups: usePopups(),
             links: useLinks(),
+            account: useAccountStore(),
+            about: useAbout(),
             endVisible: true,
             loadingMore: false,
             search: {
@@ -190,6 +224,8 @@ export default {
                 destination: "Destination",
                 visits: "Visits",
             },
+            userFilterValue: "",
+            users: [],
         };
     },
     watch: {
@@ -198,6 +234,10 @@ export default {
             this.refreshSpinning = true;
             clearTimeout(this.search.timeout);
             this.search.timeout = setTimeout(this.createSearch, typingInterval);
+        },
+        userFilterValue() {
+            this.links.clear();
+            this.loadMore();
         },
         "links.sort.field": function () {
             this.applySort();
@@ -228,7 +268,7 @@ export default {
             if (this.loadingMore) return;
             this.loadingMore = true;
             this.refreshSpinning = true;
-            await this.links.paginate({ search: this.search.value });
+            await this.links.paginate({ search: this.search.value, userID: this.userFilterValue });
             this.loadingMore = false;
 
             if (this.endVisible && this.links.remainingPages !== 0) {
@@ -247,6 +287,59 @@ export default {
                 this.newLink.response = response.result.link;
             } else {
                 this.newLink.data.error = response.message;
+            }
+        },
+        copyLink(event, slug) {
+            const copyContent = `${this.about.data.domain || window.location.origin}/${slug}`;
+            // https://gist.github.com/povalish/76d7dd1e819d067e916f1a1ddba7e68a
+            if (!navigator.clipboard) {
+                const textArea = document.createElement("textarea");
+                textArea.value = copyContent;
+
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.position = "fixed";
+
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+            } else {
+                navigator.clipboard.writeText(copyContent);
+            }
+            const tooltip = document.createElement("div");
+            tooltip.className = "tooltip copy-link";
+            tooltip.innerText = "Copied!";
+
+            event.target.appendChild(tooltip);
+
+            setTimeout(() => {
+                event.target.removeChild(tooltip);
+            }, 2000);
+        },
+        async getUsers() {
+            const userResponse = await this.account.fetch("/user/list", {});
+            if (!userResponse.success) {
+                this.popups.addPopup("Information", {
+                    title: "Error getting list of users",
+                    description: userResponse.message,
+                    buttons: [
+                        {
+                            name: "Retry",
+                            type: "primary",
+                            action: "refresh",
+                        },
+                        {
+                            name: "Cancel",
+                            type: "secondary",
+                            actions: ["navigate-home", "return"],
+                        },
+                    ],
+                });
+            } else {
+                this.users = userResponse.result;
             }
         },
         handleEdit(link) {
@@ -401,6 +494,7 @@ export default {
             }
             .custom {
                 border: 1px solid var(--bg-color-2);
+                position: relative;
                 input {
                     background: none;
                     margin: 0;
@@ -409,6 +503,39 @@ export default {
                 }
                 svg {
                     margin: 0;
+                }
+
+                &.userFilter {
+                    padding: 0;
+                    position: relative;
+                    z-index: 0;
+
+                    .userList {
+                        select {
+                            width: 0;
+                            border: 0;
+                            padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+                            background: none;
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            z-index: 5;
+                            &::-ms-expand {
+                                display: none;
+                            }
+                            &[data-empty="false"] {
+                                width: max-content;
+                                padding-right: 2rem;
+
+                            }
+                        }
+                    }
+                    svg {
+                        position: absolute;
+                        top: 50%;
+                        right: 0.5rem;
+                        transform: translateY(-50%);
+                        z-index: -1;
+                    }
                 }
 
                 &.search {
@@ -605,6 +732,16 @@ export default {
                         }
                     }
                     position: relative;
+                    &.slug > span {
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 0.5rem;
+                        > span {
+                            color: var(--color-2);
+                            cursor: pointer;
+                            position: relative;
+                        }
+                    }
                     &.destination {
                         width: 100%;
                         span {
@@ -651,6 +788,26 @@ export default {
 
     > svg {
         display: none;
+    }
+    :deep(.tooltip) {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%, 0.5rem);
+        background-color: var(--accent);
+        padding: 0.5rem;
+        border-radius: 10px;
+        z-index: 2;
+        animation: tooltipFadeOut 1s linear 1s forwards;
+    }
+
+    @keyframes tooltipFadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
     }
 
     @media screen and (max-width: 768px) {
@@ -709,6 +866,9 @@ export default {
                         &:first-of-type {
                             // hide checkbox
                             display: none;
+                        }
+                        &.slug {
+                            display: flex;
                         }
                         &.destination {
                             overflow-x: auto;

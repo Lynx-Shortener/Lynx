@@ -30,6 +30,29 @@ module.exports = async () => {
             const newOwner = await Account.findOneAndUpdate({}, { $set: { role: "owner" } });
             console.log(`Automatically promoted ${newOwner.username} to owner, as no owner previously existed.`);
         }
+
+        await Account.updateMany({ allowAutomaticLogin: { $exists: false } }, { $set: { allowAutomaticLogin: false } });
+
+        await Account.updateMany(
+            { totp: { $exists: true } },
+            [
+                {
+                    $set: {
+                        twoFactorAuthentication: {
+                            enabled: "$totp.enabled",
+                            backupCodes: "$totp.backupCodes",
+                            totp: {
+                                secret: "$totp.secret",
+                                verified: "$totp.enabled",
+                            },
+                        },
+                    },
+                },
+                {
+                    $unset: ["totp"],
+                },
+            ],
+        );
     }
 
     // Remove tmp files

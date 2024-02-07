@@ -2,19 +2,45 @@ const Link = require("../../models/link");
 const Account = require("../../models/account");
 
 module.exports = async ({
-    pagesize, page, sortType, sortField, account, search,
+    pagesize, page, sortType, sortField, account, search, userID,
 }) => {
     const total = await Link.count();
     const query = {};
-    if (!["owner", "admin"].includes(account.role)) {
-        query.author = account.id;
+    const andQuery = [];
+
+    if (account.role === "admin") {
+        andQuery.push({
+            $or: [
+                { author: account.id },
+                { author: { $in: await Account.find({ role: "standard" }).distinct("id") } },
+            ],
+        });
+    } else if (account.role === "standard") {
+        andQuery.push({
+            $or: [
+                { author: account.id },
+            ],
+        });
     }
+
     if (search) {
         // search destination and slug
         const filter = [];
         filter.push({ slug: new RegExp(search, "i") });
         filter.push({ destination: new RegExp(search, "i") });
-        query.$or = filter;
+        andQuery.push({
+            $or: filter,
+        });
+    }
+
+    if (userID !== "") {
+        andQuery.push({
+            author: userID,
+        });
+    }
+
+    if (andQuery.length > 0) {
+        query.$and = andQuery;
     }
 
     const sort = {};

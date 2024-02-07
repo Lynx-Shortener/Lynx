@@ -7,18 +7,8 @@
                  @submit="changeUsername">
             <FormKit type="text"
                      label="New Username"
-                     v-model="newData.newUsername"
-                     autocomplete="username" />
-            <FormKit type="password"
-                     label="Password"
-                     v-model="newData.password"
-                     autocomplete="current-password" />
-            <FormKit type="text"
-                     label="Your 2FA token"
-                     v-model="newData.token"
-                     validation="number:required|length:6,6"
-                     v-if="account.account.totp"
-                     autocomplete="one-time-code" />
+                     v-model="newData.username"
+                     :autocomplete="data.account === account.account.id ? 'username' : 'off'" />
             <p>{{ response }}</p>
         </FormKit>
     </div>
@@ -29,28 +19,40 @@ import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
 
 export default {
+    props: ["data"],
     data() {
         return {
             account: useAccountStore(),
             popups: usePopups(),
             newData: {
-                newUsername: "",
-                password: "",
-                token: "",
+                username: "",
             },
             response: "",
         };
     },
     methods: {
         async changeUsername() {
-            const response = await this.account.fetch("/auth/username", {
+            const verificationData = await this.popups.addPopup("Verify", { async: true });
+            const loadingPopup = await this.popups.addPopup("Loader");
+
+            const updatingSelf = this.data.account === this.account.account.id;
+
+            const response = await this.account.fetch("/user/username", {
                 method: "PATCH",
-                body: JSON.stringify(this.newData),
+                body: JSON.stringify({
+                    user: {
+                        username: this.newData.username,
+                        account: this.data.account,
+                    },
+                    verification: verificationData,
+                }),
             });
+
+            this.popups.closePopup(loadingPopup.id);
 
             if (!response.success) {
                 this.popups.addPopup("Information", {
-                    title: "Error updating your username",
+                    title: `Error updating ${updatingSelf ? "your" : "their"} username`,
                     description: response.message,
                     buttons: [
                         {
@@ -66,10 +68,12 @@ export default {
                     ],
                 });
             } else {
-                this.account.account = response.result.account;
-                this.popups.closeSelf(this);
+                if (updatingSelf) this.account.account = response.result.account;
+
+                this.popups.closeSelf(this, { account: response.result.account });
+                if (this.account.preferences.reducedPopups) return;
                 this.popups.addPopup("Information", {
-                    title: "Successfully updated your username",
+                    title: `Successfully updated ${updatingSelf ? "your" : "their"} username`,
                     buttons: [
                         {
                             name: "Okay",

@@ -13,6 +13,14 @@ module.exports = async ({
             email,
             role,
             secret: null,
+            allowAutomaticLogin: false,
+            twoFactorAuthentication: {
+                enabled: false,
+                totp: {
+                    secret: "",
+                    verified: false,
+                },
+            },
         });
 
         await account.save();

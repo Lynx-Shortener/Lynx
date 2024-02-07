@@ -24,7 +24,6 @@ export default {
 <style lang="scss" scoped>
 main {
     width: 100%;
-    padding-right: 4rem;
     box-sizing: border-box;
     @media screen and (max-width: 768px) {
         padding-right: 0;

@@ -9,6 +9,7 @@
             <thead>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Password</th>
                 <th>Role</th>
                 <th>Secret</th>
                 <th class="add-user" align="right">
@@ -17,20 +18,27 @@
             </thead>
             <tbody>
                 <tr v-for="user in users" :key="user.id">
-                    <td>
+                    <td :class="canUpdate(user) ? 'editable' : ''" @click="updateUsername(user)">
                         <font-awesome-icon :icon="['fas', 'user']" class="mobile-icon"/>
                         <span>{{ user.username }}</span>
+                        <font-awesome-icon :icon="['fas', 'pencil']" class="edit-pencil" />
                     </td>
-                    <td>
+                    <td :class="canUpdate(user) ? 'editable' : ''" @click="updateEmail(user)">
                         <font-awesome-icon :icon="['fas', 'envelope']" class="mobile-icon"/>
                         <span>{{ user.email }}</span>
+                        <font-awesome-icon :icon="['fas', 'pencil']" class="edit-pencil" />
+                    </td>
+                    <td :class="canUpdate(user) ? 'editable' : ''" @click="updatePassword(user)">
+                        <font-awesome-icon :icon="['fas', 'key']" class="mobile-icon" />
+                        <span>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span>
+                        <font-awesome-icon :icon="['fas', 'pencil']" class="edit-pencil" />
                     </td>
                     <td class="role">
                         <font-awesome-icon :icon="['fas', 'users']" class="mobile-icon"/>
                         <span>{{ user.role }}</span>
                         <font-awesome-icon
                             v-if="user.id !== account.account.id && account.account.role === 'owner'"
-                            icon="ellipsis-vertical"
+                            :icon="['fas','ellipsis-vertical']"
                             @click="updateRoleMenu($event, user)"
                             class="update-role-icon"
                         />
@@ -45,16 +53,16 @@
                             @update-user="updateUser"
                         />
                         <button @click="updateRoleMenu($event, user)" v-if="user.id !== account.account.id && account.account.role === 'owner'" class="update-role">
-                            <font-awesome-icon icon="users"/>
+                            <font-awesome-icon :icon="['fas','users']"/>
                             Update Role
                         </button>
                         <button @click="deleteUser(user)" v-if="user.id !== account.account.id" class="delete-user">
-                            <font-awesome-icon  icon="trash-can"/>
+                            <font-awesome-icon  :icon="['fas','trash-can']"/>
                             Delete
                         </button>
                     </td>
                     <td class="delete-user">
-                        <font-awesome-icon v-if="user.id !== account.account.id" icon="trash-can" @click="deleteUser(user)" />
+                        <font-awesome-icon v-if="user.id !== account.account.id" :icon="['fas','trash-can']" @click="deleteUser(user)" />
                     </td>
                 </tr>
             </tbody>
@@ -112,9 +120,20 @@ export default {
 
             this.users[userIndex] = { ...this.users[userIndex], ...updatedValues };
         },
+        async updateUsername(user) {
+            const data = await this.popups.addPopup("ChangeUsername", { account: user.id, async: true });
+            this.updateUser(user.id, data.account);
+        },
+        async updateEmail(user) {
+            const data = await this.popups.addPopup("ChangeEmail", { account: user.id, async: true });
+            this.updateUser(user.id, data.account);
+        },
+        async updatePassword(user) {
+            const data = await this.popups.addPopup("ChangePassword", { account: user.id, async: true });
+            this.updateUser(user.id, data.account);
+        },
         async createUser() {
             const userCreation = await this.popups.addPopup("CreateUser", { async: true });
-
             if (userCreation.success) {
                 await this.getUsers();
             }
@@ -254,6 +273,12 @@ export default {
                 this.users = this.users.filter((user) => user.role !== "owner");
             }
         },
+        canUpdate(user) {
+            // if user is yourself, or you have a higher role
+            return this.account.account.id === user.id
+                || (this.account.account.role === "owner" && user.role !== "owner")
+                || (this.account.account.role === "admin" && user.role === "standard");
+        },
     },
 };
 </script>
@@ -309,12 +334,27 @@ export default {
         tbody {
             td {
                 padding: 0.8rem;
+                white-space: nowrap;
                 &.role {
                     display: flex;
                     justify-content: space-between;
                     gap: 1rem;
                     svg.update-role-icon {
                         cursor: pointer;
+                    }
+                }
+
+                &.editable {
+                    gap: 1rem;
+                    font-weight: bold;
+                    color: var(--color-4);
+                    transition: 250ms ease-in-out;
+                    cursor: pointer;
+                    svg.edit-pencil {
+                        margin-left: 1rem;
+                    }
+                    &:hover {
+                        color: var(--color-2);
                     }
                 }
 
@@ -325,6 +365,24 @@ export default {
                         &:hover {
                             color: var(--color-error);
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        table {
+            tr {
+                thead {
+                    th {
+                        padding: 0.3rem;
+                    }
+                }
+                td {
+                    padding: 0.6rem 0.3rem;
+                    .edit-pencil {
+                        display: none;
                     }
                 }
             }

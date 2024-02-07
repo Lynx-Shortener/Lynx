@@ -75,7 +75,6 @@ export default {
     border: 1px solid var(--bg-color-2);
     border-radius: 5px;
     width: max-content;
-    margin-top: 1rem;
     height: max-content;
     overflow: hidden;
 
@@ -134,6 +133,11 @@ export default {
                     }
                 }
             }
+        }
+    }
+    @media screen and (max-width: 1200px) and (min-width: 769px) {
+        p {
+            width: calc(14ch + 1rem);
         }
     }
     @media screen and (max-width: 768px) {

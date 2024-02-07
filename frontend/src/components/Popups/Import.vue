@@ -113,6 +113,7 @@ export default {
             } else {
                 this.about.track(`Imported links from ${this.data.service}`);
                 this.popups.closeSelf(this);
+                if (this.account.preferences.reducedPopups) return;
                 this.popups.addPopup("Information", {
                     title: "Successfully completed import",
                     description: response.message,

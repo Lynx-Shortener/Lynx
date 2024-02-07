@@ -28,11 +28,43 @@ const routes = [
             },
             {
                 path: "/dash/settings",
-                component: () => import("../components/Dash/Settings.vue"),
+                component: () => import("../components/Dash/Settings/Index.vue"),
                 meta: {
                     requiresLogin: true,
                     title: "Settings",
+                    disableDashboardGap: true,
                 },
+                redirect: "/dash/settings/account",
+                children: [
+                    {
+                        path: "/dash/settings/account",
+                        component: () => import("../components/Dash/Settings/Account.vue"),
+                        meta: {
+                            title: "Account Settings",
+                        },
+                    },
+                    {
+                        path: "/dash/settings/preferences",
+                        component: () => import("../components/Dash/Settings/Preferences.vue"),
+                        meta: {
+                            title: "Preferences",
+                        },
+                    },
+                    {
+                        path: "/dash/settings/security",
+                        component: () => import("../components/Dash/Settings/Security.vue"),
+                        meta: {
+                            title: "Security Settings",
+                        },
+                    },
+                    {
+                        path: "/dash/settings/about",
+                        component: () => import("../components/Dash/Settings/About.vue"),
+                        meta: {
+                            title: "About",
+                        },
+                    },
+                ],
             },
             {
                 path: "/dash/login",

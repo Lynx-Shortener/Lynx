@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.8.0] - 2023-08-22
+
+- [#86](https://github.com/Lynx-Shortener/Lynx/issues/86) Add updating of other user's details as an admin, including:
+  - username
+  - email
+  - password
+- Improve responsiveness for narrow (but non-mobile) screens
+- Consistently use array format for fontawesome icons
+- Add tabbed layout to Settings and split into own components
+- Add preferences page with option to reduce popups ([#105](https://github.com/Lynx-Shortener/Lynx/issues/105))
+- Bug fixes:
+  - Admins were not able to update standard user's roles, this has been resolved.
+  - Admins are no longer able to see other admin's links.
+  - Give value to color-4 in dark-mode.
+ 
 ## [1.7.4] - 2023-12-30
 
 - Properly assign the author of links uploaded via the ShareX endpoint

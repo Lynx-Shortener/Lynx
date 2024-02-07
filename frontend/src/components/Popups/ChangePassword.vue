@@ -6,23 +6,17 @@
                  :submit-attrs="{ 'button-type': 'primary' }"
                  @submit="changePassword">
             <FormKit type="password"
-                     label="Current Password"
-                     v-model="newData.password"
-                     autocomplete="current-password" />
-            <FormKit type="password"
+                     name="password"
                      label="New Password"
                      v-model="newData.newPassword"
-                     autocomplete="new-password"/>
+                     autocomplete="new-password"
+                     help="At least 1 lowercase, 1 uppercase, 1 number and 1 special character. Minimum of 12 characters"
+                     :validation="[['required'], ['matches', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{12,}$/]]" />
             <FormKit type="password"
                      label="New Password Confirmation"
                      v-model="newData.newPasswordConfirmation"
-                     autocomplete="new-password" />
-            <FormKit type="text"
-                     label="Your 2FA token"
-                     v-model="newData.token"
-                     validation="number:required|length:6,6"
-                     v-if="account.account.totp"
-                     autocomplete="one-time-code" />
+                     autocomplete="new-password"
+                     validation="required|confirm:password" />
             <p>{{ response }}</p>
         </FormKit>
     </div>
@@ -33,12 +27,12 @@ import { useAccountStore } from "../../stores/account";
 import { usePopups } from "../../stores/popups";
 
 export default {
+    props: ["data"],
     data() {
         return {
             account: useAccountStore(),
             popups: usePopups(),
             newData: {
-                password: "",
                 newPassword: "",
                 newPasswordConfirmation: "",
                 token: "",
@@ -48,19 +42,27 @@ export default {
     },
     methods: {
         async changePassword() {
-            const { password, newPassword, token } = this.newData;
-            const response = await this.account.fetch("/auth/password", {
+            const verificationData = await this.popups.addPopup("Verify", { async: true });
+            const loadingPopup = await this.popups.addPopup("Loader");
+
+            const updatingSelf = this.data.account === this.account.account.id;
+
+            const response = await this.account.fetch("/user/password", {
                 method: "PATCH",
                 body: JSON.stringify({
-                    password,
-                    newPassword,
-                    token,
+                    user: {
+                        password: this.newData.newPassword,
+                        account: this.data.account,
+                    },
+                    verification: verificationData,
                 }),
             });
 
+            this.popups.closePopup(loadingPopup.id);
+
             if (!response.success) {
                 this.popups.addPopup("Information", {
-                    title: "Error updating your password",
+                    title: `Error updating ${updatingSelf ? "your" : "their"} password`,
                     description: response.message,
                     buttons: [
                         {
@@ -76,9 +78,12 @@ export default {
                     ],
                 });
             } else {
-                this.popups.closeSelf(this);
+                if (updatingSelf) this.account.account = response.result.account;
+
+                this.popups.closeSelf(this, { account: response.result.account });
+                if (this.account.preferences.reducedPopups) return;
                 this.popups.addPopup("Information", {
-                    title: "Successfully updated your password",
+                    title: `Successfully updated ${updatingSelf ? "your" : "their"} password`,
                     buttons: [
                         {
                             name: "Okay",

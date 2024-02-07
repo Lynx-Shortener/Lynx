@@ -64,6 +64,7 @@ export default {
             } else {
                 this.about.track("Link Edited");
                 this.popups.closeSelf(this);
+                if (this.account.preferences.reducedPopups) return;
                 this.popups.addPopup("Information", {
                     title: "Successfully updated your link",
                     buttons: [

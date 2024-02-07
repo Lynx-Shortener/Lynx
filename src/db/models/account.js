@@ -7,10 +7,14 @@ const schema = new mongoose.Schema({
     email: String,
     role: String, // owner || admin || standard
     secret: String,
-    totp: {
+    allowAutomaticLogin: Boolean,
+    twoFactorAuthentication: {
         enabled: Boolean,
-        secret: String,
         backupCodes: [String],
+        totp: {
+            secret: String,
+            verified: Boolean,
+        },
     },
 });
 

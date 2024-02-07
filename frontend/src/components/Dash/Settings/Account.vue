@@ -1,8 +1,7 @@
 <template>
-    <div class="settings">
-        <div class="account">
+    <div class="settings-section">
+        <div class="account-information">
             <h2>Account</h2>
-            <p>Here you can edit your login information and username.</p>
             <div class="inputs">
                 <div class="input">
                     <label>Email</label>
@@ -18,27 +17,8 @@
                 </div>
             </div>
         </div>
-        <div class="security">
-            <h2>Security</h2>
-            <p>Here you can change security related settings such as changing your password or enabling 2FA.</p>
-            <div class="inputs">
-                <div class="input">
-                    <label>Password</label>
-                    <div :disabled="about.data.demo" @click="changeSetting('Password')">
-                        ***********
-                    </div>
-                </div>
-                <div class="input totp">
-                    <label>2FA settings</label>
-                    <button :disabled="about.data.demo" @click="toggleTOTP">
-                        {{ account.account.totp ? "Disable" : "Enable" }} 2FA
-                    </button>
-                </div>
-            </div>
-        </div>
         <div class="integration">
             <h2>Integration</h2>
-            <p>Here you can access your ShareX configuration file and manage your secret.</p>
             <p v-if="about.data.demo">
                 This secret is automatically recreated on the hour.
             </p>
@@ -56,36 +36,14 @@
                 </div>
             </div>
         </div>
-        <div class="about">
-            <h2>About</h2>
-            <p>Here you can see information about your Lynx installation</p>
-            <table class="about-table">
-                <tr>
-                    <td>Version</td>
-                    <td>{{ about.data.version }}</td>
-                </tr>
-                <tr>
-                    <td>Account Role</td>
-                    <td>{{ account.account.role }}</td>
-                </tr>
-                <tr v-if="Object.prototype.hasOwnProperty.call(about.data, 'links')">
-                    <td>Links</td>
-                    <td>{{ formatNumber(about.data.links) }}</td>
-                </tr>
-                <tr v-if="Object.prototype.hasOwnProperty.call(about.data, 'accounts')">
-                    <td>Accounts</td>
-                    <td>{{ formatNumber(about.data.accounts) }}</td>
-                </tr>
-            </table>
-        </div>
     </div>
 </template>
 
 <script>
-import { useAccountStore } from "../../stores/account";
-import { usePopups } from "../../stores/popups";
-import { useAbout } from "../../stores/about";
-import SecretBox from "./SecretBox.vue";
+import { useAccountStore } from "../../../stores/account";
+import { usePopups } from "../../../stores/popups";
+import { useAbout } from "../../../stores/about";
+import SecretBox from "../SecretBox.vue";
 
 export default {
     components: {
@@ -101,16 +59,7 @@ export default {
     methods: {
         changeSetting(name) {
             if (this.about.data.demo) return;
-            this.popups.addPopup(`Change${name}`, {});
-        },
-        async toggleTOTP() {
-            if (this.about.data.demo) return;
-            const totpEnabled = this.account.account.totp;
-            if (!totpEnabled) {
-                this.popups.addPopup("EnableTOTP", {});
-            } else {
-                this.popups.addPopup("DisableTOTP", {});
-            }
+            this.popups.addPopup(`Change${name}`, { account: this.account.account.id });
         },
         async getConfig() {
             const data = await this.account.fetch("/sharex/config", {
@@ -145,16 +94,12 @@ export default {
 
             document.body.removeChild(a);
         },
-        formatNumber(number) {
-            return number.toLocaleString();
-        },
     },
 };
 </script>
 
 .<style lang="scss" scoped>
-.settings {
-    padding-block: 2rem;
+.settings-section {
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -172,6 +117,7 @@ export default {
         p {
             color: var(--color-3);
             font-weight: 300;
+            max-width: 80ch;
         }
         .inputs {
             margin-top: 2rem;
@@ -293,39 +239,12 @@ export default {
                 }
             }
         }
-        &.about {
-            table.about-table {
-                border-collapse:separate;
-                width: 20rem;
-                border: 1px solid var(--bg-color-3);
-                border-radius: 10px;
-                tr, th {
-
-                    border-radius: 10px;
-                }
-                tr {
-                    &:nth-of-type(2n) {
-                        background: var(--bg-color-2);
-                    }
-                    td {
-                        padding: 0.6rem 0.8rem;
-                        &:nth-of-type(1) {
-                            font-weight: 500;
-                        }
-                        &:nth-of-type(2) {
-                            font-weight: 300;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     @media screen and (max-width: 768px) {
-        padding-inline: 2rem;
         > div {
             h2 {
-                font-size: 3rem;
+                font-size: 2rem;
             }
             p {
                 font-size: 1.5rem;

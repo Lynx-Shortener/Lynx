@@ -1,5 +1,5 @@
 <template>
-    <div class="pageWrapper" :demo="about.data.demo">
+    <div class="pageWrapper" :demo="about.data.demo" :gap="enableGap">
         <div class="demoBanner" v-if="about.data.demo">
             <p>This is a demo instance, features are limited and links will be deleted after 10 minutes.</p>
         </div>
@@ -16,6 +16,11 @@ export default {
         return {
             about: useAbout(),
         };
+    },
+    computed: {
+        enableGap() {
+            return !this.$route.meta.disableDashboardGap;
+        },
     },
     async mounted() {
         useDarkMode();
@@ -44,7 +49,9 @@ body {
     .pageWrapper {
         display: flex;
         box-sizing: border-box;
-        gap: 4rem;
+        &[gap="true"] {
+            gap: 4rem;
+        }
         height: 100%;
         .demoBanner {
             position: absolute;
@@ -63,12 +70,24 @@ body {
         }
         main {
             overflow-y: auto;
+            padding-right: 2rem;
         }
         &[demo="true"] {
             margin-top: 5rem;
         }
     }
+    @media screen and (max-width: 1200px) {
+        .pageWrapper {
+            gap: 1rem;
+        }
+        main {
+            padding-right: 2rem;
+        }
+    }
     @media screen and (max-width: 768px) {
+        main {
+            padding-right: 0;
+        }
         .pageWrapper {
             flex-direction: column;
             gap: 0;
