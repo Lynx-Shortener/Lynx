@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.8.0] - 2024-02-14
+
+- Update socks to 2.7.3
+  - Fixes [CVE-2023-29400]([CVE-2023-42282](https://github.com/advisories/GHSA-78xj-cgh5-2h22))
+
 ## [1.8.0] - 2023-08-22
 
 - [#86](https://github.com/Lynx-Shortener/Lynx/issues/86) Add updating of other user's details as an admin, including:
