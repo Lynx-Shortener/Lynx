@@ -31,7 +31,7 @@ dependencies:
     version: 2.0.35(vue@3.2.47)
   qrcode.vue:
     specifier: ^3.0.0
-    version: 3.4.0(vue@3.2.47)
+    version: 3.4.1(vue@3.2.47)
   sass:
     specifier: ^1.56.2
     version: 1.62.0
@@ -1775,8 +1775,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /qrcode.vue@3.4.0(vue@3.2.47):
-    resolution: {integrity: sha512-4XeImbv10Fin16Fl2DArCMhGyAdvIg2jb7vDT+hZiIAMg/6H6mz9nUZr/dR8jBcun5VzNzkiwKhiqOGbloinwA==}
+  /qrcode.vue@3.4.1(vue@3.2.47):
+    resolution: {integrity: sha512-wq/zHsifH4FJ1GXQi8/wNxD1KfQkckIpjK1KPTc/qwYU5/Bkd4me0w4xZSg6EXk6xLBkVDE0zxVagewv5EMAVA==}
     peerDependencies:
       vue: ^3.0.0
     dependencies:
