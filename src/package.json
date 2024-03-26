@@ -17,7 +17,7 @@
 		"express": "^4.19.2",
 		"express-mongo-sanitize": "^2.2.0",
 		"jsonwebtoken": "^9.0.0",
-		"mongoose": "^7.5.2",
+		"mongoose": "^8.0.0",
 		"multer": "^1.4.5-lts.1",
 		"otpauth": "^9.1.1",
 		"uuid": "^9.0.0"
