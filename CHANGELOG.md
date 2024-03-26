@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.9.1] - 2024-03-26
+
+- Remove vite-plugin-rewrite-all
+- Update to Vite 5
+
 ## [1.9.0] - 2024-03-26
 
 - Make slug copy/open more obvious
