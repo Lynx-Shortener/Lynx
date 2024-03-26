@@ -110,10 +110,12 @@
                     <td class="slug">
                         <strong>Slug:&nbsp;</strong>
                         <span>
-                            <span @click="copyLink($event, link.slug)">{{ link.slug }}</span>
-                            <a :href="`/${link.slug}`" target="_blank">
-                                <font-awesome-icon :icon="['fas', 'arrow-up-right-from-square']" />
+                            <a :href="`/${link.slug}`" target= "_blank">
+                                {{ link.slug }}
                             </a>
+                            <span @click="copyLink($event, link.slug)">
+                                <font-awesome-icon :icon="['fas', 'copy']" />
+                            </span>
                         </span>
                     </td>
                     <td class="destination">
@@ -313,7 +315,7 @@ export default {
             tooltip.className = "tooltip copy-link";
             tooltip.innerText = "Copied!";
 
-            event.target.appendChild(tooltip);
+            event.currentTarget.appendChild(tooltip);
 
             setTimeout(() => {
                 event.target.removeChild(tooltip);
@@ -736,8 +738,11 @@ export default {
                         display: flex;
                         justify-content: space-between;
                         gap: 0.5rem;
+                        > a {
+                            text-decoration: underline;
+                        }
                         > span {
-                            color: var(--color-2);
+                            color: var(--accent);
                             cursor: pointer;
                             position: relative;
                         }
@@ -795,6 +800,7 @@ export default {
         left: 50%;
         transform: translate(-50%, 0.5rem);
         background-color: var(--accent);
+        color: var(--accent-color);
         padding: 0.5rem;
         border-radius: 10px;
         z-index: 2;
