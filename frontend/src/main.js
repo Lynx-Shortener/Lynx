@@ -32,7 +32,7 @@ import {
     faKey,
     faCircleInfo,
     faWrench,
-    faArrowUpRightFromSquare,
+    faCopy,
 } from "@fortawesome/free-solid-svg-icons";
 import VueObserveVisibility from "vue3-observe-visibility";
 import ContextMenu from "@imengyu/vue3-context-menu";
@@ -72,7 +72,7 @@ library.add(
     faKey,
     faCircleInfo,
     faWrench,
-    faArrowUpRightFromSquare,
+    faCopy,
 );
 
 const app = createApp(App);
