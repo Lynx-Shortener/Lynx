@@ -1,6 +1,11 @@
 # Changelog
 
-## [1.8.0] - 2024-02-14
+## [1.9.0] - 2024-03-26
+
+- Make slug copy/open more obvious
+- [Bunch of version updates](https://github.com/Lynx-Shortener/Lynx/issues/142)
+
+## [1.8.1] - 2024-02-14
 
 - Update socks to 2.7.3
   - Fixes [CVE-2023-29400]([CVE-2023-42282](https://github.com/advisories/GHSA-78xj-cgh5-2h22))
