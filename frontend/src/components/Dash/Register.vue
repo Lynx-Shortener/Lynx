@@ -30,7 +30,7 @@
                 name="password"
                 label="Password"
                 help="At least 1 lowercase, 1 uppercase, 1 number and 1 special character. Minimum of 12 characters"
-                :validation="[['required'], ['matches', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{12,}$/]]"
+                :validation="[['required'], ['matches', /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.* ).{12,}$/]]"
                 :validation-messages="{
                     matches: 'Password does not match requirements.',
                 }"
