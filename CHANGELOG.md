@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.9.2] - 2024-05-14
+
+- Improve password regex to accept OWASP characters 
+
 ## [1.9.1] - 2024-03-26
 
 - Remove vite-plugin-rewrite-all
