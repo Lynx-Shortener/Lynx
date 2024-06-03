@@ -40,7 +40,6 @@ services:
             - BACKUP=true
             - BACKUP_SCHEDULE=* * * * * # Use crontab.guru to create
             - BACKUP_COUNT=5 # A count of 1 will make a backup file called backup.json
-            - URL_REGEX=https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*) # Don't use quotation marks
 
             ## DO NOT CHANGE THESE:
             - DB_HOST=lynx-db

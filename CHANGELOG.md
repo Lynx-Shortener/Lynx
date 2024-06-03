@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.10.0] - 2024-05-28
+
+- Allow for 63 character TLDs, as per DNS spec
+
 ## [1.9.2] - 2024-05-14
 
 - Improve password regex to accept OWASP characters 
@@ -199,4 +203,5 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
+
 
