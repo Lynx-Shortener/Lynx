@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.10.1] - 2024-06-05
+
+- Update user creation popup regex to match server-side and registration page
+
 ## [1.10.0] - 2024-05-28
 
 - Allow for 63 character TLDs, as per DNS spec
@@ -203,5 +207,4 @@ First release, production ready
 - Main framework of Lynx
 - Import/Export
 - Add ShareX support
-
 
