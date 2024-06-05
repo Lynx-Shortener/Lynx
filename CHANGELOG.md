@@ -2,7 +2,7 @@
 
 ## [1.10.1] - 2024-06-05
 
-- Update user creation popup regex to match server-side and registration page
+- Update new user password regex to match regex internally and on registration page
 
 ## [1.10.0] - 2024-05-28
 
