@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.10.2] - 2024-06-05
+
+- Update dependencies
+
 ## [1.10.1] - 2024-06-05
 
 - Update new user password regex to match regex internally and on registration page

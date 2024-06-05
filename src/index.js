@@ -9,6 +9,8 @@ const backend = require("./modules/backend");
 
 const setup = require("./modules/setup");
 
+console.log(process.env);
+
 const undefinedEnv = ["DB_HOST", "JWT_KEY", "URL_SET", "URL_ONLY_UNIQUE", "URL_LENGTH"].filter(
     (envFile) => !Object.prototype.hasOwnProperty.call(process.env, envFile),
 );
@@ -61,10 +63,7 @@ const mongoDB = `mongodb://${
 mongoose.set("strictQuery", false);
 
 mongoose
-    .connect(mongoDB, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
+    .connect(mongoDB)
     .then(() => {
         console.log("Connected to database");
         const listenPort = process.env.EXPRESS_PORT || 3000;

@@ -10,7 +10,7 @@
 		"bcrypt": "^5.1.1",
 		"body-parser": "^1.20.2",
 		"cookie": "^0.6.0",
-		"cron": "^3.0.0",
+		"cron": "^3.1.7",
 		"csv-parse": "^5.3.3",
 		"csv-stringify": "^6.2.3",
 		"dotenv": "^16.0.3",

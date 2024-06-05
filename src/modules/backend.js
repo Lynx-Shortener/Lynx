@@ -5,7 +5,7 @@ const createSecret = require("../db/modules/secret/create");
 const backup = require("./backup");
 
 const removeDemoLinks = async () => {
-    const oldLinkCount = await Link.count({
+    const oldLinkCount = await Link. countDocuments({
         creationDate: { $lt: new Date(Date.now() - 10 * 60 * 1000) },
     });
 
@@ -25,7 +25,7 @@ const regenSecrets = async () => {
     });
 };
 
-const oldLinkDeletionJob = new CronJob({
+const oldLinkDeletionJob = CronJob.from({
     cronTime: "0 * * * * *",
     onTick: () => {
         removeDemoLinks();
@@ -33,7 +33,7 @@ const oldLinkDeletionJob = new CronJob({
     timeZone: "UTC",
 });
 
-const secretRegenJob = new CronJob({
+const secretRegenJob = CronJob.from({
     cronTime: "0 0 * * * *",
     onTick: () => {
         regenSecrets();
@@ -49,7 +49,7 @@ module.exports.start = () => {
     }
 
     if (process.env.BACKUP === "true" && process.env.BACKUP_SCHEDULE) {
-        const backupJob = new CronJob({
+        const backupJob = CronJob.from({
             cronTime: process.env.BACKUP_SCHEDULE,
             onTick: () => {
                 backup({ count: process.env.BACKUP_COUNT });

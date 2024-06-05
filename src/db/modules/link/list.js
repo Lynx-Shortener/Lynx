@@ -4,7 +4,7 @@ const Account = require("../../models/account");
 module.exports = async ({
     pagesize, page, sortType, sortField, account, search, userID,
 }) => {
-    const total = await Link.count();
+    const total = await Link. countDocuments();
     const query = {};
     const andQuery = [];
 
