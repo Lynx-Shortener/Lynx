@@ -1,3 +1,6 @@
+> [!WARNING]  
+> Lynx will no longer have new features added to it as of 2024-06-19, read [the announcement](https://github.com/Lynx-Shortener/Lynx/discussions/155) for more information
+
 <p align="center">
 <img alt="" src="frontend/public/logo.png" height="300px">
 </p>
@@ -22,9 +25,6 @@
 # Lynx
 
 ![link list](https://cdn.jackbailey.dev/screenshots/lynx.png)
-
-> [!WARNING]  
-> Lynx will no longer have new features added to it as of 2024-06-19, read [the announcement](https://github.com/Lynx-Shortener/Lynx/discussions/155) for more information
 
 ## About
 
