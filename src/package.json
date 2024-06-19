@@ -9,15 +9,15 @@
 	"dependencies": {
 		"bcrypt": "^5.1.1",
 		"body-parser": "^1.20.2",
-		"cookie": "^0.5.0",
-		"cron": "^2.2.0",
+		"cookie": "^0.6.0",
+		"cron": "^3.1.7",
 		"csv-parse": "^5.3.3",
 		"csv-stringify": "^6.2.3",
 		"dotenv": "^16.0.3",
 		"express": "^4.19.2",
 		"express-mongo-sanitize": "^2.2.0",
 		"jsonwebtoken": "^9.0.0",
-		"mongoose": "^7.5.2",
+		"mongoose": "^8.0.0",
 		"multer": "^1.4.5-lts.1",
 		"otpauth": "^9.1.1",
 		"uuid": "^9.0.0"
@@ -27,7 +27,7 @@
 		"lint": "eslint **/*.ks"
 	},
 	"devDependencies": {
-		"eslint": "^7.32.0 || ^8.2.0",
+		"eslint": "^7.32.0 || ^8.2.0 || ^9.0.0",
 		"eslint-config-airbnb-base": "^15.0.0",
 		"eslint-plugin-import": "^2.25.2"
 	}
