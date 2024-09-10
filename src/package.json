@@ -8,7 +8,7 @@
 	"private": false,
 	"dependencies": {
 		"bcrypt": "^5.1.1",
-		"body-parser": "^1.20.2",
+		"body-parser": "^2.0.0",
 		"cookie": "^0.5.0",
 		"cron": "^2.2.0",
 		"csv-parse": "^5.3.3",
