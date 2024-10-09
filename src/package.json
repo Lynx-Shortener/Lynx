@@ -9,7 +9,7 @@
 	"dependencies": {
 		"bcrypt": "^5.1.1",
 		"body-parser": "^1.20.2",
-		"cookie": "^0.5.0",
+		"cookie": "^1.0.0",
 		"cron": "^2.2.0",
 		"csv-parse": "^5.3.3",
 		"csv-stringify": "^6.2.3",
