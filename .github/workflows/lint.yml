@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 18
       - name: Lint Backend
-        uses: sibiraj-s/action-eslint@2e3213f837c945a07368d53e42f4c16453c02087
+        uses: sibiraj-s/action-eslint@b47d77a755aa115fa591770079695b70d7575601
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # optional
           working-directory: src
@@ -29,7 +29,7 @@ jobs:
           annotations: true
           use-npx: true
       - name: Lint Frontend
-        uses: sibiraj-s/action-eslint@2e3213f837c945a07368d53e42f4c16453c02087
+        uses: sibiraj-s/action-eslint@b47d77a755aa115fa591770079695b70d7575601
         with:
             token: ${{ secrets.GITHUB_TOKEN }} # optional
             working-directory: frontend
